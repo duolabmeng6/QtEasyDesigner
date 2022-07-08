@@ -71,6 +71,7 @@ class MainWin(主窗口):
         # 配置信息加载
         # 设计文件路径 = "/Users/chensuilong/Desktop/pythonproject/testqtefun/启动窗口.json"
         self.属性表格窗口.设计窗口.可否关闭 = False
+
         self.属性表格窗口.设计窗口.信号_加载设计文件(self.设计文件路径)
         self.属性表格窗口.设计窗口.插件URL地址 = f"http://127.0.0.1:{self.插件端口号}"
         # 配置信息加载
@@ -83,7 +84,10 @@ class MainWin(主窗口):
         self.ui.mdiArea.addSubWindow(self.属性表格窗口.设计窗口)
         self.ui.mdiArea.setBackground(QColor(236, 236, 236))
         self.ui.mdiArea.cascadeSubWindows()
-
+        # self.属性表格窗口.设计窗口.setGeometry(0, 0, 300, 300)
+        # self.属性表格窗口.设计窗口.setFixedWidth(400)
+        # self.属性表格窗口.设计窗口.setFixedHeight(300)
+        # self.ui.mdiArea.activeSubWindow().resize(400, 300)
         self.属性表格窗口.show()
         self.属性表格窗口.设计窗口.show()
 

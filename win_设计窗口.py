@@ -20,6 +20,7 @@ from pyefun import *
 from qt_esay_model.辅助函数 import 发送给ide插件
 
 from qtefun.组件.主窗口 import 主窗口
+from qt_esay_model.历史记录类 import 历史记录类
 
 
 class 设计窗口(主窗口):
@@ -47,6 +48,7 @@ class 设计窗口(主窗口):
     组件id与名称关系 = {}  # 组件id与名称关系
     项目目录 = ""
     组件名称管理 = None
+    操作记录: 历史记录类 = None
 
     def closeEvent(self, e: QCloseEvent):
         print("窗口关闭事件")
@@ -171,13 +173,28 @@ class 设计窗口(主窗口):
             self.递归创建组件(子组件, True)
 
     def 信号_修改组件的属性(self, 当前组件库的对象, 属性名称, 属性值):
+        def _修改组件属性(传递参数):
+            # 记录选来组件的 rect
+            组件库, 属性名称, 属性值 = 传递参数['组件库'], 传递参数['属性名称'], 传递参数['属性值']  # type:组件按钮
+            传递参数['原属性值'] = 组件库.导出为json属性()[属性名称]
+            组件库.修改组件属性(属性名称, 属性值)
+            return 传递参数
+
+        def _修改组件属性恢复(传递参数):
+            组件库, 属性名称, 属性值, 原属性值 = 传递参数['组件库'], 传递参数['属性名称'], 传递参数['属性值'], 传递参数['原属性值']  # type:组件按钮
+            组件库.修改组件属性(属性名称, 原属性值)
+            return 传递参数
+
         if self.当前选中的组件 == []:
             # 证明是窗口
-            self.组件窗口库.修改组件属性(属性名称, 属性值)
+            # self.组件窗口库.修改组件属性(属性名称, 属性值)
+            self.操作记录.开始记录()
+            self.操作记录.添加("修改组件属性", {"组件库": self.组件窗口库, "属性名称": 属性名称, "属性值": 属性值}, _修改组件属性, _修改组件属性恢复)
+            self.操作记录.提交记录()
             return
         # 当前组件库的对象.修改组件属性(属性名称, 属性值)
         for 组件 in self.当前选中的组件:
-            方块数组, 组件库 = self.组件方块数组[组件.property("_方块id")][0], self.组件方块数组[组件.property("_方块id")][2]
+            件库 = self.组件方块数组[组件.property("_方块id")][2]
             # 组件库 = self.组件方块数组[组件.property["_方块id"]][2]
             # 检查一下 组件名称 是否重复确认生效
             if 属性名称 == "名称":
@@ -185,8 +202,13 @@ class 设计窗口(主窗口):
                     if self.组件名称管理.检查重复(属性值, self.取所有组件的组件名称()):
                         self.消息框("你输入的名称有冲突请修改")
                         return
+            # 组件库.修改组件属性(属性名称, 属性值) # 原来的代码
 
-            组件库.修改组件属性(属性名称, 属性值)
+            self.操作记录.开始记录()
+            for 组件 in self.当前选中的组件:  # type: QPushButton
+                组件库 = self.组件方块数组[组件.property("_方块id")][2]
+                self.操作记录.添加("修改组件属性", {"组件库": 组件库, "属性名称": 属性名称, "属性值": 属性值}, _修改组件属性, _修改组件属性恢复)
+            self.操作记录.提交记录()
 
         self.方块_刷新显示当前选中()
 
@@ -194,11 +216,16 @@ class 设计窗口(主窗口):
         self.组件窗口库 = 组件窗口(self)
         self.setObjectName("启动窗口")
         self.setWindowTitle("启动窗口")
-        self.setFixedWidth(400)
-        self.setFixedHeight(400)
-        # self.setGeometry(300, 300, 300, 300)
-        # print(self.组件窗口库.导出为json属性())
+        # self.setMaximumSize(400,400)
+        self.setMinimumSize(400,400)
+        # self.setFixedHeight(400)
+        # self.resize(400,400)
+        # self.setGeometry(0, 0, 300, 300)
+        # print(self.组件窗口库.导出为jsson属性())
         # exit()
+        # self.setFixedWidth(400)
+        # self.setFixedHeight(300)
+
 
         for i in self.组件方块数组:
             方块数组, 组件 = self.组件方块数组[i][0], self.组件方块数组[i][1]
@@ -225,6 +252,7 @@ class 设计窗口(主窗口):
         self.组件id与名称关系 = {}  # 组件id与名称关系
         # self.项目目录 = ""
         self.组件名称管理 = 组件名称管理类()
+        self.操作记录 = 历史记录类()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -238,6 +266,19 @@ class 设计窗口(主窗口):
         self.resizeEvent = self.窗口大小改变事件
         self.moveEvent = self.窗口位置改变事件
         self.当前选中的组件 = []
+
+        self.shortcut = QShortcut(QKeySequence("Ctrl+z"), self)
+        self.shortcut.activated.connect(self.撤销)
+        self.shortcut = QShortcut(QKeySequence("Ctrl+y"), self)
+        self.shortcut.activated.connect(self.恢复)
+
+    def 撤销(self):
+        print("撤销")
+        self.操作记录.撤销记录()
+
+    def 恢复(self):
+        print("恢复")
+        self.操作记录.恢复记录()
 
     def 窗口大小改变事件(self, event):
         print("窗口大小改变事件")
@@ -327,13 +368,32 @@ class 设计窗口(主窗口):
 
         # 创建组件
         if self.当前创建组件名称:
-            组件对象 = self.创建组件(取组件名称中英文对照(self.当前创建组件名称), 左边, 顶边, 宽度, 高度)
+            self.操作记录.开始记录()
+
+            def 创建组件(传递数据):
+                名称, 左边, 顶边, 宽度, 高度 = 传递数据['名称'], 传递数据['左边'], 传递数据['顶边'], 传递数据['宽度'], 传递数据['高度']
+                组件对象 = self.创建组件(名称, 左边, 顶边, 宽度, 高度)
+                传递数据['组件对象'] = 组件对象
+                return 传递数据
+
+            def 创建组件恢复(传递数据):
+                print("恢复组件", 传递数据)
+                组件 = 传递数据['组件对象']
+
+                self.清理一个组件的数据(组件)
+                return 传递数据
+
+            名称 = 取组件名称中英文对照(self.当前创建组件名称)
+            记录对象 = self.操作记录.添加("创建组件", {"名称": 名称, "左边": 左边, "顶边": 顶边, "宽度": 宽度, "高度": 高度}, 创建组件, 创建组件恢复)
+            self.操作记录.提交记录()
+
+            组件对象 = 记录对象['组件对象']
+            # 组件对象 = self.创建组件(取组件名称中英文对照(self.当前创建组件名称), 左边, 顶边, 宽度, 高度) # 封装操作历史
             self.调整组件 = 组件对象
             self.当前选中的组件 = [组件对象]
             self.刷新数据_属性框和组件树()
 
         self.当前创建组件名称 = ""
-
 
     def 取所有组件的组件名称(self):
         组件名称 = []
@@ -406,19 +466,60 @@ class 设计窗口(主窗口):
             pass
             # 剪切组件 pass
             self.剪切组件()
+        # 检查是否按下撤销 ctrl+z
+        elif e.key() == Qt.Key_Z and e.modifiers() == Qt.ControlModifier:
+            pass
+            # 剪切组件 pass
+            self.撤销()
+        elif e.key() == Qt.Key_Y and e.modifiers() == Qt.ControlModifier:
+            pass
+            # 剪切组件 pass
+            self.恢复()
+
+    def 清理一个组件的数据(self, 组件):
+        方块数组, 组件库对象, 对象 = self.组件方块数组[组件.property("_方块id")][0], self.组件方块数组[组件.property("_方块id")][1], \
+                          self.组件方块数组[组件.property("_方块id")][2]
+        for 组件2 in 方块数组:  # type: QLabel
+            组件2.deleteLater()
+        # self.组件库列表.remove(组件库对象)
+        组件库对象.deleteLater()
+        # 移除 组件方块数组 的对象
+        self.组件方块数组.pop(组件.property("_方块id"))
+        del 对象
 
     def 删除组件(self):
-        for 组件 in self.当前选中的组件:
-            方块数组, 组件库对象 = self.组件方块数组[组件.property("_方块id")][0], self.组件方块数组[组件.property("_方块id")][1]
-            for 组件2 in 方块数组:  # type: QLabel
-                组件2.deleteLater()
-            # self.组件库列表.remove(组件库对象)
-            组件库对象.deleteLater()
-            # 移除 组件方块数组 的对象
-            self.组件方块数组.pop(组件.property("_方块id"))
 
+        self.操作记录.开始记录()
+        for 组件 in self.当前选中的组件:
+            def _删除对象(传递参数):
+                print("_删除对象")
+                组件库对象 = self.组件方块数组[传递参数['组件对象'].property("_方块id")][2]  # type: 组件按钮
+                传递参数['组件的数据'] = 组件库对象.导出为json属性()
+
+                self.清理一个组件的数据(传递参数['组件对象'])  # 删除对象操作
+
+                self.当前选中的组件 = []
+                self.刷新数据_属性框和组件树()
+                return 传递参数
+
+            def _删除对象恢复(传递参数):
+                print("_删除对象恢复")
+                组件类型 = 传递参数['组件的数据']['组件类型']
+                组件对象 = self.创建组件(组件类型, 组件属性=传递参数['组件的数据'])
+                传递参数['组件对象'] = 组件对象  # 把对象重新放回传递参数
+
+                self.调整组件 = 组件对象
+                # self.当前选中的组件 = [组件对象]
+                self.刷新数据_属性框和组件树()
+                return 传递参数
+
+            记录对象 = self.操作记录.添加("创建组件", {"组件对象": 组件}, _删除对象, _删除对象恢复)
+        self.操作记录.提交记录()
+
+        # for 组件 in self.当前选中的组件:
+        #     self.清理一个组件的数据(组件)
         self.当前选中的组件 = []
-        self.刷新数据_属性框和组件树()
+        # self.刷新数据_属性框和组件树()
 
     def 复制组件(self):
         # print("复制组件")
@@ -467,13 +568,7 @@ class 设计窗口(主窗口):
                 新增组件.append(新组件)
 
                 # 删除旧的
-                方块数组, 组件库对象 = self.组件方块数组[组件.property("_方块id")][0], self.组件方块数组[组件.property("_方块id")][1]
-                for 组件2 in 方块数组:  # type: QLabel
-                    组件2.deleteLater()
-                # self.组件库列表.remove(组件库对象)
-                组件库对象.deleteLater()
-                # 移除 组件方块数组 的对象
-                self.组件方块数组.pop(组件.property("_方块id"))
+                self.清理一个组件的数据(组件)
 
             self.当前复制组件的数据 = []
 
@@ -524,18 +619,45 @@ class 设计窗口(主窗口):
         if self.移动组件:
             print("注意这里调整1")
             左边, 顶边, 宽度, 高度 = self.rect
-            # 组件.setGeometry(左边, 顶边, 宽度, 高度) # 这是修改单个
-            print("事件_设计组件被放开", 左边, 顶边, 宽度, 高度)
-            for 组件 in self.当前选中的组件:  # 这里是批量修改
-                # 计算组件位置差距
+
+            # # 组件.setGeometry(左边, 顶边, 宽度, 高度) # 这是修改单个
+            # print("事件_设计组件被放开", 左边, 顶边, 宽度, 高度)
+            # for 组件 in self.当前选中的组件:  # 这里是批量修改
+            #     # 计算组件位置差距
+            #     左边x, 顶边x, 宽度x, 高度x = 组件.geometry().getRect()
+            #     左边n = 左边x + x - self.开始x
+            #     顶边n = 顶边x + y - self.开始y
+            #     print("事件_设计组件被放开", 左边n, 顶边n, 宽度, 高度)
+            #     组件.setGeometry(左边n, 顶边n, 宽度, 高度)
+
+            def _修改组件属性(传递参数):
+                # 记录选来组件的 rect
+                组件 = 传递参数['组件对象']
+                传递参数['原左边'], 传递参数['原顶边'], 传递参数['原宽度'], 传递参数['原高度'] = 组件.geometry().getRect()
+                self.调整组件 = 组件
                 左边x, 顶边x, 宽度x, 高度x = 组件.geometry().getRect()
                 左边n = 左边x + x - self.开始x
                 顶边n = 顶边x + y - self.开始y
-                print("事件_设计组件被放开", 左边n, 顶边n, 宽度, 高度)
                 组件.setGeometry(左边n, 顶边n, 宽度, 高度)
-            self.绘制矩形清除()
+                # self.方块_调整位置(组件.property('_方块id'))
+                self.方块_刷新显示当前选中()
+                return 传递参数
 
-        self.方块_刷新显示当前选中()
+            def _修改组件属性恢复(传递参数):
+                组件 = 传递参数['组件对象']
+                左边, 顶边, 宽度, 高度 = 传递参数['原左边'], 传递参数['原顶边'], 传递参数['原宽度'], 传递参数['原高度']
+                self.调整组件 = 组件
+                组件.setGeometry(左边, 顶边, 宽度, 高度)
+                # self.方块_调整位置(组件.property('_方块id'))
+                self.方块_刷新显示当前选中()
+                return 传递参数
+
+            self.操作记录.开始记录()
+            for 组件对象 in self.当前选中的组件:  # type: QPushButton
+                self.操作记录.添加("移动位置", {"组件对象": 组件对象}, _修改组件属性, _修改组件属性恢复)
+            self.操作记录.提交记录()
+
+        # self.方块_刷新显示当前选中()
         self.移动组件 = False
 
         # todo: 调整尺寸需要发送事件更新属性框
@@ -635,17 +757,44 @@ class 设计窗口(主窗口):
         if self.调整尺寸:
             self.调整尺寸 = False
             print("注意这里1")
+
             # 左边, 顶边, 宽度, 高度 = self.rect # 单个调整
             # print("事件_方块被放开", 左边, 顶边, 宽度, 高度)
             # 组件.setGeometry(左边, 顶边, 宽度, 高度)
             # self.方块_调整位置(组件.property('_方块id'))
-            for 组件 in self.当前选中的组件:  # 这里是批量修改
+            # for 组件 in self.当前选中的组件:  # 这里是批量修改
+            #     self.调整组件 = 组件
+            #     self.rect = self.计算矩形2(组件)
+            #     左边, 顶边, 宽度, 高度 = self.rect
+            #     print("事件_方块被放开11", 左边, 顶边, 宽度, 高度)
+            #     组件.setGeometry(左边, 顶边, 宽度, 高度)
+            #     self.方块_调整位置(组件.property('_方块id'))
+
+            def _修改组件属性(传递参数):
+                # 记录选来组件的 rect
+                组件 = 传递参数['组件对象']
+                左边, 顶边, 宽度, 高度 = 组件.geometry().getRect()
+                传递参数['原左边'], 传递参数['原顶边'], 传递参数['原宽度'], 传递参数['原高度'] = 左边, 顶边, 宽度, 高度
                 self.调整组件 = 组件
-                self.rect = self.计算矩形2(组件)
-                左边, 顶边, 宽度, 高度 = self.rect
-                print("事件_方块被放开11", 左边, 顶边, 宽度, 高度)
+                左边, 顶边, 宽度, 高度 = self.计算矩形2(组件)
                 组件.setGeometry(左边, 顶边, 宽度, 高度)
-                self.方块_调整位置(组件.property('_方块id'))
+                # self.方块_调整位置(组件.property('_方块id'))
+                self.方块_刷新显示当前选中()
+                return 传递参数
+
+            def _修改组件属性恢复(传递参数):
+                组件 = 传递参数['组件对象']
+                左边, 顶边, 宽度, 高度 = 传递参数['原左边'], 传递参数['原顶边'], 传递参数['原宽度'], 传递参数['原高度']
+                self.调整组件 = 组件
+                组件.setGeometry(左边, 顶边, 宽度, 高度)
+                # self.方块_调整位置(组件.property('_方块id'))
+                self.方块_刷新显示当前选中()
+                return 传递参数
+
+            self.操作记录.开始记录()
+            for 组件对象 in self.当前选中的组件:  # type: QPushButton
+                self.操作记录.添加("修改尺寸", {"组件对象": 组件对象}, _修改组件属性, _修改组件属性恢复)
+            self.操作记录.提交记录()
 
             self.绘制矩形清除()
 

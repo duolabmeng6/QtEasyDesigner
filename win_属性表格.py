@@ -69,7 +69,6 @@ class MainWin(QMainWindow):
         # self.初始化属性表格()
         self.初始化组件列表()
 
-        # 创建主窗口的内容部件
 
     def 数据刷新(self):
         self.当前组件库的对象 = 组件窗口(self.设计窗口)
