@@ -7,6 +7,7 @@ from PySide6.QtCore import Signal
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
+from qt_esay_model.组件名称管理类 import 组件名称管理类
 from qt_esay_model.中文对照组件常量 import 取组件名称中英文对照
 from qt_esay_model.组件库.组件单行编辑框 import 组件单行编辑框
 from qt_esay_model.组件库.组件富文本编辑框 import 组件富文本编辑框
@@ -25,7 +26,7 @@ class 设计窗口(主窗口):
     信号_更新属性框 = Signal(object)  # 请订阅这个消息
     信号_代码跳转 = Signal(bool, str)  # 请订阅这个消息
     信号_双击跳转代码 = Signal(object)  # 请订阅这个消息
-
+    信号_更新组件树 = Signal(object)
     rect = (0, 0, 0, 0)  # 第一个组件的rect数据
     rects = []  # 多个㢟的rect绘制数据
     组件方块数组 = {}  # 组件对应的方向跳转方块 0 是方块 1 是组件对象 2 是组件库对象
@@ -35,7 +36,6 @@ class 设计窗口(主窗口):
     当前选中的组件 = []
     当前创建组件名称 = ""
     # 组件库列表 = []
-    组件名称索引 = 1
     绘制虚线和方块颜色值 = QColor(64, 136, 247)
     写出文件路径_设计文件json = "启动窗口.json"  # 例如 启动窗口.py
     写出文件路径_uipy = "ui_启动窗口.py"  # 例如 ui_启动窗口.py
@@ -45,7 +45,9 @@ class 设计窗口(主窗口):
     插件URL地址 = ""
     组件树 = None  # :type 组件树类
     组件id与名称关系 = {}  # 组件id与名称关系
-    项目目录=""
+    项目目录 = ""
+    组件名称管理 = None
+
     def closeEvent(self, e: QCloseEvent):
         print("窗口关闭事件")
         if self.可否关闭:
@@ -90,10 +92,11 @@ class 设计窗口(主窗口):
 
             容器.添加子组件(组件树类(组件名称, 组件类型, 组件属性))
         导出数据 = self.组件树.导出组件结构数据_json()
-        print("导出数据",导出数据)
+        # print("导出数据", 导出数据)
         if self.写出文件路径_设计文件json == "":
             return
         # 写出文件
+        print("写出文件=======================")
         文件_写出(self.写出文件路径_设计文件json, 导出数据)
         python代码_ui = 组件树生成代码类(导出数据).生成代码2()
         文件_写出(self.写出文件路径_uipy, python代码_ui)
@@ -176,6 +179,13 @@ class 设计窗口(主窗口):
         for 组件 in self.当前选中的组件:
             方块数组, 组件库 = self.组件方块数组[组件.property("_方块id")][0], self.组件方块数组[组件.property("_方块id")][2]
             # 组件库 = self.组件方块数组[组件.property["_方块id"]][2]
+            # 检查一下 组件名称 是否重复确认生效
+            if 属性名称 == "名称":
+                if 组件.objectName() != 属性值:
+                    if self.组件名称管理.检查重复(属性值, self.取所有组件的组件名称()):
+                        self.消息框("你输入的名称有冲突请修改")
+                        return
+
             组件库.修改组件属性(属性名称, 属性值)
 
         self.方块_刷新显示当前选中()
@@ -205,7 +215,6 @@ class 设计窗口(主窗口):
         self.设计组件被按下 = False
         self.当前选中的组件 = []
         self.当前创建组件名称 = ""
-        self.组件名称索引 = 1
         self.绘制虚线和方块颜色值 = QColor(64, 136, 247)
         self.写出文件路径_设计文件json = ""  # 例如 启动窗口.py
         self.写出文件路径_uipy = ""  # 例如 ui_启动窗口.py
@@ -215,10 +224,10 @@ class 设计窗口(主窗口):
         self.组件树 = None  # :type 组件树类
         self.组件id与名称关系 = {}  # 组件id与名称关系
         # self.项目目录 = ""
+        self.组件名称管理 = 组件名称管理类()
 
     def __init__(self, parent=None):
         super().__init__(parent)
-
         self.新建()
 
         self.mousePressEvent = self.窗口鼠标按下事件
@@ -321,17 +330,25 @@ class 设计窗口(主窗口):
             组件对象 = self.创建组件(取组件名称中英文对照(self.当前创建组件名称), 左边, 顶边, 宽度, 高度)
             self.调整组件 = 组件对象
             self.当前选中的组件 = [组件对象]
+            self.刷新数据_属性框和组件树()
+
         self.当前创建组件名称 = ""
+
+
+    def 取所有组件的组件名称(self):
+        组件名称 = []
+        for i in self.组件方块数组:
+            组件名称.append(self.组件方块数组[i][1].objectName())
+        return 组件名称
 
     def 创建组件(self, 组件类型="QPushButton", 左边=0, 顶边=0, 宽度=0, 高度=0, 组件属性=None):
         # print("创建组件")
+        中文名称 = 取组件名称中英文对照(组件类型)
         if 组件属性 is None:
             组件属性 = {}
-            中文名称 = 取组件名称中英文对照(组件类型)
-            组件名称 = 中文名称 + str(self.组件名称索引)
-            self.组件名称索引 += 1
+            组件名称 = self.组件名称管理.取新名称(中文名称)
         else:
-            组件名称 = 组件属性.get("组件名称", "")
+            组件名称 = 组件属性.get("名称", "")
             print("创建组件 坐标信息", 左边, 顶边, 宽度, 高度)
         # 组件类型前缀检查是否匹配
         if 组件类型 == "QPushButton":
@@ -345,30 +362,111 @@ class 设计窗口(主窗口):
         else:
             print("位置类型不匹配", 组件类型)
             return
+
+        名称列表 = self.取所有组件的组件名称()
+        # print("名称列表", 名称列表, "组件名称", 组件名称)
+        while self.组件名称管理.检查重复(组件名称, 名称列表):
+            组件名称 = self.组件名称管理.取新名称(中文名称)
+            if 组件属性:
+                组件属性["名称"] = 组件名称
+
         组件库对象.创建组件(组件名称, 左边, 顶边, 宽度, 高度, 组件属性)
         # # 记录组件信息到组件列表中
         # self.组件库列表.append(组件库对象)
 
-        测试拖动 = 组件库对象.对象
-        测试拖动.keyReleaseEvent = lambda e, obj=组件库对象: self.事件_设计组件键盘开放(e, obj)
-        测试拖动.mousePressEvent = lambda e, obj=测试拖动: self.事件_设计组件被按下(e, obj)
-        测试拖动.mouseReleaseEvent = lambda e, obj=测试拖动: self.事件_设计组件被放开(e, obj)
-        测试拖动.mouseMoveEvent = lambda e, obj=测试拖动: self.事件_设计组件被移动(e, obj)
-        测试拖动.mouseDoubleClickEvent = lambda e, obj=测试拖动: self.事件_设计组件被双击(e, obj)
+        组件 = 组件库对象.对象
+        组件.keyReleaseEvent = lambda e, obj=组件库对象: self.事件_设计组件键盘开放(e, obj)
+        组件.mousePressEvent = lambda e, obj=组件: self.事件_设计组件被按下(e, obj)
+        组件.mouseReleaseEvent = lambda e, obj=组件: self.事件_设计组件被放开(e, obj)
+        组件.mouseMoveEvent = lambda e, obj=组件: self.事件_设计组件被移动(e, obj)
+        组件.mouseDoubleClickEvent = lambda e, obj=组件: self.事件_设计组件被双击(e, obj)
         self.绘制矩形清除()
 
-        self.创建方块(测试拖动, 组件库对象)
-        self.保存组件信息()
-        return 测试拖动
+        self.创建方块(组件, 组件库对象)
+        # self.保存组件信息()
+        return 组件
 
-    def 事件_设计组件键盘开放(self, e, 组件库对象):
+    def 事件_设计组件键盘开放(self, e, 组件库对象: 组件按钮):
         # 检查是否按下 del 键盘 和 退格键
-        print("键盘释放", e.key())
+        print("事件_设计组件键盘开放", e.key())
         if e.key() == Qt.Key_Delete or e.key() == Qt.Key_Backspace:
             # 删除组件
-            #             # self.组件库列表.remove(组件库对象)
+            self.删除组件()
 
-            for 组件 in self.当前选中的组件:
+        # 检查是否按下复制键 ctrl+c
+        elif e.key() == Qt.Key_C and e.modifiers() == Qt.ControlModifier:
+            # 复制组件
+            self.复制组件()
+        # 检查是否按下粘贴键 ctrl+v
+        elif e.key() == Qt.Key_V and e.modifiers() == Qt.ControlModifier:
+            # 粘贴组件
+            self.粘贴组件()
+        # 检查是否按下剪切键 ctrl+x
+        elif e.key() == Qt.Key_X and e.modifiers() == Qt.ControlModifier:
+            pass
+            # 剪切组件 pass
+            self.剪切组件()
+
+    def 删除组件(self):
+        for 组件 in self.当前选中的组件:
+            方块数组, 组件库对象 = self.组件方块数组[组件.property("_方块id")][0], self.组件方块数组[组件.property("_方块id")][1]
+            for 组件2 in 方块数组:  # type: QLabel
+                组件2.deleteLater()
+            # self.组件库列表.remove(组件库对象)
+            组件库对象.deleteLater()
+            # 移除 组件方块数组 的对象
+            self.组件方块数组.pop(组件.property("_方块id"))
+
+        self.当前选中的组件 = []
+        self.刷新数据_属性框和组件树()
+
+    def 复制组件(self):
+        # print("复制组件")
+        # for 组件 in self.当前选中的组件:
+        #     组件库对象 = self.组件方块数组[组件.property("_方块id")][2] # type: 组件按钮
+        #     组件的属性 = 组件库对象.导出组件属性()
+        #     print("????????",组件的属性)
+        self.复制模式 = "复制"
+        self.当前复制组件的数据 = self.当前选中的组件.copy()
+
+    def 剪切组件(self):
+        self.复制模式 = "剪切"
+        self.当前复制组件的数据 = self.当前选中的组件.copy()
+
+        # 隐藏
+        for 组件 in self.当前选中的组件:
+            方块数组, 组件库对象 = self.组件方块数组[组件.property("_方块id")][0], self.组件方块数组[组件.property("_方块id")][1]
+            for 组件2 in 方块数组:  # type: QLabel
+                组件2.hide()
+            组件库对象.hide()
+
+    def 粘贴组件(self):
+        print("粘贴组件")
+        新增组件 = []
+        if self.复制模式 == "复制":
+            for 组件 in self.当前复制组件的数据:
+                组件库对象 = self.组件方块数组[组件.property("_方块id")][2]  # type: 组件按钮
+                组件的属性 = 组件库对象.导出为json属性()
+                print("????????", 组件的属性)
+                # 给组件的属性 左边和 顶边 增加20
+                组件的属性["左边"] += 20
+                组件的属性["顶边"] += 20
+                组件的属性["可视"] = 1
+                新组件 = self.创建组件(组件的属性['组件类型'], 组件属性=组件的属性)
+                新增组件.append(新组件)
+        if self.复制模式 == "剪切":
+            for 组件 in self.当前复制组件的数据:
+                组件库对象 = self.组件方块数组[组件.property("_方块id")][2]  # type: 组件按钮
+                组件的属性 = 组件库对象.导出为json属性()
+                print("????????", 组件的属性)
+                # 给组件的属性 左边和 顶边 增加20
+                # 组件的属性["左边"] += 20
+                # 组件的属性["顶边"] += 20
+                组件的属性["可视"] = 1
+                新组件 = self.创建组件(组件的属性['组件类型'], 组件属性=组件的属性)
+                新增组件.append(新组件)
+
+                # 删除旧的
                 方块数组, 组件库对象 = self.组件方块数组[组件.property("_方块id")][0], self.组件方块数组[组件.property("_方块id")][1]
                 for 组件2 in 方块数组:  # type: QLabel
                     组件2.deleteLater()
@@ -377,10 +475,17 @@ class 设计窗口(主窗口):
                 # 移除 组件方块数组 的对象
                 self.组件方块数组.pop(组件.property("_方块id"))
 
-            self.当前选中的组件 = []
-            self.update()
-            # 在组件列表中也删除
-            self.方块_刷新显示当前选中()
+            self.当前复制组件的数据 = []
+
+        self.当前选中的组件 = 新增组件
+        self.刷新数据_属性框和组件树()
+
+    def 刷新数据_属性框和组件树(self):
+        self.方块_刷新显示当前选中()
+        self.保存组件信息()
+        self.信号_更新属性框.emit(self.组件窗口库)
+        self.信号_更新组件树.emit(self.组件窗口库)
+        self.update()
 
     def 事件_设计组件被按下(self, e: QMouseEvent, 组件: QPushButton):
         x = e.position().x()
@@ -407,7 +512,7 @@ class 设计窗口(主窗口):
     def 方块_刷新显示当前选中(self):
         self.方块_隐藏()
         for 组件 in self.当前选中的组件:
-            print("方块_刷新显示当前选中", 组件)
+            # print("方块_刷新显示当前选中", 组件)
             self.方块_显示(组件.property('_方块id'))
 
     def 事件_设计组件被放开(self, e: QMouseEvent, 组件: QPushButton):
@@ -439,7 +544,7 @@ class 设计窗口(主窗口):
     def 事件_设计组件被移动(self, e: QMouseEvent, 组件: QPushButton):
         x = e.position().x()
         y = e.position().y()
-        print("事件_设计组件被移动", x, y)
+        # print("事件_设计组件被移动", x, y)
         if self.设计组件被按下:
             self.移动组件 = True
             # 记录第一个react

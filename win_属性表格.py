@@ -45,6 +45,7 @@ class MainWin(QMainWindow):
         # self.设计窗口.show()
 
         self.设计窗口.信号_更新属性框.connect(self.信号_更新属性框)
+        self.设计窗口.信号_更新组件树.connect(self.信号_更新组件树)
         # self.设计窗口.信号_代码跳转.connect(self.信号_代码跳转)
         self.设计窗口.信号_双击跳转代码.connect(self.信号_双击跳转代码)
 
@@ -99,7 +100,7 @@ class MainWin(QMainWindow):
     def 刷新组件树显示(self):
         if self.treeWidget == None:
             return
-        print("刷新组件树显示")
+        print("刷新组件树显示 尽量优化一下有数据变更才调用")
         self.treeWidget.clear()
         # 设置  self.treeWidget 为两列内容为 对象 和 类
         self.treeWidget.setColumnCount(2)
@@ -109,7 +110,7 @@ class MainWin(QMainWindow):
         # self.设计窗口.保存组件信息()
 
         组件结构数据 = self.设计窗口.组件树.导出组件结构数据_json()
-        print("组件结构数据",组件结构数据)
+        # print("组件结构数据",组件结构数据)
         组件结构数据 = json.loads(组件结构数据)
         # 递归导入组件数据
         self.递归导入组件树(组件结构数据)
@@ -121,7 +122,7 @@ class MainWin(QMainWindow):
         组件名称 = 结构数据['组件名称']
         组件类型 = 结构数据['组件类型']
         组件属性 = 结构数据['组件属性']
-        print("递归导入组件树", 组件名称, 组件类型, 组件属性)
+        # print("递归导入组件树", 组件名称, 组件类型, 组件属性)
         if 递归深度 == False:
             窗口项目 = QTreeWidgetItem()
             窗口项目.setText(0, 组件名称)
@@ -409,6 +410,10 @@ class MainWin(QMainWindow):
             self.初始化属性表格_从数据(obj.导出组件属性())
             # print("信号_更新属性框", obj)
             self.当前组件库的对象 = obj
+
+    def 信号_更新组件树(self, obj: 组件按钮):
+        print("信号_更新属性框", obj)
+        if obj:
             self.刷新组件树显示()
 
     def 表格编辑完成(self):
