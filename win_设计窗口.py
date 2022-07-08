@@ -268,13 +268,13 @@ class 设计窗口(主窗口):
         self.当前选中的组件 = []
 
         self.shortcut = QShortcut(QKeySequence("Ctrl+z"), self)
-        self.shortcut.activated.connect(self.撤销)
+        self.shortcut.activated.connect(self.撤消)
         self.shortcut = QShortcut(QKeySequence("Ctrl+y"), self)
         self.shortcut.activated.connect(self.恢复)
 
-    def 撤销(self):
-        print("撤销")
-        self.操作记录.撤销记录()
+    def 撤消(self):
+        print("撤消")
+        self.操作记录.撤消记录()
 
     def 恢复(self):
         print("恢复")
@@ -466,11 +466,11 @@ class 设计窗口(主窗口):
             pass
             # 剪切组件 pass
             self.剪切组件()
-        # 检查是否按下撤销 ctrl+z
+        # 检查是否按下撤消 ctrl+z
         elif e.key() == Qt.Key_Z and e.modifiers() == Qt.ControlModifier:
             pass
             # 剪切组件 pass
-            self.撤销()
+            self.撤消()
         elif e.key() == Qt.Key_Y and e.modifiers() == Qt.ControlModifier:
             pass
             # 剪切组件 pass

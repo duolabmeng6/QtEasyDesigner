@@ -118,12 +118,10 @@ class MainWin(主窗口):
         sender = self.sender()
         名称 = sender.text()
         print("工具条_点击", sender.text())
-        if 名称 == "撤销":
-            self.消息框("等待开发")
-
-            # self.撤销()
+        if 名称 == "撤消":
+            self.属性表格窗口.设计窗口.撤消()
         elif 名称 == "恢复":
-            self.消息框("等待开发")
+            self.属性表格窗口.设计窗口.恢复()
 
             # self.恢复()
         elif 名称 == "左对齐":
@@ -207,14 +205,15 @@ class MainWin(主窗口):
         self.文件菜单.添加项目("保存", 获取图标("mdi.moon-new", "#FFFFFF"), self.菜单_保存, "Ctrl+S")
         self.文件菜单.添加项目("另存为", 获取图标("mdi.moon-new", "#FFFFFF"), self.菜单_另存为, )
         self.文件菜单.添加分隔条()
-
         self.文件菜单.添加项目("退出", 获取图标("mdi.exit-to-app", "#FFFFFF"), self.退出, "Ctrl+Q")
-        self.编译菜单 = 菜单(self, "编辑")
-        self.编译菜单.添加项目("撤销", 获取图标("mdi.moon-new", "#FFFFFF"), self.撤销, "Ctrl+Z")
-        self.编译菜单.添加项目("恢复", 获取图标("mdi.moon-new", "#FFFFFF"), self.恢复, "Ctrl+Y")
-        self.文件菜单.添加分隔条()
-        self.编译菜单.添加项目("复制", 获取图标("mdi.moon-new", "#FFFFFF"), self.复制, "Ctrl+C")
-        self.编译菜单.添加项目("粘贴", 获取图标("mdi.moon-new", "#FFFFFF"), self.粘贴, "Ctrl+V")
+
+        self.编辑菜单 = 菜单(self, "编辑")
+        self.编辑菜单.添加项目("撤消", 获取图标("mdi.moon-new", "#FFFFFF"), self.撤消, "Ctrl+Z")
+        self.编辑菜单.添加项目("恢复", 获取图标("mdi.moon-new", "#FFFFFF"), self.恢复, "Ctrl+Y")
+        self.编辑菜单.添加分隔条()
+        self.编辑菜单.添加项目("复制", 获取图标("mdi.moon-new", "#FFFFFF"), self.复制, "Ctrl+C")
+        self.编辑菜单.添加项目("粘贴", 获取图标("mdi.moon-new", "#FFFFFF"), self.粘贴, "Ctrl+V")
+        self.编辑菜单.添加项目("剪切", 获取图标("mdi.moon-new", "#FFFFFF"), self.粘贴, "Ctrl+X")
 
         self.编译菜单 = 菜单(self, "编译")
         self.编译菜单.添加项目("运行", 获取图标("mdi.moon-new", "#FFFFFF"), self.运行)
@@ -231,6 +230,7 @@ class MainWin(主窗口):
 
         self.菜单栏 = 菜单栏(self)  # 菜单栏
         self.菜单栏.添加项目(self.文件菜单.取菜单项目())  # 将菜单添加到菜单栏
+        self.菜单栏.添加项目(self.编辑菜单.取菜单项目())  # 将菜单添加到菜单栏
         self.菜单栏.添加项目(self.编译菜单.取菜单项目())  # 将菜单添加到菜单栏
         self.菜单栏.添加项目(self.设置菜单.取菜单项目())  # 将菜单添加到菜单栏
         self.设置菜单栏(self.菜单栏)  # 设置菜单栏
@@ -249,17 +249,21 @@ class MainWin(主窗口):
     def 检查更新(self):
         self.消息框("等待开发")
 
-    def 撤销(self):
-        self.消息框("等待开发")
+    def 撤消(self):
+        self.属性表格窗口.设计窗口.撤消()
 
     def 恢复(self):
-        self.消息框("等待开发")
+        self.属性表格窗口.设计窗口.恢复()
+        # self.消息框("等待开发")
 
     def 复制(self):
-        self.消息框("等待开发")
+        self.属性表格窗口.设计窗口.复制组件()
 
     def 粘贴(self):
-        self.消息框("等待开发")
+        self.属性表格窗口.设计窗口.粘贴组件()
+
+    def 剪切(self):
+        self.属性表格窗口.设计窗口.剪切组件()
 
     def closeEvent(self, event):
         print("窗口关闭事件 main")

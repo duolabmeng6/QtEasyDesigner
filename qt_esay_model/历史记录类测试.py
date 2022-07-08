@@ -14,9 +14,9 @@ class Example(QWidget):
         self.setWindowTitle("测试窗口")
         self.resize(400, 400)
         self.show()
-        # 监听键盘是否按下 ctrl+z 快捷键 撤销
+        # 监听键盘是否按下 ctrl+z 快捷键 撤消
         self.shortcut = QShortcut(QKeySequence("Ctrl+z"), self)
-        self.shortcut.activated.connect(self.撤销)
+        self.shortcut.activated.connect(self.撤消)
         # 监听键盘是否按下 ctrl+y 快捷键 恢复
         self.shortcut = QShortcut(QKeySequence("Ctrl+y"), self)
         self.shortcut.activated.connect(self.恢复)
@@ -74,10 +74,10 @@ class Example(QWidget):
         self.操作记录.添加("修改属性", {"组件对象": 组件对象, "左边": 300, "顶边": 300}, 修改属性, 修改属性恢复)
         self.操作记录.提交记录()
 
-    def 撤销(self):
-        print("撤销")
+    def 撤消(self):
+        print("撤消")
         # 删除按钮
-        self.操作记录.撤销记录()
+        self.操作记录.撤消记录()
 
     def 恢复(self):
         print("恢复")
