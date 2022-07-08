@@ -6,6 +6,8 @@ import webbrowser
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append("/Users/chensuilong/Desktop/pythonproject/pyqt")
+sys.path.append(r"C:/pyefun/pyefun")
+sys.path.append(r"C:\pyefun\QtEsayDesigner")
 
 import PySide6
 from PySide6.QtCore import Signal
@@ -13,7 +15,7 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from pyefun import *
 
-from qt_esay_designer import win_app2
+import win_app2
 from qtefun.组件.主窗口 import 主窗口
 from qtefun.图标 import 获取图标
 from qtefun.组件.工具条 import 工具条
@@ -33,8 +35,8 @@ class MainWin(主窗口):
         # 设计文件.json 端口号
         self.插件端口号 = 0
         if len(sys.argv) > 1:
-            写到文件("/Users/chensuilong/Desktop/pythonproject/pyqt/qt_esay_designer/参数.json",
-                 json.dumps(sys.argv, indent=4))
+            # 写到文件("/Users/chensuilong/Desktop/pythonproject/pyqt/qt_esay_designer/参数.json",
+            #      json.dumps(sys.argv, indent=4))
             self.设计文件路径 = 子文本替换(sys.argv[1], "文件路径=", "")
             self.插件端口号 = 子文本替换(sys.argv[2], "port=", "")
 
@@ -353,7 +355,8 @@ class MainWin(主窗口):
     def 信号_代码跳转(self, 状态, 错误文本):
         print("信号_代码跳转", 状态, 错误文本)
         if 状态 == True:
-            self.hide()
+            if 系统_是否为mac系统():
+                self.hide()
         else:
             self.setWindowTitle(错误文本)
 
