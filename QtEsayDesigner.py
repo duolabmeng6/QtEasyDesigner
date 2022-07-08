@@ -357,6 +357,9 @@ class MainWin(主窗口):
         if 状态 == True:
             if 系统_是否为mac系统():
                 self.hide()
+            else:
+                # 窗口最小化
+                self.setWindowState(Qt.WindowMinimized)
         else:
             self.setWindowTitle(错误文本)
 

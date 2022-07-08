@@ -496,7 +496,7 @@ if __name__ == '__main__':
     window = MainWin()
 
 
-    设计文件路径 = "/Users/chensuilong/Desktop/pythonproject/testqtefun/启动窗口.json"
+    设计文件路径 = r"C:\pyefun\QtEsayDesigner\test\启动窗口.json"
     window.设计窗口.可否关闭 = False
     window.设计窗口.信号_加载设计文件(设计文件路径)
     window.设计窗口.插件URL地址 = f"http://127.0.0.1:6666"
