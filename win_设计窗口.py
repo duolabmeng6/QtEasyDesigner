@@ -65,7 +65,7 @@ class 设计窗口(QMdiSubWindow):
     窗口被按下 = False
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super().__init__()
         # 隐藏窗口的最大化按钮
         self.setWindowTitle('sub')
         self.resize(500, 500)

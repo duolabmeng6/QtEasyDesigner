@@ -44,10 +44,11 @@ class 组件窗口(object):
         if 属性名称 == "高度":
             self.对象.setGeometry(self.对象.x(), self.对象.y(), self.对象.width(), int(属性值))
         if 属性名称 == "可视":
-            print("可视", 属性值)
-            属性值 = self.取逻辑值(属性值)
-            print("可视", 属性值)
-            self.对象.setVisible(属性值)
+            pass
+            # print("可视", 属性值)
+            # 属性值 = self.取逻辑值(属性值)
+            # print("可视", 属性值)
+            # self.对象.setVisible(属性值)
         if 属性名称 == "禁用":
             print("禁用", 属性值)
             属性值 = self.取逻辑值(属性值)
