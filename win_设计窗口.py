@@ -2,7 +2,7 @@ import json
 import random
 import sys
 import PySide6
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
 from PySide6.QtCore import Signal
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
@@ -51,6 +51,29 @@ class 设计窗口(主窗口):
     项目目录 = ""
     组件名称管理 = None
     操作记录: 历史记录类 = None
+
+    def __init__(self, parent=None):
+        super(设计窗口, self).__init__(parent)
+        # 隐藏窗口的最大化按钮
+        self.新建()
+
+        self.mousePressEvent = self.窗口鼠标按下事件
+        self.mouseReleaseEvent = self.窗口鼠标放开事件
+        self.mouseMoveEvent = self.窗口鼠标移动事件
+        self.paintEvent = self.窗口绘制
+        # todo : 双击事件bug没效果
+        # 绑定窗口鼠标双击事件
+        # self.doubleClickEvent = self.窗口鼠标双击事件
+
+        # 监听窗口大小和位置移动
+        self.resizeEvent = self.窗口大小改变事件
+        self.moveEvent = self.窗口位置改变事件
+        self.当前选中的组件 = []
+
+        self.shortcut = QShortcut(QKeySequence("Ctrl+z"), self)
+        self.shortcut.activated.connect(self.撤消)
+        self.shortcut = QShortcut(QKeySequence("Ctrl+y"), self)
+        self.shortcut.activated.connect(self.恢复)
 
     def closeEvent(self, e: QCloseEvent):
         print("窗口关闭事件")
@@ -220,13 +243,7 @@ class 设计窗口(主窗口):
         self.setWindowTitle("启动窗口")
         # self.setMaximumSize(400,400)
         self.setMinimumSize(400, 400)
-        # self.setFixedHeight(400)
-        # self.resize(400,400)
-        # self.setGeometry(0, 0, 300, 300)
-        # print(self.组件窗口库.导出为jsson属性())
-        # exit()
-        # self.setFixedWidth(400)
-        # self.setFixedHeight(300)
+        self.setGeometry(0, 0, 400, 400)
 
         for i in self.组件方块数组:
             方块数组, 组件 = self.组件方块数组[i][0], self.组件方块数组[i][1]
@@ -254,28 +271,6 @@ class 设计窗口(主窗口):
         # self.项目目录 = ""
         self.组件名称管理 = 组件名称管理类()
         self.操作记录 = 历史记录类()
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.新建()
-
-        self.mousePressEvent = self.窗口鼠标按下事件
-        self.mouseReleaseEvent = self.窗口鼠标放开事件
-        self.mouseMoveEvent = self.窗口鼠标移动事件
-        self.paintEvent = self.窗口绘制
-        # todo : 双击事件bug没效果
-        # 绑定窗口鼠标双击事件
-        # self.doubleClickEvent = self.窗口鼠标双击事件
-
-        # 监听窗口大小和位置移动
-        self.resizeEvent = self.窗口大小改变事件
-        self.moveEvent = self.窗口位置改变事件
-        self.当前选中的组件 = []
-
-        self.shortcut = QShortcut(QKeySequence("Ctrl+z"), self)
-        self.shortcut.activated.connect(self.撤消)
-        self.shortcut = QShortcut(QKeySequence("Ctrl+y"), self)
-        self.shortcut.activated.connect(self.恢复)
 
     def 窗口鼠标双击事件(self):
         print("窗口鼠标双击事件")
