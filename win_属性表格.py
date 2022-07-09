@@ -1,7 +1,7 @@
 import os
 import sys
 import PySide6
-from PySide6.QtCore import Signal, QSize
+from PySide6.QtCore import Signal, QSize, QMetaObject
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from pyefun import *
@@ -34,11 +34,12 @@ class MainWin(QMainWindow):
         # self.ui.setupUi(self)
         self.show()
         self.setWindowTitle("设计器的小部件")
-        self.move(300, 300)
-        self.resize(1000, 400)
+        self.move(300, 100)
+        self.resize(1000,800)
 
         # 创建另外一个设计窗口 500x500
         self.设计窗口 = win_设计窗口.设计窗口(self)
+
         # self.设计窗口.setObjectName("启动窗口")
         # self.设计窗口.resize(500, 500)
         # self.设计窗口.move(0, 0)
@@ -65,9 +66,11 @@ class MainWin(QMainWindow):
 
         self.treeWidget.itemClicked.connect(self.树形框被点击)
 
-        self.初始化布局()
+        # self.初始化布局()
         # self.初始化属性表格()
         self.初始化组件列表()
+
+        # self.初始化布局2()
 
 
     def 数据刷新(self):
@@ -112,7 +115,7 @@ class MainWin(QMainWindow):
         # print("组件结构数据",组件结构数据)
         组件结构数据 = json.loads(组件结构数据)
         # 递归导入组件数据
-        self.递归导入组件树(组件结构数据)
+        # self.递归导入组件树(组件结构数据)
         # 展开所有项目
         self.treeWidget.expandAll()
 
@@ -142,7 +145,7 @@ class MainWin(QMainWindow):
 
             self.递归导入组件树(子组件, True, 组件项目)
 
-    def 初始化布局(self):
+    def 初始化布局2(self):
         self.上下布局 = QHBoxLayout()
         self.上下布局.setContentsMargins(0, 0, 0, 0)
         self.上下布局.setObjectName("上下布局")
@@ -154,6 +157,33 @@ class MainWin(QMainWindow):
         self.centralWidget.setObjectName("centralWidget")
         self.centralWidget.setLayout(self.上下布局)
         self.setCentralWidget(self.centralWidget)
+
+
+    def 初始化布局(self):
+        MainWindow = self
+        self.centralwidget = QWidget(MainWindow)
+        self.centralwidget.setObjectName(u"centralwidget")
+        self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.addWidget(self.tableWidget)
+        self.horizontalLayout.addWidget(self.listWidget)
+        self.horizontalLayout.addWidget(self.treeWidget)
+        self.horizontalLayout.addWidget(self.树形框项目管理)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.mdiArea = QMdiArea(self.centralwidget)
+        self.mdiArea.setObjectName(u"mdiArea")
+        self.verticalLayout.addWidget(self.mdiArea)
+        self.horizontalLayout_2.addLayout(self.verticalLayout)
+        MainWindow.setCentralWidget(self.centralwidget)
+        QMetaObject.connectSlotsByName(MainWindow)
+        sub = self.设计窗口
+        self.mdiArea.addSubWindow(sub)
+        self.mdiArea.setOption(QMdiArea.DontMaximizeSubWindowOnActivation)
+        self.mdiArea.setViewMode(QMdiArea.SubWindowView)
 
 
     # def 信号_代码跳转(self, 状态, 错误文本):
@@ -508,6 +538,7 @@ if __name__ == '__main__':
     window.数据刷新()
     # window.属性表格窗口.设计窗口.信号_代码跳转.connect()
     window.初始化项目管理()
+    window.初始化布局()
 
     # window.show()
     sys.exit(app.exec())

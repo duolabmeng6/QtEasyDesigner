@@ -79,6 +79,7 @@ class MainWin(主窗口):
             # self.消息框("提示", "请选择一个设计文件")
 
         self.属性表格窗口 = win_属性表格.MainWin()
+        self.属性表格窗口.初始化布局2()
         # 配置信息加载
         # 设计文件路径 = "/Users/chensuilong/Desktop/pythonproject/testqtefun/启动窗口.json"
         self.属性表格窗口.设计窗口.可否关闭 = False
@@ -92,9 +93,11 @@ class MainWin(主窗口):
         self.属性表格窗口.设计窗口.信号_代码跳转.connect(self.信号_代码跳转)
 
         self.ui.horizontalLayout_2.addWidget(self.属性表格窗口)
+
         self.ui.mdiArea.addSubWindow(self.属性表格窗口.设计窗口)
         self.ui.mdiArea.setBackground(QColor(236, 236, 236))
-        self.ui.mdiArea.cascadeSubWindows()
+        self.ui.mdiArea.setOption(QMdiArea.DontMaximizeSubWindowOnActivation)
+        self.ui.mdiArea.setViewMode(QMdiArea.SubWindowView)
         # self.属性表格窗口.设计窗口.setGeometry(0, 0, 300, 300)
         # self.属性表格窗口.设计窗口.setFixedWidth(400)
         # self.属性表格窗口.设计窗口.setFixedHeight(300)

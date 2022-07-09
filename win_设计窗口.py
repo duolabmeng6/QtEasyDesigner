@@ -24,8 +24,15 @@ from qt_esay_model.辅助函数 import 发送给ide插件
 from qtefun.组件.主窗口 import 主窗口
 from qt_esay_model.历史记录类 import 历史记录类
 
+# class 子窗口(QMdiSubWindow):
+#     def __init__(self):
+#         super().__init__()
+#         self.setWindowTitle('sub')
+#         self.setWidget(QPushButton('sub'))
+#         self.show()
+#         self.resize(500, 500)
 
-class 设计窗口(主窗口):
+class 设计窗口(QMdiSubWindow):
     信号_更新属性框 = Signal(object)  # 请订阅这个消息
     信号_代码跳转 = Signal(bool, str)  # 请订阅这个消息
     信号_双击跳转代码 = Signal(object)  # 请订阅这个消息
@@ -51,23 +58,44 @@ class 设计窗口(主窗口):
     项目目录 = ""
     组件名称管理 = None
     操作记录: 历史记录类 = None
+    开始x = 0
+    开始y = 0
+    结束x = 0
+    结束y = 0
+    窗口被按下 = False
 
     def __init__(self, parent=None):
-        super(设计窗口, self).__init__(parent)
+        super().__init__(parent)
         # 隐藏窗口的最大化按钮
+        self.setWindowTitle('sub')
+        self.resize(500, 500)
+
+        self.窗口被按下 = False
+        self.结束x = 0
+        self.结束y = 0
+        self.开始x = 0
+        self.开始y = 0
         self.新建()
 
-        self.mousePressEvent = self.窗口鼠标按下事件
-        self.mouseReleaseEvent = self.窗口鼠标放开事件
-        self.mouseMoveEvent = self.窗口鼠标移动事件
-        self.paintEvent = self.窗口绘制
+        self.容器 = QWidget(self)
+        self.容器.mousePressEvent = self.窗口鼠标按下事件
+        self.容器.mouseReleaseEvent = self.窗口鼠标放开事件
+        self.容器.mouseMoveEvent = self.窗口鼠标移动事件
+        self.容器.paintEvent = self.窗口绘制
+        # QPushButton(self.容器).setText('点击')
+        self.setWidget(self.容器)
+        # self.mousePressEvent = self.窗口鼠标按下事件
+        # self.mouseReleaseEvent = self.窗口鼠标放开事件
+        # self.mouseMoveEvent = self.窗口鼠标移动事件
+        # self.paintEvent = self.窗口绘制
+
         # todo : 双击事件bug没效果
         # 绑定窗口鼠标双击事件
         # self.doubleClickEvent = self.窗口鼠标双击事件
 
         # 监听窗口大小和位置移动
-        self.resizeEvent = self.窗口大小改变事件
-        self.moveEvent = self.窗口位置改变事件
+        self.容器.resizeEvent = self.窗口大小改变事件
+        # self.容器.moveEvent = self.窗口位置改变事件
         self.当前选中的组件 = []
 
         self.shortcut = QShortcut(QKeySequence("Ctrl+z"), self)
@@ -241,15 +269,11 @@ class 设计窗口(主窗口):
         self.组件窗口库 = 组件窗口(self)
         self.setObjectName("启动窗口")
         self.setWindowTitle("启动窗口")
-        # self.setMaximumSize(400,400)
-        self.setMinimumSize(400, 400)
-        self.setGeometry(0, 0, 400, 400)
+        self.resize(400, 360)
 
         for i in self.组件方块数组:
-            方块数组, 组件 = self.组件方块数组[i][0], self.组件方块数组[i][1]
-            for 组件2 in 方块数组:  # type: QLabel
-                组件2.deleteLater()
-            组件.deleteLater()
+            组件 = self.组件方块数组[i][1]
+            self.清理一个组件的数据(组件)
 
         self.调整组件 = None
         self.rect = (0, 0, 0, 0)  # 第一个组件的rect数据
@@ -303,6 +327,7 @@ class 设计窗口(主窗口):
         y = e.position().y()
         print("窗口鼠标按下事件", x, y)
         # self.rect = (x, y, 0, 0) # 初始化矩形
+        self.窗口被按下 = True
         self.开始x = x
         self.开始y = y
 
@@ -310,6 +335,7 @@ class 设计窗口(主窗口):
         x = e.position().x()
         y = e.position().y()
         print("窗口鼠标放开事件", x, y)
+        self.窗口被按下 = False
 
         # 重新计算组件的位置和大小
         左边, 顶边, 宽度, 高度 = self.rect
@@ -358,13 +384,17 @@ class 设计窗口(主窗口):
                 self.当前选中的组件.append(组件)
 
     def 窗口鼠标移动事件(self, e: QMouseEvent):
+        # print("窗口鼠标移动事件", e.x(), e.y())
         x = e.position().x()
         y = e.position().y()
-        print("窗口鼠标移动事件", x, y)
-        self.结束x = x
-        self.结束y = y
-        self.计算矩形()
-        self.update()
+
+        if self.窗口被按下:
+            self.结束x = x
+            self.结束y = y
+
+            print("窗口鼠标移动事件", x, y)
+            self.计算矩形()
+            self.update()
 
     def 窗口鼠标松开创建组件(self):
         print("窗口鼠标松开创建组件")
@@ -416,13 +446,13 @@ class 设计窗口(主窗口):
             print("创建组件 坐标信息", 左边, 顶边, 宽度, 高度)
         # 组件类型前缀检查是否匹配
         if 组件类型 == "QPushButton":
-            组件库对象 = 组件按钮(self)
+            组件库对象 = 组件按钮(self.容器)
         elif 组件类型 == "QLineEdit":
-            组件库对象 = 组件单行编辑框(self)
+            组件库对象 = 组件单行编辑框(self.容器)
         elif 组件类型 == "QTextEdit":
-            组件库对象 = 组件富文本编辑框(self)
+            组件库对象 = 组件富文本编辑框(self.容器)
         elif 组件类型 == "QPlainTextEdit":
-            组件库对象 = 组件纯文本编辑框(self)
+            组件库对象 = 组件纯文本编辑框(self.容器)
         else:
             print("位置类型不匹配", 组件类型)
             return
@@ -698,21 +728,21 @@ class 设计窗口(主窗口):
     def 创建方块(self, 组件: QPushButton, 组件库对象: 组件按钮):
         左边, 顶边, 宽度, 高度 = 组件.geometry().getRect()
         size = 5
-        方块_左上 = QLabel(self)
+        方块_左上 = QLabel(self.容器)
         方块_左上.setCursor(Qt.SizeFDiagCursor)
-        方块_左 = QLabel(self)
+        方块_左 = QLabel(self.容器)
         方块_左.setCursor(Qt.SizeHorCursor)
-        方块_左下 = QLabel(self)
+        方块_左下 = QLabel(self.容器)
         方块_左下.setCursor(Qt.SizeBDiagCursor)
-        方块_中上 = QLabel(self)
+        方块_中上 = QLabel(self.容器)
         方块_中上.setCursor(Qt.SizeVerCursor)
-        方块_中下 = QLabel(self)
+        方块_中下 = QLabel(self.容器)
         方块_中下.setCursor(Qt.SizeVerCursor)
-        方块_右上 = QLabel(self)
+        方块_右上 = QLabel(self.容器)
         方块_右上.setCursor(Qt.SizeBDiagCursor)
-        方块_右 = QLabel(self)
+        方块_右 = QLabel(self.容器)
         方块_右.setCursor(Qt.SizeHorCursor)
-        方块_右下 = QLabel(self)
+        方块_右下 = QLabel(self.容器)
         方块_右下.setCursor(Qt.SizeFDiagCursor)
         方块数组 = (方块_左上, 方块_左, 方块_左下, 方块_中上, 方块_中下, 方块_右上, 方块_右, 方块_右下)
 
@@ -905,8 +935,8 @@ class 设计窗口(主窗口):
     def 窗口绘制(self, event):
         # print("绘制事件")
         # 初始化绘图工具
-        qp = QPainter()
-        qp.begin(self)
+        qp = QPainter(self.容器)
+        qp.begin(self.容器)
         if self.rect:
             self.绘制矩形(qp)
         qp.end()
