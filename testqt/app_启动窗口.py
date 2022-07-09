@@ -21,6 +21,7 @@ class MainWin(QMainWindow):
 
     def 按钮1被点击(self):
         print("按钮1被点击")
+        self.
 
     def 启动窗口创建完毕(self):
         print("启动窗口创建完毕")

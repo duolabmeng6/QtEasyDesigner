@@ -8,6 +8,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append("/Users/chensuilong/Desktop/pythonproject/pyqt")
 sys.path.append(r"C:/pyefun/pyefun")
 sys.path.append(r"C:\pyefun\QtEsayDesigner")
+sys.path.append(r"C:\pyefun\QtEsayDesigner\QtEsayDesigner\qt_esay_model")
 
 import PySide6
 from PySide6.QtCore import Signal
@@ -39,6 +40,11 @@ class MainWin(主窗口):
             #      json.dumps(sys.argv, indent=4))
             self.设计文件路径 = 子文本替换(sys.argv[1], "文件路径=", "")
             self.插件端口号 = 子文本替换(sys.argv[2], "port=", "")
+            目录 = 文件_取目录(self.设计文件路径)
+            文件名 = 文件_取文件名(self.设计文件路径, False)
+            if 判断文本(文件名,"_"):
+                文件名 = strCut(文件名, "_$")
+            self.设计文件路径 = f"{目录}/{文件名}.json"
 
     def __init__(self):
         super().__init__()
