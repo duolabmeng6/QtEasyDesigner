@@ -44,6 +44,11 @@ class 界面代码生成类:
             if 函数名称 in self.加载已存在的文件内容:
                 # print(f"插入def并且检查是否存在 {函数名称} 已存在")
                 return
+        # 循环检查检查定义函数代码中是否存在函数名称的文本
+        for i in range(len(self.定义函数代码)):
+            if 函数名称 in self.定义函数代码[i]:
+                # print(f"插入def并且检查是否存在 {函数名称} 已存在")
+                return
 
         self.定义函数代码.append(代码)
 
@@ -202,7 +207,14 @@ def 按钮1被点击(self):
 def 按钮2被点击(self):
     print("按钮1被点击")
         """)
-
+    界面代码生成.加入函数定义代码(f"""
+def 按钮2被点击(self):
+    print("按钮1被点击")
+            """)
+    界面代码生成.加入函数定义代码(f"""
+def 按钮2被点击(self):
+    print("按钮1被点击")
+            """)
     界面代码生成.末尾代码 = """
 if __name__ == '__main__':
     app = QApplication(sys.argv)

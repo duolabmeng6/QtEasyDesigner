@@ -1,6 +1,11 @@
 # 记录创建组件的层级关系和属性 树状结构
 import json
+import os
 import re
+import sys
+# 添加当前文件的父目录的父目录
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from qt_esay_model.中文对照组件常量 import 取组件名称中英文对照
 from qt_esay_model.组件库.组件单行编辑框 import 组件单行编辑框
 from qt_esay_model.组件库.组件富文本编辑框 import 组件富文本编辑框

@@ -3,12 +3,17 @@ import os
 
 # 把当前目录导入到 path
 import webbrowser
+sys.path.append(r"C:/pyefun/pyefun")
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append("/Users/chensuilong/Desktop/pythonproject/pyqt")
-sys.path.append(r"C:/pyefun/pyefun")
-sys.path.append(r"C:\pyefun\QtEsayDesigner")
-sys.path.append(r"C:\pyefun\QtEsayDesigner\QtEsayDesigner\qt_esay_model")
+# 添加当前目录下的 qt_esay_model 文件夹到系统搜索路径
+qtefun路径 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
+print("qtefun", qtefun路径)
+print("qt_esay_model", qt_esay_model路径)
+sys.path.append(qtefun路径)
+sys.path.append(qt_esay_model路径)
+
 
 import PySide6
 from PySide6.QtCore import Signal
