@@ -7,6 +7,8 @@ from PySide6.QtCore import Signal
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
+from qt_esay_model.代码生成AppPy文件 import 代码生成AppPy文件
+from qt_esay_model.代码生成UiPy文件 import 代码生成UiPy文件
 from qt_esay_model.组件名称管理类 import 组件名称管理类
 from qt_esay_model.中文对照组件常量 import 取组件名称中英文对照
 from qt_esay_model.组件库.组件单行编辑框 import 组件单行编辑框
@@ -100,10 +102,10 @@ class 设计窗口(主窗口):
         # 写出文件
         print("写出文件=======================")
         文件_写出(self.写出文件路径_设计文件json, 导出数据)
-        python代码_ui = 组件树生成代码类(导出数据).生成代码2()
+        python代码_ui = 代码生成UiPy文件(导出数据).生成代码()
         文件_写出(self.写出文件路径_uipy, python代码_ui)
         主窗口py的文件内容 = 读入文本(self.写出文件路径AppPy)
-        python代码_app = 组件树生成代码类(导出数据).生成代码4_入口函数(主窗口py的文件内容)
+        python代码_app = 代码生成AppPy文件(导出数据, 主窗口py的文件内容).生成代码()
         文件_写出(self.写出文件路径AppPy, python代码_app)
 
     def 信号_跳转代码(self, 函数名):
@@ -217,7 +219,7 @@ class 设计窗口(主窗口):
         self.setObjectName("启动窗口")
         self.setWindowTitle("启动窗口")
         # self.setMaximumSize(400,400)
-        self.setMinimumSize(400,400)
+        self.setMinimumSize(400, 400)
         # self.setFixedHeight(400)
         # self.resize(400,400)
         # self.setGeometry(0, 0, 300, 300)
@@ -225,7 +227,6 @@ class 设计窗口(主窗口):
         # exit()
         # self.setFixedWidth(400)
         # self.setFixedHeight(300)
-
 
         for i in self.组件方块数组:
             方块数组, 组件 = self.组件方块数组[i][0], self.组件方块数组[i][1]
@@ -262,6 +263,10 @@ class 设计窗口(主窗口):
         self.mouseReleaseEvent = self.窗口鼠标放开事件
         self.mouseMoveEvent = self.窗口鼠标移动事件
         self.paintEvent = self.窗口绘制
+        # todo : 双击事件bug没效果
+        # 绑定窗口鼠标双击事件
+        # self.doubleClickEvent = self.窗口鼠标双击事件
+
         # 监听窗口大小和位置移动
         self.resizeEvent = self.窗口大小改变事件
         self.moveEvent = self.窗口位置改变事件
@@ -271,6 +276,10 @@ class 设计窗口(主窗口):
         self.shortcut.activated.connect(self.撤消)
         self.shortcut = QShortcut(QKeySequence("Ctrl+y"), self)
         self.shortcut.activated.connect(self.恢复)
+
+    def 窗口鼠标双击事件(self):
+        print("窗口鼠标双击事件")
+        self.信号_双击跳转代码.emit()
 
     def 撤消(self):
         print("撤消")

@@ -9,35 +9,22 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QPushButton, QMainWindow, QWidget)
-
+from PySide6.QtWidgets import (QApplication, QPushButton, QWidget, QMainWindow)
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"启动窗口")
         MainWindow.resize(400, 400)
         MainWindow.setWindowTitle(u"启动窗口")
-                
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
-                     
         self.按钮1 = QPushButton(self.centralwidget)
         self.按钮1.setObjectName(u"按钮1")
         self.按钮1.setGeometry(QRect(106, 91, 179, 118))
         self.按钮1.setText("启动窗口")
-                
         MainWindow.setCentralWidget(self.centralwidget)
-
-        self.retranslateUi(MainWindow)
         QMetaObject.connectSlotsByName(MainWindow)
 
-
-        
-    def retranslateUi(self,MainWindow):
-        pass
-
-    # retranslateUi
-        
 class MainWin(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -50,5 +37,3 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWin()
     sys.exit(app.exec())
-        
-        

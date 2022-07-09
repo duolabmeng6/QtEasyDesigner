@@ -11,10 +11,21 @@ class 界面代码生成类:
     定义函数代码 = []
     末尾代码 = ""
     加载已存在的文件内容 = ""
+    组件汉化代码 = []
+    类初始化代码 = ""
 
     def __init__(self):
         pass
+        self.头部导包代码 = []
         self.依赖包 = []
+        self.类名 = "MainWin(QMainWindow)"
+        self.事件绑定代码 = []
+        self.事件绑定代码末尾 = []
+        self.定义函数代码 = []
+        self.末尾代码 = ""
+        self.加载已存在的文件内容 = ""
+        self.组件汉化代码 = []
+        self.类初始化代码 = ""
 
     def 加入依赖包(self, 包名):
         # 过滤重复
@@ -34,6 +45,9 @@ class 界面代码生成类:
             self.事件绑定代码末尾.append(代码)
         else:
             self.事件绑定代码.append(代码)
+
+    def 加入组件汉化代码(self, 代码):
+        self.组件汉化代码.append(代码)
 
     def 加入函数定义代码(self, 代码):
         # 获取函数名称 def 启动窗口创建完毕(
@@ -70,22 +84,25 @@ class {self.类名}:
         代码 = "# ==导入模块==\n"
         代码 += "\n".join(self.头部导包代码)
         代码 += "\n# ==导入模块==="
-
         return 代码
 
     def 删除空白行和空字符(self, 文本):
         代码 = re.sub(r"\n\s*\n", "\n", 文本)
+        # 删除首尾空白字符
+        代码 = re.sub(r"^\s*\n", "", 代码)
         return 代码
 
     def 取事件绑定代码(self):
         pass
         # 事件绑定代码 与 事件绑定代码末尾合并
-        新组合 = self.事件绑定代码 + self.事件绑定代码末尾
+        新组合 = self.组件汉化代码 + self.事件绑定代码 + self.事件绑定代码末尾
         新组合.insert(0, "# ==绑定事件==")
         新组合.append("# ==绑定事件===")
         新代码 = self.删除空白行和空字符("\n".join(新组合))
         # 在每一行文本前面加入空格
         新代码 = "\n".join(["        " + i for i in 新代码.split("\n")])
+        # 删除首尾空白字符
+        新代码 = re.sub(r"^\s+", "", 新代码)
 
         return 新代码
 
@@ -102,7 +119,7 @@ class {self.类名}:
     def 替换导入模块(self, 代码, 替换内容, 模块名称):
         # 使用正则表达式替换 "# ==导入模块开始==" 和 "# ==导入模块结束==" 之间的所有内容
         v = 代码
-        开始 = f"\n# =={模块名称}=="
+        开始 = f"# =={模块名称}=="
         结束 = f"# =={模块名称}==="
 
         # 替换内容 = 开始 + "\n" + 替换内容 + "\n" + 缩进 + 结束
@@ -115,25 +132,58 @@ class {self.类名}:
         print("生成代码")
         if self.加载已存在的文件内容 == "":
             代码 = ""
-
             代码 += self.取头部代码()  # 导入模块
             代码 += self.取类初始代码()
-            代码 += self.取事件绑定代码()  # 绑定事件
+            代码 += "        " + self.取事件绑定代码()  # 绑定事件
             代码 += self.取函数定义代码()  # 函数定义
             代码 += self.取末尾代码()
             return 代码
-
         原来的内容 = self.加载已存在的文件内容
         原来的内容 = self.替换导入模块(原来的内容, self.取头部代码(), "导入模块")
-
         原来的内容 = self.替换导入模块(原来的内容, self.取事件绑定代码(), "绑定事件")
-
         # 找到 "# ==绑定事件===" 的位置
         开始位置 = 原来的内容.find("# ==绑定事件===") + len("# ==绑定事件===")
         # 从 开始位置这里插入文本 hello
         原来的内容 = 原来的内容[:开始位置] + self.取函数定义代码() + 原来的内容[开始位置:]
-
         return 原来的内容
+
+    def 取头部代码UiPy(self):
+        pass
+        代码 = self.头部导包代码
+        return 代码
+
+    def 删除空白行(self, text):
+        return "\n".join([i for i in text.split("\n") if i.strip() != ""])
+
+    def 取类初始代码UiPy(self, ):
+        return self.删除空白行(self.类初始化代码) + '\n'
+
+    def 删除每一个行的首尾空白字符(self, text):
+        # 删除每一行的首尾空白字符
+        text_ = text
+        text_ = [line.strip() for line in text_.splitlines()]
+        # 删除空白行
+        text_ = [line for line in text_ if line]
+        # 重新组合
+        text_ = '\n'.join(text_)
+        return text_
+
+    def 取事件绑定代码UiPy(self):
+        pass
+        # 事件绑定代码 与 事件绑定代码末尾合并
+        新组合 = self.组件汉化代码 + self.事件绑定代码 + self.事件绑定代码末尾
+        新代码 = self.删除每一个行的首尾空白字符("\n".join(新组合))
+        # 在每一行文本前面加入空格
+        新代码 = "\n".join(["        " + i for i in 新代码.split("\n")])
+        return 新代码
+
+    def 生成代码UiPy(self):
+        代码 = ""
+        代码 += self.取头部代码UiPy()  # 导入模块
+        代码 += self.取类初始代码UiPy()
+        代码 += self.取事件绑定代码UiPy()  # 绑定事件
+        代码 += self.取末尾代码()
+        return 代码
 
 
 if __name__ == "__main__":
