@@ -7,22 +7,22 @@ from PySide6.QtCore import Signal
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from qt_esay_model.代码生成AppPy文件 import 代码生成AppPy文件
-from qt_esay_model.代码生成UiPy文件 import 代码生成UiPy文件
-from qt_esay_model.组件名称管理类 import 组件名称管理类
-from qt_esay_model.中文对照组件常量 import 取组件名称中英文对照
-from qt_esay_model.组件库.组件单行编辑框 import 组件单行编辑框
-from qt_esay_model.组件库.组件富文本编辑框 import 组件富文本编辑框
-from qt_esay_model.组件库.组件按钮 import 组件按钮
-from qt_esay_model.组件库.组件窗口 import 组件窗口
-from qt_esay_model.组件库.组件纯文本编辑框 import 组件纯文本编辑框
-from qt_esay_model.组件树类 import 组件树类, 导入导出组件结构数据, 组件树生成代码类
+from 代码生成AppPy文件 import 代码生成AppPy文件
+from 代码生成UiPy文件 import 代码生成UiPy文件
+from 组件名称管理类 import 组件名称管理类
+from 中文对照组件常量 import 取组件名称中英文对照
+from 组件库.组件单行编辑框 import 组件单行编辑框
+from 组件库.组件富文本编辑框 import 组件富文本编辑框
+from 组件库.组件按钮 import 组件按钮
+from 组件库.组件窗口 import 组件窗口
+from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
+from 组件树类 import 组件树类, 导入导出组件结构数据, 组件树生成代码类
 from pyefun import *
 
-from qt_esay_model.辅助函数 import 发送给ide插件
+from 辅助函数 import 发送给ide插件
 
 from qtefun.组件.主窗口 import 主窗口
-from qt_esay_model.历史记录类 import 历史记录类
+from 历史记录类 import 历史记录类
 
 # class 子窗口(QMdiSubWindow):
 #     def __init__(self):

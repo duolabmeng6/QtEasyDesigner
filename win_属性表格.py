@@ -1,18 +1,10 @@
-import os
-import sys
-import PySide6
 from PySide6.QtCore import Signal, QSize, QMetaObject
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from pyefun import *
 
-from qt_esay_model.组件库.组件按钮 import *
-from qt_esay_model.组件库.组件窗口 import *
-from qt_esay_model.组件库.组件单行编辑框 import *
-from qt_esay_model.组件库.组件富文本编辑框 import *
-from qt_esay_model.组件库.组件纯文本编辑框 import *
-from qt_esay_model.中文对照组件常量 import *
-from qt_esay_model.组件树类 import *
+from 组件库.组件按钮 import *
+from 组件树类 import *
 
 # import 组件拖动的测试
 import win_设计窗口

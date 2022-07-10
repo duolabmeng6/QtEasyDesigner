@@ -3,8 +3,8 @@ import json
 import os
 import re
 
-from qt_esay_model.中文对照组件常量 import 取组件名称中英文对照
-from qt_esay_model.界面代码生成类 import 界面代码生成类
+from 中文对照组件常量 import 取组件名称中英文对照
+from 界面代码生成类 import 界面代码生成类
 
 
 class 代码生成AppPy文件(object):
