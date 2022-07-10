@@ -33,6 +33,7 @@ import win_设计窗口
 import win_属性表格
 
 
+
 class MainWin(主窗口):
     插件端口号 = 0
     设计文件路径 = ""  # json文件
@@ -51,8 +52,9 @@ class MainWin(主窗口):
                 文件名 = strCut(文件名, "_$")
             self.设计文件路径 = f"{目录}/{文件名}.json"
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
         self.设计文件路径 = ""
         self.ui = win_app2.Ui_MainWindow()
         self.初始化命令行参数()
@@ -91,7 +93,6 @@ class MainWin(主窗口):
         self.setCentralWidget(self.属性表格窗口)
         self.属性表格窗口.show()
         self.属性表格窗口.设计窗口.show()
-
         self.属性表格窗口.信号_项目管理文件被选择.connect(self.信号_项目管理文件被选择)
 
     def 信号_项目管理文件被选择(self, 文件名):
@@ -369,6 +370,5 @@ if __name__ == '__main__':
     # 将命令行参数转换为json保存
     app = QApplication(sys.argv)
     window = MainWin()
-
-    # window.show()
+    window.show()
     sys.exit(app.exec())
