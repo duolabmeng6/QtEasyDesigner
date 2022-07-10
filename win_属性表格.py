@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QMainWindow, QWidget, QTableWidget, QTreeWidget, Q
     QTreeWidgetItem
 
 import pyefun as efun
-
+from pyefun import *
 import qt_esay_model.组件库.组件按钮 as 组件按钮
 import qt_esay_model.组件库.组件窗口 as 组件窗口
 import qt_esay_model.组件树类 as 组件树类

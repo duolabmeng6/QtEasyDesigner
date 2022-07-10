@@ -18,6 +18,7 @@ from 组件库.组件窗口 import 组件窗口
 from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
 from 组件树类 import 组件树类, 导入导出组件结构数据, 组件树生成代码类
 import pyefun as efun
+from pyefun import *
 
 from 辅助函数 import 发送给ide插件
 
@@ -152,12 +153,12 @@ class 设计窗口(QMdiSubWindow):
             return
         # 写出文件
         print("写出文件=======================")
-        文件_写出(self.写出文件路径_设计文件json, 导出数据)
+        efun.文件_写出(self.写出文件路径_设计文件json, 导出数据)
         python代码_ui = 代码生成UiPy文件(导出数据).生成代码()
-        文件_写出(self.写出文件路径_uipy, python代码_ui)
-        主窗口py的文件内容 = 读入文本(self.写出文件路径AppPy)
+        efun.文件_写出(self.写出文件路径_uipy, python代码_ui)
+        主窗口py的文件内容 = efun.读入文本(self.写出文件路径AppPy)
         python代码_app = 代码生成AppPy文件(导出数据, 主窗口py的文件内容).生成代码()
-        文件_写出(self.写出文件路径AppPy, python代码_app)
+        efun.文件_写出(self.写出文件路径AppPy, python代码_app)
 
     def 信号_跳转代码(self, 函数名):
         print(f"调用pycharm代码跳转: {self.写出文件路径AppPy}, {函数名}")

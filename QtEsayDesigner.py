@@ -1,9 +1,11 @@
+
 import sys
 import os
 
 # 把当前目录导入到 path
 import webbrowser
 
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QLabel
 
 sys.path.append(r"C:/pyefun/pyefun")
@@ -17,8 +19,19 @@ print("qt_esay_model", qt_esay_model路径)
 sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
 
-
 import pyefun as efun
+
+
+if efun.系统_是否为mac系统():
+    pass
+else:
+    efun.控制台_设置编码为UTF8()
+    import ctypes
+    def 隐藏控制台窗口():
+        whnd = ctypes.windll.kernel32.GetConsoleWindow()
+        if whnd != 0:
+            ctypes.windll.user32.ShowWindow(whnd, 0)
+
 
 import win_app2
 from qtefun.组件.主窗口 import 主窗口
@@ -42,12 +55,12 @@ class MainWin(主窗口):
         if len(sys.argv) > 1:
             # 写到文件("/Users/chensuilong/Desktop/pythonproject/pyqt/qt_esay_designer/参数.json",
             #      json.dumps(sys.argv, indent=4))
-            self.设计文件路径 = 子文本替换(sys.argv[1], "文件路径=", "")
-            self.插件端口号 = 子文本替换(sys.argv[2], "port=", "")
-            目录 = 文件_取目录(self.设计文件路径)
-            文件名 = 文件_取文件名(self.设计文件路径, False)
-            if 判断文本(文件名,"_"):
-                文件名 = strCut(文件名, "_$")
+            self.设计文件路径 = efun.子文本替换(sys.argv[1], "文件路径=", "")
+            self.插件端口号 = efun.子文本替换(sys.argv[2], "port=", "")
+            目录 = efun.文件_取目录(self.设计文件路径)
+            文件名 = efun.文件_取文件名(self.设计文件路径, False)
+            if efun.判断文本(文件名,"_"):
+                文件名 = efun.strCut(文件名, "_$")
             self.设计文件路径 = f"{目录}/{文件名}.json"
 
     def __init__(self, parent=None):
@@ -313,6 +326,8 @@ class MainWin(主窗口):
         端口号, _ = self.打开输入框("请输入", "pycharm插件的端口号")
         if 端口号:
             self.插件端口号 = int(端口号)
+            self.属性表格窗口.设计窗口.插件URL地址 = f"http://127.0.0.1:{self.插件端口号}"
+
             self.托盘菜单.取菜单项目对象("设置pycharm插件端口").setText(f"设置pycharm插件端口{self.插件端口号}")
             self.设置菜单.取菜单项目对象("设置pycharm插件端口").setText(f"设置pycharm插件端口{self.插件端口号}")
 
@@ -362,6 +377,13 @@ class MainWin(主窗口):
         else:
             self.setWindowTitle(错误文本)
 
+def func():
+    print(sys.argv)
+    # 将命令行参数转换为json保存
+    app = QApplication(sys.argv)
+    window = MainWin()
+    window.show()
+    sys.exit(app.exec())
 
 if __name__ == '__main__':
     print(sys.argv)
