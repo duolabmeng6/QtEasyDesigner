@@ -3,6 +3,9 @@ import os
 
 # 把当前目录导入到 path
 import webbrowser
+
+from PySide6.QtWidgets import QApplication, QLabel
+
 sys.path.append(r"C:/pyefun/pyefun")
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -15,10 +18,6 @@ sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
 
 
-import PySide6
-from PySide6.QtCore import Signal
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
 from pyefun import *
 
 import win_app2
