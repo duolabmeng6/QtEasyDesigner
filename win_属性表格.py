@@ -34,7 +34,7 @@ class MainWin(QMainWindow):
         self.show()
         self.setWindowTitle("设计器的小部件")
         self.move(300, 100)
-        self.resize(1000, 800)
+        self.resize(1200, 600)
         self.centralWidget = QWidget()
 
         self.设计窗口 = win_设计窗口.设计窗口()
@@ -184,9 +184,6 @@ class MainWin(QMainWindow):
         self.上下布局.addWidget(self.mdiArea, 2)
         self.上下布局.addLayout(self.从上到下_右边, 1)
 
-        self.statusbar = QStatusBar()
-        self.statusbar.setObjectName(u"statusbar")
-        self.setStatusBar(self.statusbar)
 
         self.centralWidget.setLayout(self.上下布局)
         self.setCentralWidget(self.centralWidget)
