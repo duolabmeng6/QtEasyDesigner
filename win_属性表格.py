@@ -1,10 +1,13 @@
+import json
+import os
+
 from PySide6.QtCore import Signal, QSize, QMetaObject, Qt
 from PySide6.QtGui import QColor, QIntValidator
 from PySide6.QtWidgets import QMainWindow, QWidget, QTableWidget, QTreeWidget, QListWidget, QAbstractItemView, \
     QListWidgetItem, QVBoxLayout, QTabWidget, QHBoxLayout, QMdiArea, QTableWidgetItem, QLineEdit, QComboBox, \
     QTreeWidgetItem
 
-from pyefun import *
+import pyefun as efun
 
 import qt_esay_model.组件库.组件按钮 as 组件按钮
 import qt_esay_model.组件库.组件窗口 as 组件窗口
@@ -235,7 +238,7 @@ class MainWin(QMainWindow):
         self.树形框项目管理.setColumnWidth(1, 50)
 
         # 枚举当前运行目录的ui格式和py格式的文件 加入到 self.树形框项目管理 选项中加入图标 图标大小 16x16
-        项目目录 = 文件_取目录(self.设计窗口.写出文件路径_设计文件json)
+        项目目录 = efun.文件_取目录(self.设计窗口.写出文件路径_设计文件json)
         print(项目目录)
         try:
             for 文件名 in os.listdir(项目目录):

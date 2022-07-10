@@ -17,7 +17,7 @@ from 组件库.组件按钮 import 组件按钮
 from 组件库.组件窗口 import 组件窗口
 from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
 from 组件树类 import 组件树类, 导入导出组件结构数据, 组件树生成代码类
-from pyefun import *
+import pyefun as efun
 
 from 辅助函数 import 发送给ide插件
 
@@ -119,8 +119,8 @@ class 设计窗口(QMdiSubWindow):
         self.读取组件信息()
 
     def 加载路径信息(self, 文件路径):
-        项目目录 = 文件_取目录(文件路径)
-        窗口名称 = 文件_取文件名(文件路径, False)
+        项目目录 = efun.文件_取目录(文件路径)
+        窗口名称 = efun.文件_取文件名(文件路径, False)
         print("信号_加载设计文件", 文件路径, 项目目录, 窗口名称)
         self.项目目录 = 项目目录 + "/"
         self.写出文件路径_设计文件json = 项目目录 + f"/{窗口名称}.json"  # 例如 启动窗口.py
@@ -161,10 +161,10 @@ class 设计窗口(QMdiSubWindow):
 
     def 信号_跳转代码(self, 函数名):
         print(f"调用pycharm代码跳转: {self.写出文件路径AppPy}, {函数名}")
-        文件名 = 文件_取文件名(self.写出文件路径AppPy)
+        文件名 = efun.文件_取文件名(self.写出文件路径AppPy)
 
         def 延迟调用():
-            代码位置 = 寻找文本(读入文本(self.写出文件路径AppPy), "def %s" % 函数名)
+            代码位置 = efun.寻找文本(efun.读入文本(self.写出文件路径AppPy), "def %s" % 函数名)
             if 代码位置 != -1:
                 状态, 错误文本 = 发送给ide插件(self.插件URL地址, 文件名, 代码位置)
                 # 延时(1)
@@ -175,12 +175,12 @@ class 设计窗口(QMdiSubWindow):
                 print("没有找到函数")
                 return f"{self.写出文件路径AppPy} 中没有找到函数 {函数名} 跳转失败"
 
-        启动线程(延迟调用)
+        efun.启动线程(延迟调用)
 
     def 读取组件信息(self):
         print("读取组件信息")
         try:
-            导入数据 = 读入文本(self.写出文件路径_设计文件json)
+            导入数据 = efun.读入文本(self.写出文件路径_设计文件json)
             导入数据 = json.loads(导入数据)
         except:
             print("没有组件信息")

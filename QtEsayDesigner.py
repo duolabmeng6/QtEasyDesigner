@@ -18,7 +18,7 @@ sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
 
 
-from pyefun import *
+import pyefun as efun
 
 import win_app2
 from qtefun.组件.主窗口 import 主窗口
@@ -102,7 +102,7 @@ class MainWin(主窗口):
 
     def 初始化工具条(self):
         toolBar = 工具条(self.addToolBar("工具栏"))
-        工具条数据 = 读入文本(路径优化(取运行目录() + r"/resources/toolBarData.json"))
+        工具条数据 = efun.读入文本(efun.路径优化(efun.取运行目录() + r"/resources/toolBarData.json"))
         toolBar.从工具条数据中创建(工具条数据, 16, 16, self.工具条_点击)
 
     def 工具条_点击(self):
@@ -298,7 +298,7 @@ class MainWin(主窗口):
 
     def 菜单_另存为(self):
         pass
-        文件路径 = self.打开文件保存选择器("设计文件 (*.json)", "请选择保存设计文件的路径", 取运行目录())
+        文件路径 = self.打开文件保存选择器("设计文件 (*.json)", "请选择保存设计文件的路径", efun.取运行目录())
         print("路径", 文件路径)
         if 文件路径[0] != "":
             self.设计文件路径 = 文件路径[0]
@@ -346,7 +346,7 @@ class MainWin(主窗口):
 
     def 运行(self):
         print("运行python代码")
-        运行(f"/usr/local/bin/python3.9 {self.属性表格窗口.设计窗口.写出文件路径AppPy}")
+        efun.运行(f"/usr/local/bin/python3.9 {self.属性表格窗口.设计窗口.写出文件路径AppPy}")
 
     def 编译为可执行程序(self):
         self.消息框("等待开发")
@@ -354,7 +354,7 @@ class MainWin(主窗口):
     def 信号_代码跳转(self, 状态, 错误文本):
         print("信号_代码跳转", 状态, 错误文本)
         if 状态 == True:
-            if 系统_是否为mac系统():
+            if efun.系统_是否为mac系统():
                 self.hide()
             else:
                 # 窗口最小化
