@@ -28,7 +28,6 @@ from qtefun.组件.系统托盘图标 import 系统托盘图标
 from qtefun.组件.菜单 import 菜单
 from qtefun.组件.菜单栏 import 菜单栏
 
-import win_设计窗口
 import win_属性表格
 
 

@@ -1,10 +1,15 @@
-from PySide6.QtCore import Signal, QSize, QMetaObject
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
+from PySide6.QtCore import Signal, QSize, QMetaObject, Qt
+from PySide6.QtGui import QColor, QIntValidator
+from PySide6.QtWidgets import QMainWindow, QWidget, QTableWidget, QTreeWidget, QListWidget, QAbstractItemView, \
+    QListWidgetItem, QVBoxLayout, QTabWidget, QHBoxLayout, QMdiArea, QTableWidgetItem, QLineEdit, QComboBox, \
+    QTreeWidgetItem
+
 from pyefun import *
 
-from 组件库.组件按钮 import *
-from 组件树类 import *
+import qt_esay_model.组件库.组件按钮 as 组件按钮
+import qt_esay_model.组件库.组件窗口 as 组件窗口
+import qt_esay_model.组件树类 as 组件树类
+import qt_esay_model.中文对照组件常量 as 中文对照组件常量
 
 # import 组件拖动的测试
 import win_设计窗口
@@ -51,7 +56,7 @@ class MainWin(QMainWindow):
         self.初始化布局2()
 
     def 数据刷新(self):
-        self.当前组件库的对象 = 组件窗口(self.设计窗口)
+        self.当前组件库的对象 = 组件窗口.组件窗口(self.设计窗口)
         self.初始化属性表格_从数据(self.当前组件库的对象.导出组件属性())
         self.刷新组件树显示()
 
