@@ -1,19 +1,39 @@
+
 import sys
 import os
 
 # 把当前目录导入到 path
 import webbrowser
 
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QLabel
+
+sys.path.append(r"C:/pyefun/pyefun")
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append("/Users/chensuilong/Desktop/pythonproject/pyqt")
+# 添加当前目录下的 qt_esay_model 文件夹到系统搜索路径
+qtefun路径 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
+print("qtefun", qtefun路径)
+print("qt_esay_model", qt_esay_model路径)
+sys.path.append(qtefun路径)
+sys.path.append(qt_esay_model路径)
 
-import PySide6
-from PySide6.QtCore import Signal
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
-from pyefun import *
+import pyefun as efun
 
-from qt_esay_designer import win_app2
+
+if efun.系统_是否为mac系统():
+    pass
+else:
+    efun.控制台_设置编码为UTF8()
+    import ctypes
+    def 隐藏控制台窗口():
+        whnd = ctypes.windll.kernel32.GetConsoleWindow()
+        if whnd != 0:
+            ctypes.windll.user32.ShowWindow(whnd, 0)
+
+
+import win_app2
 from qtefun.组件.主窗口 import 主窗口
 from qtefun.图标 import 获取图标
 from qtefun.组件.工具条 import 工具条
@@ -21,8 +41,8 @@ from qtefun.组件.系统托盘图标 import 系统托盘图标
 from qtefun.组件.菜单 import 菜单
 from qtefun.组件.菜单栏 import 菜单栏
 
-import win_设计窗口
 import win_属性表格
+
 
 
 class MainWin(主窗口):
@@ -33,13 +53,19 @@ class MainWin(主窗口):
         # 设计文件.json 端口号
         self.插件端口号 = 0
         if len(sys.argv) > 1:
-            写到文件("/Users/chensuilong/Desktop/pythonproject/pyqt/qt_esay_designer/参数.json",
-                 json.dumps(sys.argv, indent=4))
-            self.设计文件路径 = 子文本替换(sys.argv[1], "文件路径=", "")
-            self.插件端口号 = 子文本替换(sys.argv[2], "port=", "")
+            # 写到文件("/Users/chensuilong/Desktop/pythonproject/pyqt/qt_esay_designer/参数.json",
+            #      json.dumps(sys.argv, indent=4))
+            self.设计文件路径 = efun.子文本替换(sys.argv[1], "文件路径=", "")
+            self.插件端口号 = efun.子文本替换(sys.argv[2], "port=", "")
+            目录 = efun.文件_取目录(self.设计文件路径)
+            文件名 = efun.文件_取文件名(self.设计文件路径, False)
+            if efun.判断文本(文件名,"_"):
+                文件名 = efun.strCut(文件名, "_$")
+            self.设计文件路径 = f"{目录}/{文件名}.json"
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
         self.设计文件路径 = ""
         self.ui = win_app2.Ui_MainWindow()
         self.初始化命令行参数()
@@ -66,8 +92,6 @@ class MainWin(主窗口):
             # self.消息框("提示", "请选择一个设计文件")
 
         self.属性表格窗口 = win_属性表格.MainWin()
-        # 配置信息加载
-        # 设计文件路径 = "/Users/chensuilong/Desktop/pythonproject/testqtefun/启动窗口.json"
         self.属性表格窗口.设计窗口.可否关闭 = False
         self.属性表格窗口.设计窗口.信号_加载设计文件(self.设计文件路径)
         self.属性表格窗口.设计窗口.插件URL地址 = f"http://127.0.0.1:{self.插件端口号}"
@@ -77,23 +101,9 @@ class MainWin(主窗口):
 
         self.属性表格窗口.设计窗口.信号_代码跳转.connect(self.信号_代码跳转)
 
-        self.ui.horizontalLayout_2.addWidget(self.属性表格窗口)
-        self.ui.mdiArea.addSubWindow(self.属性表格窗口.设计窗口)
-        self.ui.mdiArea.setBackground(QColor(236, 236, 236))
-        self.ui.mdiArea.cascadeSubWindows()
-
+        self.setCentralWidget(self.属性表格窗口)
         self.属性表格窗口.show()
         self.属性表格窗口.设计窗口.show()
-
-        # self.属性表格窗口.listWidget
-        self.ui.verticalLayout.addWidget(self.属性表格窗口.treeWidget)
-        self.ui.verticalLayout.addWidget(self.属性表格窗口.listWidget)
-        self.ui.horizontalLayout_5.addWidget(self.属性表格窗口.树形框项目管理)
-        self.属性表格窗口.listWidget.setFixedWidth(260)
-
-        # 切换为属性表格窗口
-        self.ui.tabWidget.setCurrentIndex(1)
-
         self.属性表格窗口.信号_项目管理文件被选择.connect(self.信号_项目管理文件被选择)
 
     def 信号_项目管理文件被选择(self, 文件名):
@@ -105,19 +115,17 @@ class MainWin(主窗口):
 
     def 初始化工具条(self):
         toolBar = 工具条(self.addToolBar("工具栏"))
-        工具条数据 = 读入文本(路径优化(取运行目录() + r"/resources/toolBarData.json"))
+        工具条数据 = efun.读入文本(efun.路径优化(efun.取运行目录() + r"/resources/toolBarData.json"))
         toolBar.从工具条数据中创建(工具条数据, 16, 16, self.工具条_点击)
 
     def 工具条_点击(self):
         sender = self.sender()
         名称 = sender.text()
         print("工具条_点击", sender.text())
-        if 名称 == "撤销":
-            self.消息框("等待开发")
-
-            # self.撤销()
+        if 名称 == "撤消":
+            self.属性表格窗口.设计窗口.撤消()
         elif 名称 == "恢复":
-            self.消息框("等待开发")
+            self.属性表格窗口.设计窗口.恢复()
 
             # self.恢复()
         elif 名称 == "左对齐":
@@ -201,14 +209,15 @@ class MainWin(主窗口):
         self.文件菜单.添加项目("保存", 获取图标("mdi.moon-new", "#FFFFFF"), self.菜单_保存, "Ctrl+S")
         self.文件菜单.添加项目("另存为", 获取图标("mdi.moon-new", "#FFFFFF"), self.菜单_另存为, )
         self.文件菜单.添加分隔条()
-
         self.文件菜单.添加项目("退出", 获取图标("mdi.exit-to-app", "#FFFFFF"), self.退出, "Ctrl+Q")
-        self.编译菜单 = 菜单(self, "编辑")
-        self.编译菜单.添加项目("撤销", 获取图标("mdi.moon-new", "#FFFFFF"), self.撤销, "Ctrl+Z")
-        self.编译菜单.添加项目("恢复", 获取图标("mdi.moon-new", "#FFFFFF"), self.恢复, "Ctrl+Y")
-        self.文件菜单.添加分隔条()
-        self.编译菜单.添加项目("复制", 获取图标("mdi.moon-new", "#FFFFFF"), self.复制, "Ctrl+C")
-        self.编译菜单.添加项目("粘贴", 获取图标("mdi.moon-new", "#FFFFFF"), self.粘贴, "Ctrl+V")
+
+        self.编辑菜单 = 菜单(self, "编辑")
+        self.编辑菜单.添加项目("撤消", 获取图标("mdi.moon-new", "#FFFFFF"), self.撤消, "Ctrl+Z")
+        self.编辑菜单.添加项目("恢复", 获取图标("mdi.moon-new", "#FFFFFF"), self.恢复, "Ctrl+Y")
+        self.编辑菜单.添加分隔条()
+        self.编辑菜单.添加项目("复制", 获取图标("mdi.moon-new", "#FFFFFF"), self.复制, "Ctrl+C")
+        self.编辑菜单.添加项目("粘贴", 获取图标("mdi.moon-new", "#FFFFFF"), self.粘贴, "Ctrl+V")
+        self.编辑菜单.添加项目("剪切", 获取图标("mdi.moon-new", "#FFFFFF"), self.粘贴, "Ctrl+X")
 
         self.编译菜单 = 菜单(self, "编译")
         self.编译菜单.添加项目("运行", 获取图标("mdi.moon-new", "#FFFFFF"), self.运行)
@@ -225,6 +234,7 @@ class MainWin(主窗口):
 
         self.菜单栏 = 菜单栏(self)  # 菜单栏
         self.菜单栏.添加项目(self.文件菜单.取菜单项目())  # 将菜单添加到菜单栏
+        self.菜单栏.添加项目(self.编辑菜单.取菜单项目())  # 将菜单添加到菜单栏
         self.菜单栏.添加项目(self.编译菜单.取菜单项目())  # 将菜单添加到菜单栏
         self.菜单栏.添加项目(self.设置菜单.取菜单项目())  # 将菜单添加到菜单栏
         self.设置菜单栏(self.菜单栏)  # 设置菜单栏
@@ -243,17 +253,21 @@ class MainWin(主窗口):
     def 检查更新(self):
         self.消息框("等待开发")
 
-    def 撤销(self):
-        self.消息框("等待开发")
+    def 撤消(self):
+        self.属性表格窗口.设计窗口.撤消()
 
     def 恢复(self):
-        self.消息框("等待开发")
+        self.属性表格窗口.设计窗口.恢复()
+        # self.消息框("等待开发")
 
     def 复制(self):
-        self.消息框("等待开发")
+        self.属性表格窗口.设计窗口.复制组件()
 
     def 粘贴(self):
-        self.消息框("等待开发")
+        self.属性表格窗口.设计窗口.粘贴组件()
+
+    def 剪切(self):
+        self.属性表格窗口.设计窗口.剪切组件()
 
     def closeEvent(self, event):
         print("窗口关闭事件 main")
@@ -297,7 +311,7 @@ class MainWin(主窗口):
 
     def 菜单_另存为(self):
         pass
-        文件路径 = self.打开文件保存选择器("设计文件 (*.json)", "请选择保存设计文件的路径", 取运行目录())
+        文件路径 = self.打开文件保存选择器("设计文件 (*.json)", "请选择保存设计文件的路径", efun.取运行目录())
         print("路径", 文件路径)
         if 文件路径[0] != "":
             self.设计文件路径 = 文件路径[0]
@@ -312,6 +326,8 @@ class MainWin(主窗口):
         端口号, _ = self.打开输入框("请输入", "pycharm插件的端口号")
         if 端口号:
             self.插件端口号 = int(端口号)
+            self.属性表格窗口.设计窗口.插件URL地址 = f"http://127.0.0.1:{self.插件端口号}"
+
             self.托盘菜单.取菜单项目对象("设置pycharm插件端口").setText(f"设置pycharm插件端口{self.插件端口号}")
             self.设置菜单.取菜单项目对象("设置pycharm插件端口").setText(f"设置pycharm插件端口{self.插件端口号}")
 
@@ -345,7 +361,7 @@ class MainWin(主窗口):
 
     def 运行(self):
         print("运行python代码")
-        运行(f"/usr/local/bin/python3.9 {self.属性表格窗口.设计窗口.写出文件路径AppPy}")
+        efun.运行(f"/usr/local/bin/python3.9 {self.属性表格窗口.设计窗口.写出文件路径AppPy}")
 
     def 编译为可执行程序(self):
         self.消息框("等待开发")
@@ -353,16 +369,26 @@ class MainWin(主窗口):
     def 信号_代码跳转(self, 状态, 错误文本):
         print("信号_代码跳转", 状态, 错误文本)
         if 状态 == True:
-            self.hide()
+            if efun.系统_是否为mac系统():
+                self.hide()
+            else:
+                # 窗口最小化
+                self.setWindowState(Qt.WindowMinimized)
         else:
             self.setWindowTitle(错误文本)
 
+def func():
+    print(sys.argv)
+    # 将命令行参数转换为json保存
+    app = QApplication(sys.argv)
+    window = MainWin()
+    window.show()
+    sys.exit(app.exec())
 
 if __name__ == '__main__':
     print(sys.argv)
     # 将命令行参数转换为json保存
     app = QApplication(sys.argv)
     window = MainWin()
-
-    # window.show()
+    window.show()
     sys.exit(app.exec())

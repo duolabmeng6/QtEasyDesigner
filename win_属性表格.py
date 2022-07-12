@@ -1,18 +1,18 @@
+import json
 import os
-import sys
-import PySide6
-from PySide6.QtCore import Signal, QSize
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
-from pyefun import *
 
-from qt_esay_model.组件库.组件按钮 import *
-from qt_esay_model.组件库.组件窗口 import *
-from qt_esay_model.组件库.组件单行编辑框 import *
-from qt_esay_model.组件库.组件富文本编辑框 import *
-from qt_esay_model.组件库.组件纯文本编辑框 import *
-from qt_esay_model.中文对照组件常量 import *
-from qt_esay_model.组件树类 import *
+from PySide6.QtCore import Signal, QSize, QMetaObject, Qt
+from PySide6.QtGui import QColor, QIntValidator
+from PySide6.QtWidgets import QMainWindow, QWidget, QTableWidget, QTreeWidget, QListWidget, QAbstractItemView, \
+    QListWidgetItem, QVBoxLayout, QTabWidget, QHBoxLayout, QMdiArea, QTableWidgetItem, QLineEdit, QComboBox, \
+    QTreeWidgetItem
+
+import pyefun as efun
+from pyefun import *
+import qt_esay_model.组件库.组件按钮 as 组件按钮
+import qt_esay_model.组件库.组件窗口 as 组件窗口
+import qt_esay_model.组件树类 as 组件树类
+import qt_esay_model.中文对照组件常量 as 中文对照组件常量
 
 # import 组件拖动的测试
 import win_设计窗口
@@ -28,50 +28,38 @@ class MainWin(QMainWindow):
     当前组件库的对象 = None  # type: 组件按钮
     tableWidget = None
     treeWidget = None
+
     def __init__(self):
         super().__init__()
-        # self.ui = win_app.Ui_MainWindow()
-        # self.ui.setupUi(self)
         self.show()
         self.setWindowTitle("设计器的小部件")
-        self.move(300, 300)
-        self.resize(1000, 400)
+        self.move(300, 100)
+        self.resize(1200, 600)
+        self.centralWidget = QWidget()
 
-        # 创建另外一个设计窗口 500x500
-        self.设计窗口 = win_设计窗口.设计窗口(self)
-        # self.设计窗口.setObjectName("启动窗口")
-        # self.设计窗口.resize(500, 500)
-        # self.设计窗口.move(0, 0)
-        # self.设计窗口.show()
+        self.设计窗口 = win_设计窗口.设计窗口()
 
         self.设计窗口.信号_更新属性框.connect(self.信号_更新属性框)
+        self.设计窗口.信号_更新组件树.connect(self.信号_更新组件树)
         # self.设计窗口.信号_代码跳转.connect(self.信号_代码跳转)
         self.设计窗口.信号_双击跳转代码.connect(self.信号_双击跳转代码)
-
         self.信号_绘制组件名称.connect(self.设计窗口.信号_绘制组件名称)
         self.信号_修改组件的属性.connect(self.设计窗口.信号_修改组件的属性)
-
-        # 设计文件路径 = "/Users/chensuilong/Desktop/pythonproject/pyqt/8.视窗设计器雏形/测试2/启动窗口.json"
-        # self.设计窗口.可否关闭 = False
-        # self.设计窗口.信号_加载设计文件(设计文件路径)
-        # 插件端口号 = 9999
-        # self.设计窗口.插件URL地址 = f"http://127.0.0.1:{插件端口号}"
 
         self.tableWidget = QTableWidget(self)
         self.listWidget = QListWidget(self)
         self.treeWidget = QTreeWidget(self)
         self.树形框项目管理 = QTreeWidget(self)
-
         self.treeWidget.itemClicked.connect(self.树形框被点击)
-
-        self.初始化布局()
-        # self.初始化属性表格()
         self.初始化组件列表()
 
-        # 创建主窗口的内容部件
+        # self.初始化布局()
+        # self.初始化属性表格()
+
+        self.初始化布局2()
 
     def 数据刷新(self):
-        self.当前组件库的对象 = 组件窗口(self.设计窗口)
+        self.当前组件库的对象 = 组件窗口.组件窗口(self.设计窗口)
         self.初始化属性表格_从数据(self.当前组件库的对象.导出组件属性())
         self.刷新组件树显示()
 
@@ -99,7 +87,7 @@ class MainWin(QMainWindow):
     def 刷新组件树显示(self):
         if self.treeWidget == None:
             return
-        print("刷新组件树显示")
+        print("刷新组件树显示 尽量优化一下有数据变更才调用")
         self.treeWidget.clear()
         # 设置  self.treeWidget 为两列内容为 对象 和 类
         self.treeWidget.setColumnCount(2)
@@ -109,7 +97,7 @@ class MainWin(QMainWindow):
         # self.设计窗口.保存组件信息()
 
         组件结构数据 = self.设计窗口.组件树.导出组件结构数据_json()
-        print("组件结构数据",组件结构数据)
+        # print("组件结构数据",组件结构数据)
         组件结构数据 = json.loads(组件结构数据)
         # 递归导入组件数据
         self.递归导入组件树(组件结构数据)
@@ -121,7 +109,7 @@ class MainWin(QMainWindow):
         组件名称 = 结构数据['组件名称']
         组件类型 = 结构数据['组件类型']
         组件属性 = 结构数据['组件属性']
-        print("递归导入组件树", 组件名称, 组件类型, 组件属性)
+        # print("递归导入组件树", 组件名称, 组件类型, 组件属性)
         if 递归深度 == False:
             窗口项目 = QTreeWidgetItem()
             窗口项目.setText(0, 组件名称)
@@ -142,19 +130,87 @@ class MainWin(QMainWindow):
 
             self.递归导入组件树(子组件, True, 组件项目)
 
-    def 初始化布局(self):
+    def 初始化布局2(self):
+        ###
+        self.verticalLayout_3 = QVBoxLayout(self)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.tabWidget = QTabWidget(self)
+        self.tabWidget.setObjectName(u"tabWidget")
+        self.tab = QWidget()
+        self.tab.setObjectName(u"tab")
+        self.horizontalLayout_2 = QHBoxLayout(self.tab)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+
+        self.horizontalLayout_3.addWidget(self.树形框项目管理)
+
+        self.horizontalLayout_2.addLayout(self.horizontalLayout_3)
+
+        self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QWidget()
+        self.tab_2.setObjectName(u"tab_2")
+        self.horizontalLayout = QHBoxLayout(self.tab_2)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setObjectName(u"verticalLayout")
+
+        self.verticalLayout.addWidget(self.tableWidget)
+
+        self.horizontalLayout.addLayout(self.verticalLayout)
+
+        self.tabWidget.addTab(self.tab_2, "")
+
+        self.verticalLayout_3.addWidget(self.tabWidget)
+        self.tabWidget.setTabText(0, "项目管理")
+        self.tabWidget.setTabText(1, "组件属性")
+        self.tabWidget.setCurrentIndex(1)
+
+        self.mdiArea = QMdiArea()
+        self.mdiArea.setBackground(QColor(236, 236, 236))
+        self.mdiArea.addSubWindow(self.设计窗口)
+        self.mdiArea.setOption(QMdiArea.DontMaximizeSubWindowOnActivation)
+        self.mdiArea.setViewMode(QMdiArea.SubWindowView)
+
+        self.从上到下_右边 = QVBoxLayout()
+        self.从上到下_右边.setContentsMargins(0, 0, 0, 0)
+        self.从上到下_右边.addWidget(self.treeWidget, 1)
+        self.从上到下_右边.addWidget(self.listWidget, 1)
+        self.listWidget.setMinimumWidth(200)
+
         self.上下布局 = QHBoxLayout()
         self.上下布局.setContentsMargins(0, 0, 0, 0)
-        self.上下布局.setObjectName("上下布局")
-        self.上下布局.addWidget(self.tableWidget)
-        self.上下布局.addWidget(self.listWidget)
-        self.上下布局.addWidget(self.treeWidget)
-        self.上下布局.addWidget(self.树形框项目管理)
-        self.centralWidget = QWidget(self)
-        self.centralWidget.setObjectName("centralWidget")
+        self.上下布局.addWidget(self.tabWidget, 1)
+        self.上下布局.addWidget(self.mdiArea, 2)
+        self.上下布局.addLayout(self.从上到下_右边, 1)
+
+
         self.centralWidget.setLayout(self.上下布局)
         self.setCentralWidget(self.centralWidget)
 
+    def 初始化布局(self):
+        MainWindow = self
+        self.centralwidget = QWidget(MainWindow)
+        self.centralwidget.setObjectName(u"centralwidget")
+        self.horizontalLayout_2 = QHBoxLayout(self.centralwidget)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.verticalLayout = QVBoxLayout()
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.addWidget(self.tableWidget)
+        self.horizontalLayout.addWidget(self.listWidget)
+        self.horizontalLayout.addWidget(self.treeWidget)
+        self.horizontalLayout.addWidget(self.树形框项目管理)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.mdiArea = QMdiArea(self.centralwidget)
+        self.mdiArea.addSubWindow(self.设计窗口)
+        self.mdiArea.setOption(QMdiArea.DontMaximizeSubWindowOnActivation)
+        self.mdiArea.setViewMode(QMdiArea.SubWindowView)
+        self.verticalLayout.addWidget(self.mdiArea)
+        self.horizontalLayout_2.addLayout(self.verticalLayout)
+        MainWindow.setCentralWidget(self.centralwidget)
+        QMetaObject.connectSlotsByName(MainWindow)
 
     # def 信号_代码跳转(self, 状态, 错误文本):
     #     print("信号_代码跳转", 状态, 错误文本)
@@ -182,7 +238,7 @@ class MainWin(QMainWindow):
         self.树形框项目管理.setColumnWidth(1, 50)
 
         # 枚举当前运行目录的ui格式和py格式的文件 加入到 self.树形框项目管理 选项中加入图标 图标大小 16x16
-        项目目录 = 文件_取目录(self.设计窗口.写出文件路径_设计文件json)
+        项目目录 = efun.文件_取目录(self.设计窗口.写出文件路径_设计文件json)
         print(项目目录)
         try:
             for 文件名 in os.listdir(项目目录):
@@ -208,14 +264,12 @@ class MainWin(QMainWindow):
         # 排序
         self.树形框项目管理.sortItems(0, Qt.AscendingOrder)
 
-
     def 项目管理_项目被双击(self, item):
         # print(item.text(0))
         文件路径 = self.设计窗口.项目目录 + item.text(0)
         # 检查后缀是否为 json
         if 文件路径.endswith(".json"):
             self.信号_项目管理文件被选择.emit(文件路径)
-
 
     def 初始化组件列表(self):
         # 创建列表组件
@@ -409,6 +463,10 @@ class MainWin(QMainWindow):
             self.初始化属性表格_从数据(obj.导出组件属性())
             # print("信号_更新属性框", obj)
             self.当前组件库的对象 = obj
+
+    def 信号_更新组件树(self, obj: 组件按钮):
+        print("信号_更新属性框", obj)
+        if obj:
             self.刷新组件树显示()
 
     def 表格编辑完成(self):
@@ -440,14 +498,14 @@ class MainWin(QMainWindow):
         # self.当前组件库的对象.修改组件属性(属性名称, text)
         self.信号_修改组件的属性.emit(self.当前组件库的对象, 属性名称, text)
 
-    def 信号_双击跳转代码(self,组件):
+    def 信号_双击跳转代码(self, 组件):
         # 查询属性表格中第一列属性文本前缀为"事件"获取行号
         属性表格行号 = self.tableWidget.findItems("事件*", Qt.MatchWildcard)[0].row()
         # 获取属性表格中第一列属性文本前缀为"事件"的属性名称
         属性名称 = self.tableWidget.item(属性表格行号, 0).text()
         print(属性名称)
-        print("信号_双击跳转代码",属性名称)
-        self.表格被双击(属性表格行号,0)
+        print("信号_双击跳转代码", 属性名称)
+        self.表格被双击(属性表格行号, 0)
 
     def 表格被双击(self, row, column):
         # 当前行 = self.tableWidget.currentRow()
@@ -477,7 +535,6 @@ class MainWin(QMainWindow):
         # todo 这里需要跳转代码
         self.设计窗口.信号_跳转代码(函数名)
 
-
     def 查询所有数据(self):
         for idx in range(self.tableWidget.rowCount()):
             obj = self.tableWidget.cellWidget(idx, 1)
@@ -495,8 +552,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWin()
 
-
-    设计文件路径 = "/Users/chensuilong/Desktop/pythonproject/testqtefun/启动窗口.json"
+    设计文件路径 = r"C:\pyefun\QtEsayDesigner\test\启动窗口.json"
     window.设计窗口.可否关闭 = False
     window.设计窗口.信号_加载设计文件(设计文件路径)
     window.设计窗口.插件URL地址 = f"http://127.0.0.1:6666"
@@ -504,6 +560,7 @@ if __name__ == '__main__':
     window.数据刷新()
     # window.属性表格窗口.设计窗口.信号_代码跳转.connect()
     window.初始化项目管理()
+    # window.初始化布局()
 
     # window.show()
     sys.exit(app.exec())

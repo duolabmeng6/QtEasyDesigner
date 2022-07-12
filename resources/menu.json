@@ -19,8 +19,8 @@
     "子菜单": [
       {
         "id": 101,
-        "名称": "撤销\tCtrl+Z",
-        "图标": "./resources/images/工具条/撤销.png"
+        "名称": "撤消\tCtrl+Z",
+        "图标": "./resources/images/工具条/撤消.png"
       },
       {
         "id": 102,

@@ -44,10 +44,11 @@ class 组件窗口(object):
         if 属性名称 == "高度":
             self.对象.setGeometry(self.对象.x(), self.对象.y(), self.对象.width(), int(属性值))
         if 属性名称 == "可视":
-            print("可视", 属性值)
-            属性值 = self.取逻辑值(属性值)
-            print("可视", 属性值)
-            self.对象.setVisible(属性值)
+            pass
+            # print("可视", 属性值)
+            # 属性值 = self.取逻辑值(属性值)
+            # print("可视", 属性值)
+            # self.对象.setVisible(属性值)
         if 属性名称 == "禁用":
             print("禁用", 属性值)
             属性值 = self.取逻辑值(属性值)
@@ -140,8 +141,8 @@ if __name__ == "__main__":
         json的数据 = json.loads(json的数据)
         print(组件信息.导出为代码(json的数据))
 
-    测试导出代码()
-    sys.exit()
+    # 测试导出代码()
+    # sys.exit()
 
     app = QApplication([])
     # 创建窗口 400x400
@@ -157,6 +158,9 @@ if __name__ == "__main__":
     # 导出组件属性
     # 导出数据 = 组件按钮.导出组件属性()
     导出数据 = 组件按钮.修改组件属性("事件创建完毕", "窗口创建完毕")
+    导出数据 = 组件按钮.修改组件属性("宽度", 600)
+    导出数据 = 组件按钮.修改组件属性("高度", 500)
+    导出数据 = 组件按钮.修改组件属性("标题", "测试")
     导出数据 = 组件按钮.导出为json属性()
     # 导出为 json 格式 打印出来
     print(json.dumps(导出数据, indent=4, ensure_ascii=False))

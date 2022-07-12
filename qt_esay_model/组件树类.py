@@ -1,14 +1,18 @@
 # 记录创建组件的层级关系和属性 树状结构
 import json
+import os
 import re
+import sys
+# 添加当前文件的父目录的父目录
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import qt_esay_model
-from qt_esay_model.中文对照组件常量 import 取组件名称中英文对照
-from qt_esay_model.组件库.组件单行编辑框 import 组件单行编辑框
-from qt_esay_model.组件库.组件富文本编辑框 import 组件富文本编辑框
-from qt_esay_model.组件库.组件按钮 import 组件按钮
-from qt_esay_model.组件库.组件窗口 import 组件窗口
-from qt_esay_model.组件库.组件纯文本编辑框 import 组件纯文本编辑框
+from 中文对照组件常量 import 取组件名称中英文对照
+from 组件库.组件单行编辑框 import 组件单行编辑框
+from 组件库.组件富文本编辑框 import 组件富文本编辑框
+from 组件库.组件按钮 import 组件按钮
+from 组件库.组件窗口 import 组件窗口
+from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
+from 界面代码生成类 import 界面代码生成类
 
 
 class 组件树类:
@@ -278,6 +282,80 @@ from qtefun.组件.{导包名称} import {导包名称}
             """
         return 代码
 
+    def 生成代码4_入口函数(self, 加载已存在的文件内容=""):
+        # self.代码生成类 = 代码生成
+        self.界面代码生成 = 界面代码生成类()
+        self.加载已存在的文件内容 = 加载已存在的文件内容
+        self.界面代码生成.加载已存在的文件内容 = 加载已存在的文件内容
+        self.界面代码生成.末尾代码 = """
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = MainWin()
+    sys.exit(app.exec())
+            """
+        self.递归4(组件树=self.组件树)
+        代码 = self.界面代码生成.生成代码()
+        return 代码
+
+    def 递归4(self, 递归深度=0, 组件树=None):
+        self.获取代码4(组件树)
+        for 子组件 in 组件树['子组件']:
+             self.递归4(递归深度=递归深度 + 1, 组件树=子组件)
+        return
+
+    def 获取代码4(self, 组件对象):
+        窗口代码 = ""
+        组件名称 = 组件对象['组件名称']
+        组件类型 = 组件对象['组件类型']
+        组件属性 = 组件对象['组件属性']
+        # print(组件名称, 组件类型, 组件属性)
+        if 组件类型 == "QMainWindow":
+            self.界面代码生成.加入导包模块头部代码("import sys")
+            self.界面代码生成.加入导包模块头部代码("from PySide6.QtWidgets import QApplication")
+            self.界面代码生成.加入导包模块头部代码("from PySide6.QtWidgets import QMainWindow")
+            self.界面代码生成.加入导包模块头部代码(f"""import ui_{组件名称}""")
+            self.界面代码生成.加入事件绑定代码(f"""
+self.ui = ui_{组件名称}.Ui_MainWindow()
+self.ui.setupUi(self)
+self.show() 
+self.{组件名称} = self 
+        """)
+            self.界面代码生成.加入事件绑定代码(f"""self.{组件名称}创建完毕()""", True)
+
+            self.界面代码生成.加入函数定义代码(f"""
+def {组件名称}创建完毕(self):
+    print("{组件名称}创建完毕")
+            """)
+
+            self.界面代码生成.类名 = "MainWin(主窗口)"
+            self.界面代码生成.加入导包模块头部代码("""from qtefun.组件.主窗口 import 主窗口""")
+            return ""
+
+        父组件 = 组件对象['父组件']
+        父组件类型 = 组件对象['父组件类型']
+
+        导包名称 = 取组件名称中英文对照(组件类型)
+        if 导包名称:
+            self.界面代码生成.加入导包模块头部代码(f"""from qtefun.组件.{导包名称} import {导包名称}""")
+            self.界面代码生成.加入事件绑定代码(f"self.{组件名称} = {导包名称}(self.ui.{组件名称})")
+        else:
+            pass
+        for 属性 in 组件属性:
+            # print(属性)
+            是否存在属性 = 属性.startswith("事件") and 组件属性[属性] != "" and 组件属性[属性] != "None" and 组件属性[属性] != None
+            if not 是否存在属性:
+                continue
+            print(组件名称, 组件类型, 组件属性)
+            self.界面代码生成.加入事件绑定代码(
+                f"""
+self.{组件名称}.绑定{属性}(self.{组件属性[属性]})
+                """
+            )
+            self.界面代码生成.加入函数定义代码(f"""
+def {组件属性[属性]}(self):
+    print("{组件属性[属性]}")
+            """)
+
     def 生成代码3_入口函数(self, 加载已存在的文件内容=""):
         self.加载已存在的文件内容 = 加载已存在的文件内容
 
@@ -386,7 +464,6 @@ import ui_{组件名称}
             self.qtefun依赖列表.append("主窗口")
 
             return ""
-
 
         父组件 = 组件对象['父组件']
         父组件类型 = 组件对象['父组件类型']
@@ -512,7 +589,7 @@ if __name__ == "__main__":
 
     # 重新测试
     窗口名称 = "启动窗口"
-    dirpath = "/Users/chensuilong/Desktop/pythonproject/testqtefun/"
+    dirpath = r"C:/pyefun/QtEsayDesigner/test"
     with open(f"{dirpath}/{窗口名称}.json", "r", encoding="utf-8") as f:
         导入数据 = f.read()
         # 导入数据 = json.loads(导入数据)
@@ -525,15 +602,15 @@ if __name__ == "__main__":
 
     # 文件存在则读入不存在创建
 
-    #
-    try:
-        加载已存在的文件内容 = open(f"{dirpath}/app_{窗口名称}.py", "r", encoding="utf-8").read()
-    except:
-        pass
-    # 加载已存在的文件内容 = ""
+    # #
+    # try:
+    #     加载已存在的文件内容 = open(f"{dirpath}/app_{窗口名称}.py", "r", encoding="utf-8").read()
+    # except:
+    #     pass
+    加载已存在的文件内容 = ""
 
     # 生成入口文件绑定事件
-    python = 组件树生成代码类(导入数据).生成代码3_入口函数(加载已存在的文件内容)
+    python = 组件树生成代码类(导入数据).生成代码4_入口函数(加载已存在的文件内容)
     print(python)
     with open(f"{dirpath}/app_{窗口名称}.py", "w", encoding="utf-8") as f:
         f.write(python)
