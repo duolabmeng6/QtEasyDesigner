@@ -33,7 +33,7 @@ jobs:
     # 在 $GITHUB_WORKSPACE 下 checks-out 当前仓库，这样当前作业就可以访问该仓库
     - uses: actions/checkout@v3
       with:
-        submodules: false
+        submodules: recursive
     - name: Set up Python 3.9.13
       uses: actions/setup-python@v3
       with:
@@ -44,7 +44,6 @@ jobs:
     # 使用运行器的终端来运行一个命令
     - name: Install dependencies
       run: |
-        git submodule update --init --recursive
         python -m pip install --upgrade pip
         pip install pyinstaller
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
