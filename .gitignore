@@ -1,2 +1,12 @@
+/.idea
+/__pycache__
+/build
+/dist
+/docs/build
 __pycache__
-o
+/venv
+/cache/
+*_test.rst
+.idea
+
+
