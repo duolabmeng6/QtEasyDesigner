@@ -4,8 +4,8 @@ name: MacOS_x64
 # 控制工作流何时运行
 on:
 #   # 当 `push` 或 `pull request` 事件发生时就触发工作流的执行，这里仅仅针对 `master` 分支
-   push:
-     branches: [ main ]
+  push:
+    branches: [ main ]
 #   pull_request:
 #     branches: [ master ]
 
