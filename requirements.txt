@@ -21,3 +21,4 @@ six==1.16.0
 ujson==5.4.0
 urllib3==1.26.9
 wheel==0.37.1
+qtawesome
