@@ -32,6 +32,8 @@ jobs:
     steps:
     # 在 $GITHUB_WORKSPACE 下 checks-out 当前仓库，这样当前作业就可以访问该仓库
     - uses: actions/checkout@v3
+      with:
+        submodules: false
     - name: Set up Python 3.9.13
       uses: actions/setup-python@v3
       with:
@@ -42,6 +44,7 @@ jobs:
     # 使用运行器的终端来运行一个命令
     - name: Install dependencies
       run: |
+        git submodule update --init --recursive
         python -m pip install --upgrade pip
         pip install pyinstaller
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
@@ -52,9 +55,9 @@ jobs:
         rm -rf dist
         rm -rf app.spec
         pyinstaller QtEsayDesigner_mac.spec
-    - name: Create Zip Package # 创建压缩包
-      run: |
-        zip -r ./dist/QtEsayDesigner.zip ./dist/QtEsayDesigner.app
+    #- name: Create Zip Package # 创建压缩包
+    #  run: |
+    #    zip -r ./dist/QtEsayDesigner.zip ./dist/QtEsayDesigner.app
     - name: Upload Artifact # 上传构建产物，这里我们的源码目录是根目录，而实际运行的代码是构建后的 dist 目录
       uses: actions/upload-artifact@v3
       with:
