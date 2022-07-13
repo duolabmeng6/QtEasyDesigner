@@ -7,7 +7,17 @@ import webbrowser
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QLabel
+def 取资源文件路径(relative_path=""):
+    """ PyInstaller 单文件解压后目录的路径  """
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
+sys.path.append(取资源文件路径(""))
+sys.path.append(取资源文件路径("pyefun"))
+sys.path.append(取资源文件路径("pyefun/pyefun"))
 sys.path.append(r"C:/pyefun/pyefun")
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
