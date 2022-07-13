@@ -15,6 +15,7 @@ def 取资源文件路径(relative_path=""):
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
 
+print("取资源文件路径",取资源文件路径())
 sys.path.append(取资源文件路径(""))
 sys.path.append(取资源文件路径("pyefun"))
 sys.path.append(取资源文件路径("pyefun/pyefun"))
