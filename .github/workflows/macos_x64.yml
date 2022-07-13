@@ -1,0 +1,61 @@
+# 下面是一个基础的工作流，你可以基于它来编写自己的 Github Actions
+name: MacOS_x64
+
+# 控制工作流何时运行
+on:
+#   # 当 `push` 或 `pull request` 事件发生时就触发工作流的执行，这里仅仅针对 `master` 分支
+#   push:
+#     branches: [ master ]
+#   pull_request:
+#     branches: [ master ]
+
+# 允许用于在 `Actions` 标签页中手动运行工作流
+  workflow_dispatch:
+
+#权限
+permissions:
+  contents: read
+
+# 工作流由一个或多个作业( job )组成，这些作业可以顺序运行也可以并行运行
+jobs:
+  # 当前的工作流仅包含一个作业，作业 id 是 "build"
+  build:
+    # 执行作业所需的运行器 runner
+    runs-on: ${{ matrix.os }}
+    environment: build
+
+    strategy:
+      matrix:
+        os: [macos-12]
+
+    # 执行作业所需的运行器 runner
+    steps:
+    # 在 $GITHUB_WORKSPACE 下 checks-out 当前仓库，这样当前作业就可以访问该仓库
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9.13
+      uses: actions/setup-python@v3
+      with:
+        #要使用的Python版本的版本范围或确切版本，使用SemVer的版本范围语法
+        python-version: "3.9.13"
+        #可选x64或x86。如果未指定，默认值为x64
+        architecture: "x64"
+    # 使用运行器的终端来运行一个命令
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    # 使用运行器的终端运行一组命令
+    - name: Build
+      run: |
+        rm -rf build
+        rm -rf dist
+        rm -rf app.spec
+        pyinstaller QtEsayDesigner_mac.spec
+    - name: Create Zip Package # 创建压缩包
+      run: |
+        zip -r ./dist/QtEsayDesigner.zip ./dist/QtEsayDesigner.app
+    - name: Upload Artifact # 上传构建产物，这里我们的源码目录是根目录，而实际运行的代码是构建后的 dist 目录
+      uses: actions/upload-artifact@v3
+      with:
+        name: MacOS_x64
+        path: ./dist/QtEsayDesigner.zip # 上传 dist 目录下的 app 执行文件
