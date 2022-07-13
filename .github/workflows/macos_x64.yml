@@ -5,7 +5,9 @@ name: MacOS_x64
 on:
 #   # 当 `push` 或 `pull request` 事件发生时就触发工作流的执行，这里仅仅针对 `master` 分支
   push:
-    branches: [ main ]
+#    branches: [ main ]
+    tags:
+      - '*'
 #   pull_request:
 #     branches: [ master ]
 
@@ -15,7 +17,6 @@ on:
 #权限
 permissions:
   contents: read
-
 # 工作流由一个或多个作业( job )组成，这些作业可以顺序运行也可以并行运行
 jobs:
   # 当前的工作流仅包含一个作业，作业 id 是 "build"
@@ -23,6 +24,8 @@ jobs:
     # 执行作业所需的运行器 runner
     runs-on: ${{ matrix.os }}
     environment: build
+    permissions:
+      contents: write
 
     strategy:
       matrix:
@@ -64,3 +67,9 @@ jobs:
       with:
         name: MacOS_x64
         path: ./dist/QtEsayDesigner.zip # 上传 dist 目录下的 app 执行文件
+
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "dist/*.zip"
+        bodyFile: "body.md"
+        token: ${{ secrets.GITHUB_TOKEN }}
