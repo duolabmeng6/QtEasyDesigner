@@ -61,4 +61,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: MacOS_x64
-        path: ./dist/QtEsayDesigner.zip # 上传 dist 目录下的 app 执行文件
+        path: ./dist/QtEsayDesigner.app # 上传 dist 目录下的 app 执行文件
