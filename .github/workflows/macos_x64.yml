@@ -57,7 +57,8 @@ jobs:
         pyinstaller QtEsayDesigner_mac.spec
     - name: Create Zip Package # 创建压缩包
       run: |
-        zip -r ./QtEsayDesigner.zip ./dist/QtEsayDesigner.app
+        cd ./dist
+        zip -r ./QtEsayDesigner.zip ./QtEsayDesigner.app
     - name: Upload Artifact # 上传构建产物，这里我们的源码目录是根目录，而实际运行的代码是构建后的 dist 目录
       uses: actions/upload-artifact@v3
       with:
