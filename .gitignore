@@ -8,5 +8,6 @@ __pycache__
 /cache/
 *_test.rst
 .idea
-
+/o
+/build
 
