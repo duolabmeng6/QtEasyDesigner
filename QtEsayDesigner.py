@@ -115,7 +115,11 @@ class MainWin(主窗口):
 
     def 初始化工具条(self):
         toolBar = 工具条(self.addToolBar("工具栏"))
-        工具条数据 = efun.读入文本(efun.路径优化(efun.取运行目录() + r"/resources/toolBarData.json"))
+        #print("资源文件路径",efun.取资源文件路径(""))
+        print("路径",efun.取资源文件路径() + r"/resources/toolBarData.json")
+        工具条数据 = efun.读入文本(efun.取资源文件路径() + r"/resources/toolBarData.json")
+        print("工具条数据",工具条数据)
+
         toolBar.从工具条数据中创建(工具条数据, 16, 16, self.工具条_点击)
 
     def 工具条_点击(self):
