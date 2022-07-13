@@ -1,3 +1,6 @@
 [submodule "qtefun"]
 	path = qtefun
 	url = https://github.com/duolabmeng6/qtefun
+[submodule "pyefun"]
+	path = pyefun
+	url = https://github.com/duolabmeng6/pyefun
