@@ -8,7 +8,7 @@ a = Analysis(
     ['QtEsayDesigner.py'],
     pathex=[],
     binaries=[],
-    datas=[('qt_esay_model', 'qt_esay_model/'), ('resources', 'resources/'), ('qtefun', 'qtefun/')],
+    datas=[('qt_esay_model', 'qt_esay_model/'), ('resources', 'resources/'), ('qtefun', 'qtefun/'), ('pyefun/pyefun', 'pyefun/')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
