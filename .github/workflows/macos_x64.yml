@@ -70,14 +70,13 @@ jobs:
 
     - uses: ncipollo/release-action@v1
       with:
+        allowUpdates: true
         artifacts: "dist/*.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - uses: "marvinpinto/action-automatic-releases@latest"
+    - uses: ncipollo/release-action@v1
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: true
-        title: "开发版本"
-        files: |
-          ./dist/*.zip
+        allowUpdates: true
+        name: latest
+        artifacts: "dist/*.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
