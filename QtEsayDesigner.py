@@ -6,6 +6,7 @@ import os
 import webbrowser
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QLabel
 def 取资源文件路径(relative_path=""):
     """ PyInstaller 单文件解压后目录的路径  """
@@ -85,6 +86,7 @@ class MainWin(主窗口):
         self.show()
         self.初始化托盘图标()
 
+
         self.状态条标签 = QLabel()
         self.状态条标签.setText("欢迎使用 Qt视窗设计器(QtEsayDesigner) 版本: 2022年07月08日")
         self.ui.statusbar.addWidget(self.状态条标签)
@@ -144,57 +146,31 @@ class MainWin(主窗口):
 
             # self.恢复()
         elif 名称 == "左对齐":
-            self.消息框("等待开发")
-
-            # self.左对齐()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("左对齐")
         elif 名称 == "右对齐":
-            self.消息框("等待开发")
-
-            # self.右对齐()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("右对齐")
         elif 名称 == "顶对齐":
-            self.消息框("等待开发")
-
-            # self.顶对齐()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("顶对齐")
         elif 名称 == "底对齐":
-            self.消息框("等待开发")
-
-            # self.底对齐()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("底对齐")
         elif 名称 == "窗口水平居中":
-            self.消息框("等待开发")
-
-            # self.窗口水平居中()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("窗口水平居中")
         elif 名称 == "窗口垂直居中":
-            self.消息框("等待开发")
-
-            # self.窗口垂直居中()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("窗口垂直居中")
         elif 名称 == "组件水平居中":
-            self.消息框("等待开发")
-
-            # self.组件水平居中()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("组件水平居中")
         elif 名称 == "组件垂直居中":
-            self.消息框("等待开发")
-
-            # self.组件垂直居中()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("组件垂直居中")
         elif 名称 == "水平平均分布":
-            self.消息框("等待开发")
-
-            # self.水平平均分布()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("水平平均分布")
         elif 名称 == "垂直平均分布":
-            self.消息框("等待开发")
-
-            # self.垂直平均分布()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("垂直平均分布")
         elif 名称 == "等宽":
-            self.消息框("等待开发")
-
-            # self.等宽()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("等宽")
         elif 名称 == "等高":
-            self.消息框("等待开发")
-
-            # self.等高()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("等高")
         elif 名称 == "等宽高":
-            self.消息框("等待开发")
-
-            # self.等宽高()
+            self.属性表格窗口.设计窗口.工具条_对齐工具("等宽高")
         elif 名称 == "运行":
             self.运行()
             # self.消息框("等待开发")
@@ -232,7 +208,8 @@ class MainWin(主窗口):
         self.编辑菜单.添加分隔条()
         self.编辑菜单.添加项目("复制", 获取图标("mdi.moon-new", "#FFFFFF"), self.复制, "Ctrl+C")
         self.编辑菜单.添加项目("粘贴", 获取图标("mdi.moon-new", "#FFFFFF"), self.粘贴, "Ctrl+V")
-        self.编辑菜单.添加项目("剪切", 获取图标("mdi.moon-new", "#FFFFFF"), self.粘贴, "Ctrl+X")
+        self.编辑菜单.添加项目("剪切", 获取图标("mdi.moon-new", "#FFFFFF"), self.剪切, "Ctrl+X")
+        self.编辑菜单.添加项目("删除", 获取图标("mdi.moon-new", "#FFFFFF"), self.删除)
 
         self.编译菜单 = 菜单(self, "编译")
         self.编译菜单.添加项目("运行", 获取图标("mdi.moon-new", "#FFFFFF"), self.运行)
@@ -280,6 +257,9 @@ class MainWin(主窗口):
 
     def 粘贴(self):
         self.属性表格窗口.设计窗口.粘贴组件()
+
+    def 删除(self):
+        self.属性表格窗口.设计窗口.删除组件()
 
     def 剪切(self):
         self.属性表格窗口.设计窗口.剪切组件()

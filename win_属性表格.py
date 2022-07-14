@@ -5,7 +5,7 @@ from PySide6.QtCore import Signal, QSize, QMetaObject, Qt
 from PySide6.QtGui import QColor, QIntValidator
 from PySide6.QtWidgets import QMainWindow, QWidget, QTableWidget, QTreeWidget, QListWidget, QAbstractItemView, \
     QListWidgetItem, QVBoxLayout, QTabWidget, QHBoxLayout, QMdiArea, QTableWidgetItem, QLineEdit, QComboBox, \
-    QTreeWidgetItem
+    QTreeWidgetItem, QApplication
 
 import pyefun as efun
 from pyefun import *
@@ -546,6 +546,7 @@ class MainWin(QMainWindow):
                 print("行{} 列{} 的值为 {}".format(idx, 1, obj.isChecked()))
             elif isinstance(obj, QComboBox):
                 print("行{} 列{} 的值为 {}".format(idx, 1, obj.currentText()))
+
 
 
 if __name__ == '__main__':
