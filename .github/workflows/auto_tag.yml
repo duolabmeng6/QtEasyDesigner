@@ -15,6 +15,6 @@ jobs:
       - uses: actions/checkout@v3
       - uses: duolabmeng6/action-autotag-python@master
         with:
-          path: ./VERSION
+          myInput: ./VERSION
           token: ${{ secrets.GITHUB_TOKEN }}
 
