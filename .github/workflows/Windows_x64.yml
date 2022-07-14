@@ -58,5 +58,7 @@ jobs:
 
     - uses: ncipollo/release-action@v1
       with:
-        artifacts: "dist/*.zip"
+        artifacts: "dist/*.exe"
         token: ${{ secrets.GITHUB_TOKEN }}
+
+
