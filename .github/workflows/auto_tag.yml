@@ -14,5 +14,5 @@ jobs:
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           strategy: regex # Optional since regex_pattern is defined
-          root: "/version"
-          regex_pattern: "([0-9]+\.[0-9]+\.[0-9]+)"
+          root: "version"
+          regex_pattern: "(.*?)"
