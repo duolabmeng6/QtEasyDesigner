@@ -1,7 +1,7 @@
 name: 自动创建版本号
 
 on: push
-
+# 为什么没触发...
 jobs:
   build:
     runs-on: ubuntu-latest
