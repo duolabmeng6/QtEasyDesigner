@@ -16,4 +16,5 @@ jobs:
       - uses: duolabmeng6/action-autotag-python@master
         with:
           path: VERSION
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
