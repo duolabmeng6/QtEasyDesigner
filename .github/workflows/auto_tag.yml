@@ -1,0 +1,19 @@
+# 下面是一个基础的工作流，你可以基于它来编写自己的 Github Actions
+name: auto_tag
+
+# 控制工作流何时运行
+on: ['push','workflow_dispatch']
+
+#权限
+permissions:
+  contents: read
+# 工作流由一个或多个作业( job )组成，这些作业可以顺序运行也可以并行运行
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: duolabmeng6/action-autotag-python@master
+        with:
+          path: VERSION
+          github_token: ${{ secrets.GITHUB_TOKEN }}

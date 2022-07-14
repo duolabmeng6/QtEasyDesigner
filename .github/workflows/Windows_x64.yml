@@ -4,7 +4,7 @@ name: 构建应用程序Windows_x64
 on:
 #   # 当 `push` 或 `pull request` 事件发生时就触发工作流的执行，这里仅仅针对 `master` 分支
   push:
-    branches: [ main ]
+#    branches: [ main ]
     tags:
       - '*'
 #   pull_request:
@@ -37,7 +37,7 @@ jobs:
         python-version: "3.9.13"
         #可选x64或x86。如果未指定，默认值为x64
         architecture: "x64"
-    - uses: rmeneely/git-next-version@v1 # 自动版本管理
+
     - name: Install dependencies
       run: |
         set /P $VERSION= < ./VERSION
@@ -61,7 +61,7 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
-        tag: ${{ env.NEXT_VERSION }}
+        tag: "latest"
         artifacts: "dist/*.exe"
         token: ${{ secrets.GITHUB_TOKEN }}
 
