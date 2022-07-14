@@ -1,25 +1,19 @@
 name: 自动创建版本号
-
 on:
-  release:
-    types: [ published, edited ]
-
-permissions:
-  contents: read
+  push:
+    branches: [master]
 
 jobs:
-  actions-tagger:
+  tag:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-
     steps:
-      - name: Repository checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v2
 
-      - name: Update tag
-        uses: Actions-R-Us/actions-tagger@latest
+      - name: Version tag
+        uses: samamorgan/action-autotag-python@master
+
         with:
-          publish_latest_tag: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: package/__version__.py
+          variable: __version__
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prefix: v
