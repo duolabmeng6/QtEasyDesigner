@@ -1,4 +1,4 @@
-name: GitHub Tag Update
+name: 自动创建版本号
 
 on:
   release:

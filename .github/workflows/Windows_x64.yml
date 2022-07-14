@@ -1,4 +1,4 @@
-name: Windows_x64
+name: 构建应用程序Windows_x64
 
 # 控制工作流何时运行
 on:
