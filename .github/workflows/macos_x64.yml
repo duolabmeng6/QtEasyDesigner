@@ -1,17 +1,15 @@
 # 下面是一个基础的工作流，你可以基于它来编写自己的 Github Actions
 name: 构建应用程序MacOS_x64
-on: push
 
 # 控制工作流何时运行
-#on:
+on:
 #   # 当 `push` 或 `pull request` 事件发生时就触发工作流的执行，这里仅仅针对 `master` 分支
-#  push:
-#    branches: [ main ]
-#    tags:
-#      - '*'
+  push:
+    branches: [ main ]
+    tags:
+      - '*'
 #   pull_request:
-#     branches: [ master ]
-
+#     branches: [ main ]
 # 允许用于在 `Actions` 标签页中手动运行工作流
   workflow_dispatch:
 
