@@ -1,19 +1,16 @@
 name: 自动创建版本号
-on:
-  push:
-    branches: [master]
+
+on: push
 
 jobs:
-  tag:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout branch
+        uses: actions/checkout@v2
 
-      - name: Version tag
-        uses: samamorgan/action-autotag-python@master
-
+      - name: Generate release tag
+        uses: amitsingh-007/next-release-tag@v1.0.0
         with:
-          path: package/__version__.py
-          variable: __version__
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          prefix: v
