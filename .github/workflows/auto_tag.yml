@@ -7,9 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Bump version
-      uses: remorses/bump-version@js
+    - name: Increment version
+      id: version
+      uses: vinodhraj/Bump-N-Tag-Version@master
       with:
-          version_file: ./VERSION
+        file_name: './VERSION'
+        tag_version: "true"
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
