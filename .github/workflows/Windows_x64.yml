@@ -22,7 +22,8 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     environment: build
-
+    permissions:
+      contents: write
     strategy:
       matrix:
         os: [windows-2022]

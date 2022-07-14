@@ -72,12 +72,12 @@ jobs:
       with:
         artifacts: "dist/*.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
+
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
         prerelease: true
-        title: "Development Build"
+        title: "开发版本"
         files: |
-          LICENSE.txt
-          *.jar
+          ./dist/*.zip
