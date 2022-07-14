@@ -9,7 +9,7 @@ on:
       - '*'
 #   pull_request:
 #     branches: [ main ]
-# 允许用于在 `Actions` 标签页中手动运行工作流 
+# 允许用于在 `Actions` 标签页中手动运行工作流
   workflow_dispatch:
 
 
@@ -43,6 +43,7 @@ jobs:
         pip install pyefun
         pip install pyinstaller
         pip install -r requirements.txt
+        echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
     - name: Build
       run: |
         pyinstaller QtEsayDesigner_window.spec
@@ -58,7 +59,7 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
-        tag: 'latest'
+        tag: ${{ env.VERSION }}
         artifacts: "dist/*.exe"
         token: ${{ secrets.GITHUB_TOKEN }}
 
