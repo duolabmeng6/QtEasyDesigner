@@ -4,7 +4,9 @@ name: Windows_x64
 on:
 #   # 当 `push` 或 `pull request` 事件发生时就触发工作流的执行，这里仅仅针对 `master` 分支
   push:
-    branches: [ main ]
+#    branches: [ main ]
+    tags:
+      - '*'
 #   pull_request:
 #     branches: [ master ]
 
@@ -53,3 +55,8 @@ jobs:
       with:
         name: Win_x64
         path: ./dist/QtEsayDesigner.exe # 上传 dist 目录下的 app 执行文件
+
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "dist/*.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
