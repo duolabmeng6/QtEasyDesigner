@@ -51,7 +51,7 @@ jobs:
         pip install pyinstaller
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
-      # 使用运行器的终端运行一组命令 
+      # 使用运行器的终端运行一组命令
     - name: Build
       run: |
         rm -rf build

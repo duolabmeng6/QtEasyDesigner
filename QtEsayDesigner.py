@@ -385,20 +385,13 @@ class MainWin(主窗口):
         print("信号_代码跳转", 状态, 错误文本)
         if 状态 == True:
             if efun.系统_是否为mac系统():
-                self.hide()
+                # self.hide()
+                self.lower() # 这个不会挡住窗口还能在dock栏激活
             else:
                 # 窗口最小化
                 self.setWindowState(Qt.WindowMinimized)
         else:
             self.setWindowTitle(错误文本)
-
-def func():
-    print(sys.argv)
-    # 将命令行参数转换为json保存
-    app = QApplication(sys.argv)
-    window = MainWin()
-    window.show()
-    sys.exit(app.exec())
 
 if __name__ == '__main__':
     print(sys.argv)

@@ -163,7 +163,6 @@ class 设计窗口(QMdiSubWindow):
     def 信号_跳转代码(self, 函数名):
         print(f"调用pycharm代码跳转: {self.写出文件路径AppPy}, {函数名}")
         文件名 = efun.文件_取文件名(self.写出文件路径AppPy)
-
         def 延迟调用():
             代码位置 = efun.寻找文本(efun.读入文本(self.写出文件路径AppPy), "def %s" % 函数名)
             if 代码位置 != -1:

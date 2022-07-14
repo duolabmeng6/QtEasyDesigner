@@ -43,7 +43,7 @@ jobs:
         pip install pyefun
         pip install pyinstaller
         pip install -r requirements.txt
-        echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
+        python 构建时运行.py
     - name: Build
       run: |
         pyinstaller QtEsayDesigner_window.spec
