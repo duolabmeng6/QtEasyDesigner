@@ -13,7 +13,7 @@ jobs:
           version_file: ./VERSION
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
     - uses: PssbleTrngle/VersionManagment@v2
       id: version
       with:
