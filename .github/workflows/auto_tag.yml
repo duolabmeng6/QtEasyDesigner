@@ -16,4 +16,4 @@ jobs:
         # Put your action repo here
       - uses: duolabmeng6/action-autotag-python@master
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # xxx
+          token: ${{ secrets.LONGLONG }} # xxx
