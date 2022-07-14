@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: butlerlogic/action-autotag@stable
+    - name: Bump version
+      uses: remorses/bump-version@js
       with:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        strategy: regex # Optional since regex_pattern is defined
-        root: "./version.py"
-        regex_pattern: "version=(.*)"
+          version_file: ./VERSION
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
