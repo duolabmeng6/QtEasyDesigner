@@ -9,16 +9,16 @@ permissions:
   contents: read
 # 工作流由一个或多个作业( job )组成，这些作业可以顺序运行也可以并行运行
 jobs:
-  tag:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@master
       - name: Self test
         id: selftest
-      - uses: duolabmeng6/action-autotag-python@master
-        with:
-          myInput: ./VERSION
-          token: ${{ secrets.GITHUB_TOKEN }}
+
+        # Put your action repo here
+        uses: duolabmeng6/action-autotag-python@master
+
       - name: Check outputs
         run: |
           echo "${{ steps.selftest.outputs.myOutput }}"
