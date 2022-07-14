@@ -68,7 +68,7 @@ jobs:
         name: MacOS_x64
         path: ./dist/QtEsayDesigner_MacOS.zip # 上传 dist 目录下的 app 执行文件
 
-    - uses: ncipollo/release-action@v1
+    - uses: ncipollo/release-action@v1 # 发布版本
       with:
         allowUpdates: true
         artifacts: "dist/*.zip"
