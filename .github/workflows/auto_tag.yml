@@ -10,7 +10,7 @@ on:
 #权限
 permissions:
   contents: write
-# 工作流由一个或多个作业( job )组成，这些作业可以顺序运行也可以并行运行
+# 工作流由一个或多个作业( job )组成，这些作业可以顺序运行也可以并行运行 
 jobs:
   build:
     runs-on: ubuntu-latest
