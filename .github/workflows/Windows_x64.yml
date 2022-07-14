@@ -37,9 +37,10 @@ jobs:
         python-version: "3.9.13"
         #可选x64或x86。如果未指定，默认值为x64
         architecture: "x64"
+    - uses: rmeneely/git-next-version@v1 # 自动版本管理
     - name: Install dependencies
       run: |
-        set /P $VERSION=<VERSION
+        set /P $VERSION= < ./VERSION
         echo "VERSION=$VERSION" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         python -m pip install --upgrade pip
         pip install pyefun
@@ -60,7 +61,7 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
-        tag: ${{ env.VERSION }}
+        tag: ${{ env.NEXT_VERSION }}
         artifacts: "dist/*.exe"
         token: ${{ secrets.GITHUB_TOKEN }}
 

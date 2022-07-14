@@ -36,6 +36,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+    - uses: rmeneely/git-next-version@v1 # 自动版本管理
     - name: Set up Python 3.9.13
       uses: actions/setup-python@v3
       with:
@@ -50,7 +51,6 @@ jobs:
         pip install pyefun
         pip install pyinstaller
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
       # 使用运行器的终端运行一组命令
     - name: Build
       run: |
@@ -71,6 +71,6 @@ jobs:
     - uses: ncipollo/release-action@v1 # 发布版本
       with:
         allowUpdates: true
-        tag: ${{ env.VERSION }}
+        tag: ${{ env.NEXT_VERSION }}
         artifacts: "dist/*.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
