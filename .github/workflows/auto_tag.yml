@@ -10,7 +10,9 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
-      - name: Generate release tag
-        uses: amitsingh-007/next-release-tag@v1.0.0
+      - uses: butlerlogic/action-autotag@1.0.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          strategy: regex # Optional since regex_pattern is defined
+          root: "/version"
+          regex_pattern: "([0-9\.])"
