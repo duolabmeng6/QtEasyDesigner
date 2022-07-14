@@ -1,4 +1,3 @@
-
 import sys
 import os
 
@@ -8,42 +7,41 @@ import webbrowser
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QLabel
-def 取资源文件路径(relative_path=""):
-    """ PyInstaller 单文件解压后目录的路径  """
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
 
-print("取资源文件路径",取资源文件路径())
-sys.path.append(取资源文件路径(""))
-sys.path.append(取资源文件路径("pyefun"))
-sys.path.append(取资源文件路径("pyefun/pyefun"))
-sys.path.append(r"C:/pyefun/pyefun")
+from pyefun import *
+import pyefun as efun
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-# 添加当前目录下的 qt_esay_model 文件夹到系统搜索路径
-qtefun路径 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if efun.是否为PyInstaller编译后环境():
+    全局变量_资源文件目录 = efun.取资源文件路径()
+else:
+    全局变量_资源文件目录 = os.path.dirname(os.path.abspath(__file__))
+print("全局变量_资源文件目录", 全局变量_资源文件目录)
+
+sys.path.append(全局变量_资源文件目录)
+qtefun路径 = 全局变量_资源文件目录 + r"/qtefun"
+qt_esay_model路径 = 全局变量_资源文件目录 + r"/qt_esay_model"
+pyefun路径 = 全局变量_资源文件目录 + r"/pyefun"
+
 qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
+pyefun路径 = os.path.dirname(os.path.abspath(__file__)) + "/pyefun"
+print("pyefun", pyefun路径)
 print("qtefun", qtefun路径)
 print("qt_esay_model", qt_esay_model路径)
 sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
-
-import pyefun as efun
-
+sys.path.append(pyefun路径)
 
 if efun.系统_是否为mac系统():
     pass
 else:
     efun.控制台_设置编码为UTF8()
     import ctypes
+
+
     def 隐藏控制台窗口():
         whnd = ctypes.windll.kernel32.GetConsoleWindow()
         if whnd != 0:
             ctypes.windll.user32.ShowWindow(whnd, 0)
-
 
 import win_app2
 from qtefun.组件.主窗口 import 主窗口
@@ -54,7 +52,6 @@ from qtefun.组件.菜单 import 菜单
 from qtefun.组件.菜单栏 import 菜单栏
 
 import win_属性表格
-
 
 
 class MainWin(主窗口):
@@ -71,7 +68,7 @@ class MainWin(主窗口):
             self.插件端口号 = efun.子文本替换(sys.argv[2], "port=", "")
             目录 = efun.文件_取目录(self.设计文件路径)
             文件名 = efun.文件_取文件名(self.设计文件路径, False)
-            if efun.判断文本(文件名,"_"):
+            if efun.判断文本(文件名, "_"):
                 文件名 = efun.strCut(文件名, "_$")
             self.设计文件路径 = f"{目录}/{文件名}.json"
 
@@ -85,7 +82,6 @@ class MainWin(主窗口):
         self.ui.setupUi(self)
         self.show()
         self.初始化托盘图标()
-
 
         self.状态条标签 = QLabel()
         self.状态条标签.setText("欢迎使用 Qt视窗设计器(QtEsayDesigner) 版本: 2022年07月08日")
@@ -128,10 +124,11 @@ class MainWin(主窗口):
 
     def 初始化工具条(self):
         toolBar = 工具条(self.addToolBar("工具栏"))
-        #print("资源文件路径",efun.取资源文件路径(""))
-        print("路径",efun.取资源文件路径() + r"/resources/toolBarData.json")
-        工具条数据 = efun.读入文本(efun.取资源文件路径() + r"/resources/toolBarData.json")
-        print("工具条数据",工具条数据)
+        # print("资源文件路径",efun.取资源文件路径(""))
+        print("路径", 全局变量_资源文件目录 + r"/resources/toolBarData.json")
+        toolBar.资源文件绝对路径 = 全局变量_资源文件目录
+        工具条数据 = efun.读入文本(全局变量_资源文件目录 + r"/resources/toolBarData.json")
+        print("工具条数据", 工具条数据)
 
         toolBar.从工具条数据中创建(工具条数据, 16, 16, self.工具条_点击)
 
@@ -366,12 +363,13 @@ class MainWin(主窗口):
         if 状态 == True:
             if efun.系统_是否为mac系统():
                 # self.hide()
-                self.lower() # 这个不会挡住窗口还能在dock栏激活
+                self.lower()  # 这个不会挡住窗口还能在dock栏激活
             else:
                 # 窗口最小化
                 self.setWindowState(Qt.WindowMinimized)
         else:
             self.setWindowTitle(错误文本)
+
 
 if __name__ == '__main__':
     print(sys.argv)
