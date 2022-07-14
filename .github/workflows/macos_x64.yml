@@ -73,10 +73,3 @@ jobs:
         allowUpdates: true
         artifacts: "dist/*.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
-
-    - uses: ncipollo/release-action@v1
-      with:
-        allowUpdates: true
-        name: latest
-        artifacts: "dist/*.zip"
-        token: ${{ secrets.GITHUB_TOKEN }}
