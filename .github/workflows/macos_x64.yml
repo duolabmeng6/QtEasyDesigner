@@ -71,5 +71,4 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         artifacts: "dist/*.zip"
-        bodyFile: "body.md"
         token: ${{ secrets.GITHUB_TOKEN }}
