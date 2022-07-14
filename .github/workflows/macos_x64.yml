@@ -70,6 +70,6 @@ jobs:
     - uses: ncipollo/release-action@v1 # 发布版本
       with:
         allowUpdates: true
-        tag: "latest"
+#        tag: "latest"
         artifacts: "dist/*.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
