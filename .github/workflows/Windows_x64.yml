@@ -39,9 +39,8 @@ jobs:
         architecture: "x64"
     - name: Install dependencies
       run: |
-        $VERSION="${{ github.ref }}".substring("refs/tags/".length)
+        set /P $VERSION=<VERSION
         echo "VERSION=$VERSION" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
         python -m pip install --upgrade pip
         pip install pyefun
         pip install pyinstaller
@@ -49,7 +48,7 @@ jobs:
     - name: Build
       run: |
         pyinstaller QtEsayDesigner_window.spec
-    #- name: Create Zip Package # 创建压缩包 
+    #- name: Create Zip Package # 创建压缩包
     #  run: |
     #    zip -r ./dist/MacOS_ARM64.zip ./dist/app
     - name: Upload Artifact # 上传构建产物，这里我们的源码目录是根目录，而实际运行的代码是构建后的 dist 目录
