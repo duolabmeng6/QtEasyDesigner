@@ -11,7 +11,16 @@ qt 窗口设计器 基于易函数的理念设计和开发
 # 软件下载
 
 支持 MacOS Window
+
 https://github.com/duolabmeng6/QtEsayDesigner/releases
+
+由于在积极开发所以请及时关注新版本发布哦
+
+本设计器所生成的 `ui_启动窗口.py` 可以兼容原版qt的按正常规则引入界面即可
+
+qtefun 的模块下载后放置到项目目录 https://github.com/duolabmeng6/qtefun
+
+后续会提供 `pip install qtefun` 或者直接写到项目目录的形式~
 
 # 参与开发 
 
