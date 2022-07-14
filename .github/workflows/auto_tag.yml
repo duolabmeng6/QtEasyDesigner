@@ -1,17 +1,15 @@
 name: 自动创建版本号
 
 on: push
-# 为什么没触发...
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Increment version
-      id: version
-      uses: vinodhraj/Bump-N-Tag-Version@master
+    - name: Bump version
+      uses: remorses/bump-version@js
       with:
-        file_name: './VERSION'
-        tag_version: "true"
+          version_file: ./VERSION
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
