@@ -10,7 +10,7 @@ if 是否为PyInstaller编译后环境():
     全局变量_资源文件目录 = 取资源文件路径()
 else:
     全局变量_资源文件目录 = os.path.dirname(os.path.abspath(__file__))
-print("全局变量_资源文件目录", 全局变量_资源文件目录)
+# print("全局变量_资源文件目录", 全局变量_资源文件目录)
 
 sys.path.append(全局变量_资源文件目录)
 qtefun路径 = 全局变量_资源文件目录 + r"/qtefun"
@@ -19,9 +19,9 @@ pyefun路径 = 全局变量_资源文件目录 + r"/pyefun"
 
 qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
 pyefun路径 = os.path.dirname(os.path.abspath(__file__)) + "/pyefun"
-print("pyefun", pyefun路径)
-print("qtefun", qtefun路径)
-print("qt_esay_model", qt_esay_model路径)
+# print("pyefun", pyefun路径)
+# print("qtefun", qtefun路径)
+# print("qt_esay_model", qt_esay_model路径)
 sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
 sys.path.append(pyefun路径)
@@ -45,7 +45,6 @@ from qtefun.组件.工具条 import 工具条
 from qtefun.组件.系统托盘图标 import 系统托盘图标
 from qtefun.组件.菜单 import 菜单
 from qtefun.组件.菜单栏 import 菜单栏
-
 import win_属性表格
 
 
@@ -72,7 +71,10 @@ class MainWin(主窗口):
 
         self.设计文件路径 = ""
         self.ui = win_app2.Ui_MainWindow()
-        self.初始化命令行参数()
+        try:
+            self.初始化命令行参数()
+        except:
+            pass
         self.初始化菜单()
         self.ui.setupUi(self)
         self.show()
@@ -94,7 +96,6 @@ class MainWin(主窗口):
             pass
             # 创建工程新建窗口
             # self.消息框("提示", "请选择一个设计文件")
-
         self.属性表格窗口 = win_属性表格.MainWin()
         self.属性表格窗口.设计窗口.可否关闭 = False
         self.属性表格窗口.设计窗口.信号_加载设计文件(self.设计文件路径)
@@ -105,10 +106,11 @@ class MainWin(主窗口):
 
         self.属性表格窗口.设计窗口.信号_代码跳转.connect(self.信号_代码跳转)
 
-        self.setCentralWidget(self.属性表格窗口)
+        self.setCentralWidget(self.属性表格窗口) # 设置布局
         self.属性表格窗口.show()
         self.属性表格窗口.设计窗口.show()
         self.属性表格窗口.信号_项目管理文件被选择.connect(self.信号_项目管理文件被选择)
+
 
     def 信号_项目管理文件被选择(self, 文件名):
         pass
@@ -120,10 +122,10 @@ class MainWin(主窗口):
     def 初始化工具条(self):
         toolBar = 工具条(self.addToolBar("工具栏"))
         # print("资源文件路径",efun.取资源文件路径(""))
-        print("路径", 全局变量_资源文件目录 + r"/resources/toolBarData.json")
+        # print("路径", 全局变量_资源文件目录 + r"/resources/toolBarData.json")
         toolBar.资源文件绝对路径 = 全局变量_资源文件目录
         工具条数据 = 读入文本(全局变量_资源文件目录 + r"/resources/toolBarData.json")
-        print("工具条数据", 工具条数据)
+        # print("工具条数据", 工具条数据)
 
         toolBar.从工具条数据中创建(工具条数据, 16, 16, self.工具条_点击)
 
@@ -367,7 +369,7 @@ class MainWin(主窗口):
 
 
 if __name__ == '__main__':
-    print(sys.argv)
+    # print(sys.argv)
     # 将命令行参数转换为json保存
     app = QApplication(sys.argv)
     window = MainWin()

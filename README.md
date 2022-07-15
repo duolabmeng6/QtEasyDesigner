@@ -58,6 +58,11 @@ git clone https://github.com/duolabmeng6/QtEsayDesigner.git --recurse-submodules
 * qt_esay_model/组件库 这里是指软件中的 组件箱 配置好即可出现在组件箱
 * qtefun/组件 这里是组件的中文命令 这个库可以用于官方的qt设计器
 
+源码运行设计器 需要注意 python3.9 需要绝对路径
+
+```shell
+/usr/local/bin/python3.9 /QtEasyDesigner/QtEsayDesigner.py
+```
 
 
 

@@ -31,12 +31,12 @@ class MainWin(QMainWindow):
 
     def __init__(self):
         super().__init__()
+
         self.show()
         self.setWindowTitle("设计器的小部件")
         self.move(300, 100)
         self.resize(1200, 600)
         self.centralWidget = QWidget()
-
         self.设计窗口 = win_设计窗口.设计窗口()
 
         self.设计窗口.信号_更新属性框.connect(self.信号_更新属性框)
@@ -87,7 +87,7 @@ class MainWin(QMainWindow):
     def 刷新组件树显示(self):
         if self.treeWidget == None:
             return
-        print("刷新组件树显示 尽量优化一下有数据变更才调用")
+        # print("刷新组件树显示 尽量优化一下有数据变更才调用")
         self.treeWidget.clear()
         # 设置  self.treeWidget 为两列内容为 对象 和 类
         self.treeWidget.setColumnCount(2)
@@ -132,7 +132,7 @@ class MainWin(QMainWindow):
 
     def 初始化布局2(self):
         ###
-        self.verticalLayout_3 = QVBoxLayout(self)
+        self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.tabWidget = QTabWidget(self)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -458,14 +458,14 @@ class MainWin(QMainWindow):
                 comboBox.currentIndexChanged.connect(self.表格选择框选择完成)
 
     def 信号_更新属性框(self, obj: 组件按钮):
-        print("信号_更新属性框", obj)
+        # print("信号_更新属性框", obj)
         if obj:
             self.初始化属性表格_从数据(obj.导出组件属性())
             # print("信号_更新属性框", obj)
             self.当前组件库的对象 = obj
 
     def 信号_更新组件树(self, obj: 组件按钮):
-        print("信号_更新属性框", obj)
+        # print("信号_更新属性框", obj)
         if obj:
             self.刷新组件树显示()
 

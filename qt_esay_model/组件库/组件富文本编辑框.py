@@ -89,7 +89,7 @@ class 组件富文本编辑框(object):
             ("内容", "文本型", self.对象.toPlainText()),
             # ("事件被点击", "文本型", 事件被点击)
         ]
-        print(组件属性)
+        # print("组件属性",组件属性)
         return 组件属性
 
     def 导出为json属性(self):

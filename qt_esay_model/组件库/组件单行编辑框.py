@@ -87,7 +87,7 @@ class 组件单行编辑框(object):
             ("内容", "文本型", self.对象.text()),
             ("事件内容被改变", "文本型", self.对象.property("事件内容被改变"))
         ]
-        print(组件属性)
+        # print("组件属性",组件属性)
         return 组件属性
 
     def 导出为json属性(self):

@@ -86,7 +86,7 @@ class 组件按钮(object):
             ("标题", "文本型", self.对象.text()),
             ("事件被点击", "文本型", 事件被点击)
         ]
-        print(组件属性)
+        # print("组件属性",组件属性)
         return 组件属性
 
     def 导出为json属性(self):

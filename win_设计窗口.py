@@ -126,7 +126,7 @@ class 设计窗口(QMdiSubWindow):
     def 加载路径信息(self, 文件路径):
         项目目录 = efun.文件_取目录(文件路径)
         窗口名称 = efun.文件_取文件名(文件路径, False)
-        print("信号_加载设计文件", 文件路径, 项目目录, 窗口名称)
+        # print("信号_加载设计文件", 文件路径, 项目目录, 窗口名称)
         self.项目目录 = 项目目录 + "/"
         self.写出文件路径_设计文件json = 项目目录 + f"/{窗口名称}.json"  # 例如 启动窗口.py
         self.写出文件路径_uipy = 项目目录 + f"/ui_{窗口名称}.py"  # 例如 ui_启动窗口.py
@@ -135,9 +135,9 @@ class 设计窗口(QMdiSubWindow):
             self.写出文件路径_设计文件json = ""
             self.写出文件路径_uipy = ""
             self.写出文件路径AppPy = ""
-        print("写出文件路径_设计文件json", self.写出文件路径_设计文件json)
-        print("写出文件路径_uipy", self.写出文件路径_uipy)
-        print("写出文件路径AppPy", self.写出文件路径AppPy)
+        # print("写出文件路径_设计文件json", self.写出文件路径_设计文件json)
+        # print("写出文件路径_uipy", self.写出文件路径_uipy)
+        # print("写出文件路径AppPy", self.写出文件路径AppPy)
 
     def 保存组件信息(self):
         窗口属性 = self.组件窗口库.导出为json属性()
@@ -183,12 +183,12 @@ class 设计窗口(QMdiSubWindow):
         efun.启动线程(延迟调用)
 
     def 读取组件信息(self):
-        print("读取组件信息")
+        # print("读取组件信息")
         try:
             导入数据 = efun.读入文本(self.写出文件路径_设计文件json)
             导入数据 = json.loads(导入数据)
         except:
-            print("没有组件信息")
+            # print("没有组件信息")
             窗口宽度 = 400
             窗口高度 = 400
             窗口标题 = "祖国,您好!"
@@ -503,7 +503,7 @@ class 设计窗口(QMdiSubWindow):
         self.操作记录.恢复记录()
 
     def 窗口大小改变事件(self, event):
-        print("窗口大小改变事件")
+        # print("窗口大小改变事件")
         self.信号_更新属性框.emit(self.组件窗口库)
 
     def 窗口位置改变事件(self, event):

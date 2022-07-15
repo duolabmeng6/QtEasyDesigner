@@ -78,7 +78,7 @@ class 组件窗口(object):
             ("标题", "文本型", self.对象.windowTitle()),
             ("事件创建完毕", "文本型", 事件被点击)
         ]
-        print(组件属性)
+        # print("组件属性",组件属性)
         return 组件属性
 
     def 导出为json属性(self):
