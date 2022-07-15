@@ -1,18 +1,13 @@
 import sys
 import os
-
-# 把当前目录导入到 path
 import webbrowser
-
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QLabel
-
+from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
 from pyefun import *
-import pyefun as efun
 
-if efun.是否为PyInstaller编译后环境():
-    全局变量_资源文件目录 = efun.取资源文件路径()
+if 是否为PyInstaller编译后环境():
+    全局变量_资源文件目录 = 取资源文件路径()
 else:
     全局变量_资源文件目录 = os.path.dirname(os.path.abspath(__file__))
 print("全局变量_资源文件目录", 全局变量_资源文件目录)
@@ -31,10 +26,10 @@ sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
 sys.path.append(pyefun路径)
 
-if efun.系统_是否为mac系统():
+if 系统_是否为mac系统():
     pass
 else:
-    efun.控制台_设置编码为UTF8()
+    控制台_设置编码为UTF8()
     import ctypes
 
 
@@ -64,12 +59,12 @@ class MainWin(主窗口):
         if len(sys.argv) > 1:
             # 写到文件("/Users/chensuilong/Desktop/pythonproject/pyqt/qt_esay_designer/参数.json",
             #      json.dumps(sys.argv, indent=4))
-            self.设计文件路径 = efun.子文本替换(sys.argv[1], "文件路径=", "")
-            self.插件端口号 = efun.子文本替换(sys.argv[2], "port=", "")
-            目录 = efun.文件_取目录(self.设计文件路径)
-            文件名 = efun.文件_取文件名(self.设计文件路径, False)
-            if efun.判断文本(文件名, "_"):
-                文件名 = efun.strCut(文件名, "_$")
+            self.设计文件路径 = 子文本替换(sys.argv[1], "文件路径=", "")
+            self.插件端口号 = 子文本替换(sys.argv[2], "port=", "")
+            目录 = 文件_取目录(self.设计文件路径)
+            文件名 = 文件_取文件名(self.设计文件路径, False)
+            if 判断文本(文件名, "_"):
+                文件名 = strCut(文件名, "_$")
             self.设计文件路径 = f"{目录}/{文件名}.json"
 
     def __init__(self, parent=None):
@@ -127,7 +122,7 @@ class MainWin(主窗口):
         # print("资源文件路径",efun.取资源文件路径(""))
         print("路径", 全局变量_资源文件目录 + r"/resources/toolBarData.json")
         toolBar.资源文件绝对路径 = 全局变量_资源文件目录
-        工具条数据 = efun.读入文本(全局变量_资源文件目录 + r"/resources/toolBarData.json")
+        工具条数据 = 读入文本(全局变量_资源文件目录 + r"/resources/toolBarData.json")
         print("工具条数据", 工具条数据)
 
         toolBar.从工具条数据中创建(工具条数据, 16, 16, self.工具条_点击)
@@ -237,7 +232,7 @@ class MainWin(主窗口):
         webbrowser.open("https://github.com/duolabmeng6/qtEsayDesigner")
 
     def 关于(self):
-        self.消息框("QtEsayDesigner 是我揣着情怀的开发~~", "关于", QMessageBox.Ok)
+        self.消息框("QtEsayDesigner 是我揣着情怀的开发~~", "关于")
 
     def 检查更新(self):
         self.消息框("等待开发")
@@ -303,7 +298,7 @@ class MainWin(主窗口):
 
     def 菜单_另存为(self):
         pass
-        文件路径 = self.打开文件保存选择器("设计文件 (*.json)", "请选择保存设计文件的路径", efun.取运行目录())
+        文件路径 = self.打开文件保存选择器("设计文件 (*.json)", "请选择保存设计文件的路径", 取运行目录())
         print("路径", 文件路径)
         if 文件路径[0] != "":
             self.设计文件路径 = 文件路径[0]
@@ -353,7 +348,7 @@ class MainWin(主窗口):
 
     def 运行(self):
         print("运行python代码")
-        efun.运行(f"/usr/local/bin/python3.9 {self.属性表格窗口.设计窗口.写出文件路径AppPy}")
+        运行(f"/usr/local/bin/python3.9 {self.属性表格窗口.设计窗口.写出文件路径AppPy}")
 
     def 编译为可执行程序(self):
         self.消息框("等待开发")
@@ -361,7 +356,7 @@ class MainWin(主窗口):
     def 信号_代码跳转(self, 状态, 错误文本):
         print("信号_代码跳转", 状态, 错误文本)
         if 状态 == True:
-            if efun.系统_是否为mac系统():
+            if 系统_是否为mac系统():
                 # self.hide()
                 self.lower()  # 这个不会挡住窗口还能在dock栏激活
             else:
