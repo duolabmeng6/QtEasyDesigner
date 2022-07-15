@@ -1,10 +1,13 @@
 import sys
 import os
 import webbrowser
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QThread
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
 from pyefun import *
+from qt_esay_model.更新模块 import 获取最新版本号和下载地址
+
+全局变量_版本号 = "2022年07月15日"
 
 if 是否为PyInstaller编译后环境():
     全局变量_资源文件目录 = 取资源文件路径()
@@ -66,27 +69,40 @@ class MainWin(主窗口):
                 文件名 = strCut(文件名, "_$")
             self.设计文件路径 = f"{目录}/{文件名}.json"
 
+    def 更新版本号(self):
+        pass
+        try:
+            最新版本号, 下载地址, 发布时间 = 获取最新版本号和下载地址("duolabmeng6/QtEsayDesigner")
+            print(最新版本号, 下载地址, 发布时间)
+            最新版本 = f"最新版更新于:{发布时间}({最新版本号})"
+        except:
+            pass
+            最新版本 = "查询失败"
+        self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEsayDesigner) 当前版本:{全局变量_版本号} {最新版本}")
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
         self.设计文件路径 = ""
         self.ui = win_app2.Ui_MainWindow()
-        try:
-            self.初始化命令行参数()
-        except:
-            pass
+        self.初始化命令行参数()
         self.初始化菜单()
         self.ui.setupUi(self)
         self.show()
         self.初始化托盘图标()
 
         self.状态条标签 = QLabel()
-        self.状态条标签.setText("欢迎使用 Qt视窗设计器(QtEsayDesigner) 版本: 2022年07月08日")
+        self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEsayDesigner) 当前版本:{全局变量_版本号} 最新版本获取中")
         self.ui.statusbar.addWidget(self.状态条标签)
+        # 开启qt的线程 运行 更新版本号
+        self.线程 = QThread()
+        self.线程.started.connect(self.更新版本号)
+        self.线程.start()
 
         self.状态条标签_文件信息 = QLabel()
         self.状态条标签_文件信息.setText(self.设计文件路径)
         self.ui.statusbar.addWidget(self.状态条标签_文件信息)
+
         self.大小 = (1200, 600)
         self.标题 = "Qt视窗设计器"
         self.窗口居中()
@@ -106,11 +122,10 @@ class MainWin(主窗口):
 
         self.属性表格窗口.设计窗口.信号_代码跳转.connect(self.信号_代码跳转)
 
-        self.setCentralWidget(self.属性表格窗口) # 设置布局
+        self.setCentralWidget(self.属性表格窗口)  # 设置布局
         self.属性表格窗口.show()
         self.属性表格窗口.设计窗口.show()
         self.属性表格窗口.信号_项目管理文件被选择.connect(self.信号_项目管理文件被选择)
-
 
     def 信号_项目管理文件被选择(self, 文件名):
         pass

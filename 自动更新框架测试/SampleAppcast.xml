@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+<channel>
+<title>MacApp</title>
+<item>
+<title>2.0</title>
+<pubDate>周一, 11 3月 2019 09:44:51 +0800</pubDate>
+<sparkle:minimumSystemVersion>10.13</sparkle:minimumSystemVersion>
+<enclosure url="http://0.0.0.0:8000/MacApp.zip" sparkle:version="2.0" sparkle:shortVersionString="2.0" length="5056434" type="application/octet-stream" sparkle:edSignature="BT7y5cdBzgElBgkFrFQdBEjmT+fyaeWV0WTCILLcWCTLRzLwzZVONUA/uBKgsn/qKOtFCKaF9a7O7v9nBiJxDg=="/>
+</item>
+</channel></rss>
