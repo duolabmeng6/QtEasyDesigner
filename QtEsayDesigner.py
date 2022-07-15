@@ -80,6 +80,9 @@ class MainWin(主窗口):
             最新版本 = "查询失败"
         self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEsayDesigner) 当前版本:{全局变量_版本号} {最新版本}")
 
+    def 打开更新页面(self,e):
+        webbrowser.open("https://github.com/duolabmeng6/QtEsayDesigner/releases")
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -93,7 +96,10 @@ class MainWin(主窗口):
 
         self.状态条标签 = QLabel()
         self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEsayDesigner) 当前版本:{全局变量_版本号} 最新版本获取中")
+        # 绑定点击事件
+        self.状态条标签.mousePressEvent = self.打开更新页面
         self.ui.statusbar.addWidget(self.状态条标签)
+
         # 开启qt的线程 运行 更新版本号
         self.线程 = QThread()
         self.线程.started.connect(self.更新版本号)
@@ -252,7 +258,8 @@ class MainWin(主窗口):
         self.消息框("QtEsayDesigner 是我揣着情怀的开发~~", "关于")
 
     def 检查更新(self):
-        self.消息框("等待开发")
+        self.打开更新页面("")
+        # self.更新版本号()
 
     def 撤消(self):
         self.属性表格窗口.设计窗口.撤消()

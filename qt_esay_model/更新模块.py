@@ -2,9 +2,11 @@
 import requests
 from pyefun import *
 
+
 def 获取最新版本号和下载地址(project_name):
-    jsondata = requests.get(
-        f"https://green-sound-d020.duolabmeng.workers.dev/repos/{project_name}/releases/latest")
+    url = f"https://green-sound-d020.duolabmeng.workers.dev/repos/{project_name}/releases/latest"
+    # print(url)
+    jsondata = requests.get(url)
     jsondata = jsondata.json()
     版本号 = jsondata['tag_name']
     body = jsondata['body']
