@@ -5,6 +5,10 @@ import re
 
 from 中文对照组件常量 import 取组件名称中英文对照
 from 界面代码生成类 import 界面代码生成类
+from 组件库.组件单行编辑框 import 组件单行编辑框
+from 组件库.组件富文本编辑框 import 组件富文本编辑框
+from 组件库.组件按钮 import 组件按钮
+from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
 
 
 class 代码生成AppPy文件(object):
@@ -83,15 +87,33 @@ def {组件名称}创建完毕(self):
 self.{组件名称}.绑定{属性}(self.{组件属性[属性]})
                 """
             )
-            self.界面代码生成.加入函数定义代码(f"""
-def {组件属性[属性]}(self):
-    print("{组件属性[属性]}")
-            """)
+            函数名称 = f"{组件属性[属性]}"
+            事件名称 = 属性
+            if 组件类型 == "QPushButton":  # 按钮组件
+                组件信息 = 组件按钮()
+                函数定义代码 = 组件信息.导出事件代码(函数名称, 事件名称)
+            if 组件类型 == "QLineEdit":  # 组件单行编辑框
+                组件信息 = 组件单行编辑框()
+                函数定义代码 = 组件信息.导出事件代码(函数名称, 事件名称)
+            if 组件类型 == "QPlainTextEdit":  # 组件单行编辑框
+                组件信息 = 组件纯文本编辑框()
+                函数定义代码 = 组件信息.导出事件代码(函数名称, 事件名称)
+            if 组件类型 == "QTextEdit":  # 组件单行编辑框
+                组件信息 = 组件富文本编辑框()
+                函数定义代码 = 组件信息.导出事件代码(函数名称, 事件名称)
+
+            self.界面代码生成.加入函数定义代码(函数定义代码)
+
+
+#             self.界面代码生成.加入函数定义代码(f"""
+# def {组件属性[属性]}(self):
+#     print("{组件属性[属性]}")
+#             """)
 
 
 if __name__ == "__main__":
     # 数据文件路径 = r"C:\pyefun\QtEsayDesigner\QtEsayDesigner\qt_esay_model\测试代码生成的目录\启动窗口.json"
-    数据文件路径 = r"C:\pyefun\QtEsayDesigner\test\启动窗口.json"
+    数据文件路径 = r"/Users/chensuilong/Desktop/pythonproject/pythonProject3/main.json"
 
     # os 取文件路径的目录
     项目目录 = os.path.dirname(数据文件路径)

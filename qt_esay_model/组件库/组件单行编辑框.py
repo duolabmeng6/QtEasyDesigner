@@ -6,14 +6,32 @@ from PySide6.QtCore import QRect
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
+from 导出组件事件方法 import *
+from 组件库.组件接口类 import *
+from qtefun.组件.单行编辑框 import 单行编辑框
 
-class 组件单行编辑框(object):
+
+class 组件单行编辑框(组件接口类):
     对象: QLineEdit
     parent: QWidget
+    事件列表: list = []
 
     def __init__(self, parent=None):
         pass
         self.parent = parent
+        # 事件格式 (事件[事件名称], 回调函数参数)])
+        # 最终生成格式 def 单行编辑框1内容被改变(self,内容):
+        self.事件列表 = [
+            # ("事件内容被改变", "内容"),
+            # ("事件编辑完成", ""),
+            # ("事件输入被拒绝", ""),
+            # ("事件回车键被按下", ""),
+            # ("事件选择区域发生变化", ""),
+            # ("事件文本被编辑", "内容"),
+        ]
+
+        self.事件列表 = 导出类绑定事件函数(单行编辑框, '事件内容被改变')
+        # print("事件列表",self.事件列表)
 
     def 创建组件(self, 名称, 左边=0, 顶边=0, 宽度=0, 高度=0, 组件属性=None):
         if 组件属性 is None:
@@ -32,15 +50,6 @@ class 组件单行编辑框(object):
         for key in 组件属性:
             self.修改组件属性(key, 组件属性[key])
         return self.对象
-
-    def 取逻辑值(self, 值):
-        if 值 == True:
-            return True
-        if 值 == "真" or 值 == 'True' or 值 == 'true':
-            return True
-        if str(值) == '1':
-            return True
-        return False
 
     def 修改组件属性(self, 属性名称, 属性值):
         pass
@@ -85,9 +94,11 @@ class 组件单行编辑框(object):
             ("可视", "逻辑值", 1 if self.对象.isVisible() else 0),
             ("禁用", "逻辑值", 1 if self.对象.isEnabled() == False else 0),
             ("内容", "文本型", self.对象.text()),
-            ("事件内容被改变", "文本型", self.对象.property("事件内容被改变"))
+            # ("事件内容被改变", "文本型", self.对象.property("事件内容被改变")),
         ]
-        # print("组件属性",组件属性)
+        # 添加事件属性
+        for 事件 in self.事件列表:
+            组件属性.append((事件[0], "文本型", self.对象.property(事件[0])))
         return 组件属性
 
     def 导出为json属性(self):
@@ -173,6 +184,8 @@ if __name__ == "__main__":
     组件单行编辑框.删除组件()
 
     组件单行编辑框.创建组件("单行编辑框", 组件属性=导出数据)
+
+    print("事件代码", 组件单行编辑框.导出事件代码("xxx", "事件内容被改变"))
 
     # 创建组件库
     sys.exit(app.exec())

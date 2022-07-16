@@ -6,14 +6,19 @@ from PySide6.QtCore import QRect
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
+from 组件库.组件接口类 import *
+from qtefun.组件.纯文本编辑框 import 纯文本编辑框
 
-class 组件纯文本编辑框(object):
+
+class 组件纯文本编辑框(组件接口类):
     对象: QPlainTextEdit
     parent: QWidget
 
     def __init__(self, parent=None):
         pass
         self.parent = parent
+        self.事件列表 = 导出类绑定事件函数(纯文本编辑框, '事件内容被改变')
+
 
     def 创建组件(self, 名称, 左边=0, 顶边=0, 宽度=0, 高度=0, 组件属性=None):
         if 组件属性 is None:
@@ -87,10 +92,13 @@ class 组件纯文本编辑框(object):
             ("可视", "逻辑值", 1 if self.对象.isVisible() else 0),
             ("禁用", "逻辑值", 1 if self.对象.isEnabled() == False else 0),
             ("内容", "文本型", self.对象.toPlainText()),
-            ("事件内容被改变", "文本型", self.对象.property("事件内容被改变"))
+            # ("事件内容被改变", "文本型", self.对象.property("事件内容被改变"))
         ]
-        # print("组件属性",组件属性)
+        # 添加事件属性
+        for 事件 in self.事件列表:
+            组件属性.append((事件[0], "文本型", self.对象.property(事件[0])))
         return 组件属性
+
 
     def 导出为json属性(self):
         pass

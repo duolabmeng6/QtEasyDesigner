@@ -1,19 +1,25 @@
 # 实现 富文本编辑框组件的构建 包括 创建组件 修改属性 导出属性 删除组件
 import json
+import re
 import sys
 import PySide6
 from PySide6.QtCore import QRect
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
+from 组件库.组件接口类 import *
+from qtefun.组件.富文本编辑框 import 富文本编辑框
 
-class 组件富文本编辑框(object):
+
+class 组件富文本编辑框(组件接口类):
     对象: QTextEdit
     parent: QWidget
 
     def __init__(self, parent=None):
         pass
         self.parent = parent
+        self.事件列表 = 导出类绑定事件函数(富文本编辑框, '事件内容被改变')
+
 
     def 创建组件(self, 名称, 左边=0, 顶边=0, 宽度=0, 高度=0, 组件属性=None):
         if 组件属性 is None:
@@ -66,10 +72,8 @@ class 组件富文本编辑框(object):
         if 属性名称.startswith("事件"):
             self.对象.setProperty(属性名称, 属性值)
 
-
         if 属性名称 == "内容":
             self.对象.setText(属性值)
-
 
     def 导出组件属性(self):
         pass
@@ -87,9 +91,11 @@ class 组件富文本编辑框(object):
             ("可视", "逻辑值", 1 if self.对象.isVisible() else 0),
             ("禁用", "逻辑值", 1 if self.对象.isEnabled() == False else 0),
             ("内容", "文本型", self.对象.toPlainText()),
-            ("事件内容被改变", "文本型", self.对象.property("事件内容被改变"))
+            # ("事件内容被改变", "文本型", self.对象.property("事件内容被改变"))
         ]
-        # print("组件属性",组件属性)
+        # 添加事件属性
+        for 事件 in self.事件列表:
+            组件属性.append((事件[0], "文本型", self.对象.property(事件[0])))
         return 组件属性
 
     def 导出为json属性(self):
@@ -121,6 +127,7 @@ class 组件富文本编辑框(object):
                 """
         return 窗口代码
 
+
 if __name__ == "__main__":
     def 测试导出代码():
         组件信息 = 组件富文本编辑框()
@@ -146,8 +153,10 @@ if __name__ == "__main__":
                """
         json的数据 = json.loads(json的数据)
         print(组件信息.导出为代码(json的数据))
+
+
     测试导出代码()
-    sys.exit()
+    # sys.exit()
     app = QApplication([])
     # 创建窗口 400x400
     w = QMainWindow()

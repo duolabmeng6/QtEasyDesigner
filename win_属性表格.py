@@ -165,6 +165,9 @@ class MainWin(QMainWindow):
         self.tabWidget.setTabText(0, "项目管理")
         self.tabWidget.setTabText(1, "组件属性")
         self.tabWidget.setCurrentIndex(1)
+        self.tableWidget.setMinimumWidth(300)
+
+
 
         self.mdiArea = QMdiArea()
         self.mdiArea.setBackground(QColor(236, 236, 236))
@@ -332,8 +335,8 @@ class MainWin(QMainWindow):
         # 禁止编辑
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         # 设置表格的行高和列宽
-        self.tableWidget.setColumnWidth(0, 120)
-        self.tableWidget.setColumnWidth(1, 100)
+        self.tableWidget.setColumnWidth(0, 150)
+        self.tableWidget.setColumnWidth(1, 120)
         self.tableWidget.setEnabled(False)
         self.tableWidget.setVisible(False)
         self.tableWidget.setRowCount(len(表格属性数据))

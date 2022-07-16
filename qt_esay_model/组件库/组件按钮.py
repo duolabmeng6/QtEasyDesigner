@@ -6,14 +6,22 @@ from PySide6.QtCore import QRect
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
+from qtefun.组件.按钮 import 按钮
+from 组件库.组件接口类 import *
 
-class 组件按钮(object):
+
+class 组件按钮(组件接口类):
     对象: QPushButton
     parent: QWidget
 
     def __init__(self, parent=None):
         pass
         self.parent = parent
+        self.事件列表 = 导出类绑定事件函数(按钮, '事件被点击')
+
+    def 导出类绑定事件函数(self, 类, 排第一位的事件名称=""):
+        return 导出类绑定事件函数(类, 排第一位的事件名称)
+
 
     def 创建组件(self, 名称, 左边=0, 顶边=0, 宽度=0, 高度=0, 组件属性=None):
         if 组件属性 is None:
@@ -81,9 +89,11 @@ class 组件按钮(object):
             ("可视", "逻辑值", 1 if self.对象.isVisible() else 0),
             ("禁用", "逻辑值", 1 if self.对象.isEnabled() == False else 0),
             ("标题", "文本型", self.对象.text()),
-            ("事件被点击", "文本型", self.对象.property("事件被点击"))
         ]
-        # print("组件属性",组件属性)
+        # 添加事件属性
+        for 事件 in self.事件列表:
+            组件属性.append((事件[0], "文本型", self.对象.property(事件[0])))
+
         return 组件属性
 
     def 导出为json属性(self):
@@ -143,6 +153,7 @@ if __name__ == "__main__":
             """
         json的数据 = json.loads(json的数据)
         print(组件信息.导出为代码(json的数据))
+
 
     测试导出代码()
     sys.exit()

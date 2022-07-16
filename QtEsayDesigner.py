@@ -81,7 +81,7 @@ class MainWin(主窗口):
             最新版本 = "查询失败"
         self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEsayDesigner) 当前版本:{全局变量_版本号} {最新版本}")
 
-    def 打开更新页面(self,e):
+    def 打开更新页面(self, e):
         webbrowser.open("https://github.com/duolabmeng6/QtEsayDesigner/releases")
 
     def __init__(self, parent=None):
@@ -102,10 +102,9 @@ class MainWin(主窗口):
         self.ui.statusbar.addWidget(self.状态条标签)
 
         # 开启qt的线程 运行 更新版本号
-        self.线程 = QThread(self) # 注意这里要给一个父对象 否则销毁会报错
+        self.线程 = QThread(self)  # 注意这里要给一个父对象 否则销毁会报错
         self.线程.started.connect(self.更新版本号)
         self.线程.start()
-
 
         self.状态条标签_文件信息 = QLabel()
         self.状态条标签_文件信息.setText(self.设计文件路径)
