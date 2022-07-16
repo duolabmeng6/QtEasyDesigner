@@ -4,13 +4,14 @@ import webbrowser
 from PySide6.QtCore import Qt, QThread
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
+import pyefun as efun
 from pyefun import *
 from qt_esay_model.更新模块 import 获取最新版本号和下载地址
 
 全局变量_版本号 = "2022年07月15日"
 
-if 是否为PyInstaller编译后环境():
-    全局变量_资源文件目录 = 取资源文件路径()
+if efun.是否为PyInstaller编译后环境():
+    全局变量_资源文件目录 = efun.取资源文件路径()
 else:
     全局变量_资源文件目录 = os.path.dirname(os.path.abspath(__file__))
 # print("全局变量_资源文件目录", 全局变量_资源文件目录)
