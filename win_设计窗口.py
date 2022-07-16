@@ -9,11 +9,13 @@ from PySide6.QtWidgets import *
 
 from 代码生成AppPy文件 import 代码生成AppPy文件
 from 代码生成UiPy文件 import 代码生成UiPy文件
+from 取组件库对象 import 通过组件名称取组件库对象
 from 组件名称管理类 import 组件名称管理类
 from 中文对照组件常量 import 取组件名称中英文对照
 from 组件库.组件单行编辑框 import 组件单行编辑框
 from 组件库.组件富文本编辑框 import 组件富文本编辑框
 from 组件库.组件按钮 import 组件按钮
+from 组件库.组件标签 import 组件标签
 from 组件库.组件窗口 import 组件窗口
 from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
 from 组件树类 import 组件树类, 导入导出组件结构数据, 组件树生成代码类
@@ -652,18 +654,26 @@ class 设计窗口(QMdiSubWindow):
             组件名称 = 组件属性.get("名称", "")
             print("创建组件 坐标信息", 左边, 顶边, 宽度, 高度)
         # 组件类型前缀检查是否匹配
-        if 组件类型 == "QPushButton":
-            组件库对象 = 组件按钮(self.容器)
-        elif 组件类型 == "QLineEdit":
-            组件库对象 = 组件单行编辑框(self.容器)
-        elif 组件类型 == "QTextEdit":
-            组件库对象 = 组件富文本编辑框(self.容器)
-        elif 组件类型 == "QPlainTextEdit":
-            组件库对象 = 组件纯文本编辑框(self.容器)
-        else:
-            print("位置类型不匹配", 组件类型)
-            return
 
+        # 创建组件步骤 1 创建组建的地方
+        # if 组件类型 == "QPushButton":
+        #     组件库对象 = 组件按钮(self.容器)
+        # elif 组件类型 == "QLineEdit":
+        #     组件库对象 = 组件单行编辑框(self.容器)
+        # elif 组件类型 == "QTextEdit":
+        #     组件库对象 = 组件富文本编辑框(self.容器)
+        # elif 组件类型 == "QPlainTextEdit":
+        #     组件库对象 = 组件纯文本编辑框(self.容器)
+        # elif 组件类型 == "QLabel":
+        #     组件库对象 = 组件标签(self.容器)
+        # else:
+        #     print( f"未匹配组件{组件类型}")
+        #     return
+
+        组件库对象 = 通过组件名称取组件库对象(组件类型, self.容器)
+        if 组件库对象 is None:
+            print("请补充组件 "+组件类型)
+            return
         名称列表 = self.取所有组件的组件名称()
         # print("名称列表", 名称列表, "组件名称", 组件名称)
         while self.组件名称管理.检查重复(组件名称, 名称列表):

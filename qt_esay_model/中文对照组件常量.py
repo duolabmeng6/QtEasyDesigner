@@ -2,6 +2,7 @@ class 组件数据:
     组件中英文对照 = {
         "主窗口": "QMainWindow",
         "按钮": "QPushButton",
+        "标签": "QLabel",
         "单行编辑框": "QLineEdit",
         "纯文本编辑框": "QPlainTextEdit",
         "富文本编辑框": "QTextEdit",

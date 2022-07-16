@@ -283,26 +283,19 @@ class MainWin(QMainWindow):
         # for 组件 in 取所有组件名称():
         #     self.listWidget.addItem(组件)
 
+
         item = QListWidgetItem(获取图标("fa.mouse-pointer", "black"), '指针')
         item.setSizeHint(QSize(32, 32))
         self.listWidget.addItem(item)
 
-        item = QListWidgetItem(获取图标("mdi.gesture-tap-button", "black"), '按钮')
-        item.setSizeHint(QSize(32, 32))
-        self.listWidget.addItem(item)
-
-        item = QListWidgetItem(获取图标("ph.credit-card-thin", "black"), '单行编辑框')
-        item.setSizeHint(QSize(32, 32))
-        self.listWidget.addItem(item)
-
-        item = QListWidgetItem(获取图标("ph.credit-card-thin", "black"), '纯文本编辑框')
-        item.setSizeHint(QSize(32, 32))
-        self.listWidget.addItem(item)
-
-        item = QListWidgetItem(获取图标("ph.credit-card-thin", "black"), '富文本编辑框')
-        item.setSizeHint(QSize(32, 32))
-        self.listWidget.addItem(item)
-        self.listWidget.setIconSize(QSize(16, 16))
+        名称s = 中文对照组件常量.取所有组件名称()
+        for 名称 in 名称s:
+            if 名称 == "主窗口":
+                continue
+            item = QListWidgetItem(获取图标("mdi.moon-new", "black"), 名称)
+            item.setSizeHint(QSize(32, 32))
+            self.listWidget.addItem(item)
+            self.listWidget.setIconSize(QSize(16, 16))
 
     def 组件列表点击(self, item):
         print("组件列表点击", item.text())
