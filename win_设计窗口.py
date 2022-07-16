@@ -9,7 +9,7 @@ from PySide6.QtWidgets import *
 
 from 代码生成AppPy文件 import 代码生成AppPy文件
 from 代码生成UiPy文件 import 代码生成UiPy文件
-from 取组件库对象 import 通过组件名称取组件库对象
+from 中文对照组件常量 import 通过组件名称取组件库对象
 from 组件名称管理类 import 组件名称管理类
 from 中文对照组件常量 import 取组件名称中英文对照
 from 组件库.组件单行编辑框 import 组件单行编辑框

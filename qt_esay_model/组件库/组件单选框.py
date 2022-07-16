@@ -1,4 +1,4 @@
-# 实现 标签组件的构建 包括 创建组件 修改属性 导出属性 删除组件
+# 实现 单选框组件的构建 包括 创建组件 修改属性 导出属性 删除组件
 import json
 import sys
 import PySide6
@@ -6,25 +6,24 @@ from PySide6.QtCore import QRect
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from qtefun.组件.标签 import 标签
+from qtefun.组件.单选框 import 单选框
 from 组件库.组件接口类 import *
 
 
-class 组件标签(组件接口类):
-    对象: QLabel
+class 组件单选框(组件接口类):
+    对象: QRadioButton
     parent: QWidget
 
     def __init__(self, parent=None):
         pass
         self.parent = parent
-        self.事件列表 = 导出类绑定事件函数(标签, '事件被按下')
-
+        self.事件列表 = 导出类绑定事件函数(单选框, '事件选中状态切换')
 
     def 创建组件(self, 名称, 左边=0, 顶边=0, 宽度=0, 高度=0, 组件属性=None):
         if 组件属性 is None:
             组件属性 = {}
-        # 根据配置信息创建标签
-        self.对象 = QLabel(self.parent)
+        # 根据配置信息创建单选框
+        self.对象 = QRadioButton(self.parent)
         self.对象.setGeometry(QRect(左边, 顶边, 宽度, 高度))
         self.对象.setObjectName(名称)
         self.对象.setText(名称)
@@ -77,7 +76,7 @@ class 组件标签(组件接口类):
     def 导出组件属性(self):
         pass
         组件属性 = [
-            ("组件类型", "文本型", 'QLabel'),
+            ("组件类型", "文本型", 'QRadioButton'),
             ("名称", "文本型", self.对象.objectName()),
             ("左边", "整数型", self.对象.geometry().left()),
             ("顶边", "整数型", self.对象.geometry().top()),
@@ -116,7 +115,7 @@ class 组件标签(组件接口类):
         父组件类型 = json的数据["父组件类型"]
 
         窗口代码 = f"""
-        self.{组件名称} = QLabel(self.{父组件})
+        self.{组件名称} = QRadioButton(self.{父组件})
         self.{组件名称}.setObjectName(u"{组件名称}")
         self.{组件名称}.setGeometry(QRect({组件属性['左边']}, {组件属性['顶边']}, {组件属性['宽度']}, {组件属性['高度']}))
         self.{组件名称}.setText("{组件属性['标题']}")
@@ -126,21 +125,21 @@ class 组件标签(组件接口类):
 
 if __name__ == "__main__":
     def 测试导出代码():
-        组件信息 = 组件标签()
+        组件信息 = 组件单选框()
         json的数据 = """
                 {
-                    "组件名称": "标签1",
-                    "组件类型": "QLabel",
+                    "组件名称": "单选框1",
+                    "组件类型": "QRadioButton",
                     "组件属性": {
-                        "组件类型": "QLabel",
-                        "名称": "标签1",
+                        "组件类型": "QRadioButton",
+                        "名称": "单选框1",
                         "左边": 299,
                         "顶边": 97,
                         "宽度": 112,
                         "高度": 91,
                         "可视": 1,
                         "禁用": 0,
-                        "标题": "标签1",
+                        "标题": "单选框1",
                         "事件被点击": ""
                     },
                     "父组件": "centralwidget",
@@ -165,8 +164,8 @@ if __name__ == "__main__":
 
     def 测试创建组件():
         # 创建组件
-        组件信息 = 组件标签(w)
-        组件信息.创建组件("标签", 顶边=10, 左边=100, 宽度=100, 高度=100)
+        组件信息 = 组件单选框(w)
+        组件信息.创建组件("单选框", 顶边=10, 左边=100, 宽度=100, 高度=100)
         组件信息.修改组件属性("事件被点击", "事件" + 组件信息.对象.objectName() + "被点击")
 
         组件信息.对象.mousePressEvent = lambda e: print("按下")
@@ -174,14 +173,14 @@ if __name__ == "__main__":
         组件信息.对象.mouseReleaseEvent = lambda e: print("放开")
 
         # 导出组件属性
-        # 导出数据 = 组件标签.导出组件属性()
+        # 导出数据 = 组件单选框.导出组件属性()
         导出数据 = 组件信息.导出为json属性()
         # 导出为 json 格式 打印出来
         print(json.dumps(导出数据, indent=4, ensure_ascii=False))
         # 删除组件
         # 组件信息.删除组件()
 
-        # 组件信息.创建组件("标签", 组件属性=导出数据)
+        # 组件信息.创建组件("单选框", 组件属性=导出数据)
 
 
     测试创建组件()

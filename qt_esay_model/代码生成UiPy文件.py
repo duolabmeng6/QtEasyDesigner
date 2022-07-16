@@ -4,7 +4,7 @@ import os
 import re
 
 from 中文对照组件常量 import 取组件名称中英文对照
-from 取组件库对象 import 通过组件名称取组件库对象
+from 中文对照组件常量 import 通过组件名称取组件库对象
 from 界面代码生成类 import 界面代码生成类
 from 组件库.组件单行编辑框 import 组件单行编辑框
 from 组件库.组件富文本编辑框 import 组件富文本编辑框
