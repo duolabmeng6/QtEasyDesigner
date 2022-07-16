@@ -35,6 +35,7 @@ from 历史记录类 import 历史记录类
 #         self.resize(500, 500)
 
 class 设计窗口(QMdiSubWindow):
+    全局变量_资源文件目录 = ""  # 穿透这个参数
     信号_更新属性框 = Signal(object)  # 请订阅这个消息
     信号_代码跳转 = Signal(bool, str)  # 请订阅这个消息
     信号_双击跳转代码 = Signal(object)  # 请订阅这个消息
@@ -58,6 +59,7 @@ class 设计窗口(QMdiSubWindow):
     组件树 = None  # :type 组件树类
     组件id与名称关系 = {}  # 组件id与名称关系
     项目目录 = ""
+    窗口名称 = "启动窗口"
     组件名称管理 = None
     操作记录: 历史记录类 = None
     开始x = 0
@@ -128,6 +130,7 @@ class 设计窗口(QMdiSubWindow):
         窗口名称 = efun.文件_取文件名(文件路径, False)
         # print("信号_加载设计文件", 文件路径, 项目目录, 窗口名称)
         self.项目目录 = 项目目录 + "/"
+        self.窗口名称 = 窗口名称
         self.写出文件路径_设计文件json = 项目目录 + f"/{窗口名称}.json"  # 例如 启动窗口.py
         self.写出文件路径_uipy = 项目目录 + f"/ui_{窗口名称}.py"  # 例如 ui_启动窗口.py
         self.写出文件路径AppPy = 项目目录 + f"/app_{窗口名称}.py"  # 例如 app.py
@@ -163,6 +166,14 @@ class 设计窗口(QMdiSubWindow):
         主窗口py的文件内容 = efun.读入文本(self.写出文件路径AppPy)
         python代码_app = 代码生成AppPy文件(导出数据, 主窗口py的文件内容).生成代码()
         efun.文件_写出(self.写出文件路径AppPy, python代码_app)
+        # print("检查目录中是否有qtefun 如果没有就写出qtefun")
+        # 检查目录中是否有qtefun 如果没有就写出qtefun的资源
+        项目的qtefun路径 = self.项目目录 + "/qtefun"
+        # print("文件是否存在 项目目录", 文件是否存在(项目的qtefun路径))
+
+        if 文件是否存在(项目的qtefun路径) is False:
+            复制目录(self.全局变量_资源文件目录 + "/qtefun", 项目的qtefun路径)
+            print(self.全局变量_资源文件目录 + "/qtefun", 项目的qtefun路径)
 
     def 信号_跳转代码(self, 函数名):
         print(f"调用pycharm代码跳转: {self.写出文件路径AppPy}, {函数名}")
@@ -191,8 +202,10 @@ class 设计窗口(QMdiSubWindow):
             # print("没有组件信息")
             窗口宽度 = 400
             窗口高度 = 400
-            窗口标题 = "祖国,您好!"
-            self.组件树 = 组件树类('启动窗口', 'QMainWindow',
+            窗口标题 = self.窗口名称
+            self.setObjectName(self.窗口名称)
+            self.setWindowTitle(self.窗口名称)
+            self.组件树 = 组件树类(self.窗口名称, 'QMainWindow',
                             {"左边": 0, "顶边": 0, "宽度": 窗口宽度, "高度": 窗口高度, "可视": 1, "禁止": 0, "标题": 窗口标题, "事件窗口创建完毕": ""})
             容器 = 组件树类('centralwidget', 'QWidget', {})
             self.组件树.添加子组件(容器)
@@ -674,7 +687,7 @@ class 设计窗口(QMdiSubWindow):
         # self.保存组件信息()
         return 组件
 
-    def 事件_设计组件键盘开放(self, e, 组件库对象: 组件按钮=None):
+    def 事件_设计组件键盘开放(self, e, 组件库对象: 组件按钮 = None):
         # 检查是否按下 del 键盘 和 退格键
         print("事件_设计组件键盘开放", e.key())
         if e.key() == Qt.Key_Delete or e.key() == Qt.Key_Backspace:

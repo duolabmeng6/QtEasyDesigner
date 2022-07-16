@@ -59,6 +59,7 @@ class MainWin(主窗口):
         # 设计文件.json 端口号
         self.插件端口号 = 0
         if len(sys.argv) > 1:
+            print("sys.argv", sys.argv)
             # 写到文件("/Users/chensuilong/Desktop/pythonproject/pyqt/qt_esay_designer/参数.json",
             #      json.dumps(sys.argv, indent=4))
             self.设计文件路径 = 子文本替换(sys.argv[1], "文件路径=", "")
@@ -128,6 +129,7 @@ class MainWin(主窗口):
         self.属性表格窗口.初始化项目管理()
 
         self.属性表格窗口.设计窗口.信号_代码跳转.connect(self.信号_代码跳转)
+        self.属性表格窗口.设计窗口.全局变量_资源文件目录 = 全局变量_资源文件目录
 
         self.setCentralWidget(self.属性表格窗口)  # 设置布局
         self.属性表格窗口.show()
