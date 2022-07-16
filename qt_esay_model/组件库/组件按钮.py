@@ -71,9 +71,6 @@ class 组件按钮(object):
 
     def 导出组件属性(self):
         pass
-        事件被点击 = self.对象.property("事件被点击")
-        if 事件被点击 is None:
-            事件被点击 = ""
         组件属性 = [
             ("组件类型", "文本型", 'QPushButton'),
             ("名称", "文本型", self.对象.objectName()),
@@ -84,7 +81,7 @@ class 组件按钮(object):
             ("可视", "逻辑值", 1 if self.对象.isVisible() else 0),
             ("禁用", "逻辑值", 1 if self.对象.isEnabled() == False else 0),
             ("标题", "文本型", self.对象.text()),
-            ("事件被点击", "文本型", 事件被点击)
+            ("事件被点击", "文本型", self.对象.property("事件被点击"))
         ]
         # print("组件属性",组件属性)
         return 组件属性

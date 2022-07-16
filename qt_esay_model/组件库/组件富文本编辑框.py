@@ -87,7 +87,7 @@ class 组件富文本编辑框(object):
             ("可视", "逻辑值", 1 if self.对象.isVisible() else 0),
             ("禁用", "逻辑值", 1 if self.对象.isEnabled() == False else 0),
             ("内容", "文本型", self.对象.toPlainText()),
-            # ("事件被点击", "文本型", 事件被点击)
+            ("事件内容被改变", "文本型", self.对象.property("事件内容被改变"))
         ]
         # print("组件属性",组件属性)
         return 组件属性
