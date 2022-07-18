@@ -5,6 +5,7 @@ from 组件库.组件复选框 import 组件复选框
 from 组件库.组件富文本编辑框 import 组件富文本编辑框
 from 组件库.组件按钮 import 组件按钮
 from 组件库.组件标签 import 组件标签
+from 组件库.组件树形框 import 组件树形框
 from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
 
 
@@ -19,6 +20,7 @@ class 组件数据:
         "复选框": "QCheckBox",
         "单选框": "QRadioButton",
         "列表框": "QListWidget",
+        "树形框": "QTreeWidget",
     }
 
 
@@ -51,6 +53,8 @@ def 通过组件名称取组件库对象(组件类型, 父容器=None):
         组件库对象 = 组件单选框(父容器)
     elif 组件类型 == "QListWidget":
         组件库对象 = 组件列表框(父容器)
+    elif 组件类型 == "QTreeWidget":
+        组件库对象 = 组件树形框(父容器)
     else:
         print(f"======未匹配组件 {组件类型}")
         return None
