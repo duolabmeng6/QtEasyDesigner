@@ -43,6 +43,7 @@ jobs:
         python-version: "3.9.13"
         #可选x64或x86。如果未指定，默认值为x64
         architecture: "x64"
+        cache: 'pip'
     # 使用运行器的终端来运行一个命令
     - name: Install dependencies
       run: |
@@ -65,7 +66,7 @@ jobs:
         zip -r ./QtEasyDesigner_MacOS.zip ./QtEasyDesigner.app
     - name: Run App Test # 运行程序检查是否返回 app run success
       run: |
-          ./dist/my_app.app/Contents/MacOS/QtEasyDesigner test
+          ./dist/QtEasyDesigner.app/Contents/MacOS/QtEasyDesigner test
           if [ $? -eq 0 ]; then
             echo "app run success"
           else

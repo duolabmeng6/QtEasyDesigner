@@ -37,6 +37,7 @@ jobs:
         python-version: "3.9.13"
         #可选x64或x86。如果未指定，默认值为x64
         architecture: "x64"
+        cache: 'pip'
     - name: Install dependencies
       run: |
         cd ./pyefun
@@ -51,7 +52,7 @@ jobs:
         pyinstaller QtEasyDesigner_window.spec
     - name: Run App Test # 运行程序检查是否返回 app run success
       run: |
-          ./dist/my_app.exe test
+          ./dist/QtEasyDesigner.exe test
     #- name: Create Zip Package # 创建压缩包
     #  run: |
     #    zip -r ./dist/MacOS_ARM64.zip ./dist/app
