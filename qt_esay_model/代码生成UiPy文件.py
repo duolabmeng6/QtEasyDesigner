@@ -150,7 +150,7 @@ self.{组件名称}.setCurrentIndex(1)
 
 if __name__ == "__main__":
     数据文件路径 = r"/Users/chensuilong/Desktop/pythonproject/pythonProject3/main.json"
-    # 数据文件路径 = r"C:\pyefun\QtEsayDesigner\test\启动窗口.json"
+    # 数据文件路径 = r"C:\pyefun\QtEasyDesigner\test\启动窗口.json"
 
     # os 取文件路径的目录
     项目目录 = os.path.dirname(数据文件路径)

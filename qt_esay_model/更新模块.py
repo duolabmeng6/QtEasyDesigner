@@ -23,5 +23,5 @@ def 获取最新版本号和下载地址(project_name):
 
 
 if __name__ == '__main__':
-    最新版本号, 下载地址, 发布时间 = 获取最新版本号和下载地址("duolabmeng6/QtEsayDesigner")
+    最新版本号, 下载地址, 发布时间 = 获取最新版本号和下载地址("duolabmeng6/QtEasyDesigner")
     print(最新版本号, 下载地址, 发布时间)

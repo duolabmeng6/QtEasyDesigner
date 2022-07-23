@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['QtEsayDesigner.py'],
+    ['QtEasyDesigner.py'],
     pathex=[],
     binaries=[],
     datas=[('qt_esay_model', 'qt_esay_model/'), ('resources', 'resources/'), ('qtefun', 'qtefun/'), ('pyefun/pyefun', 'pyefun/')],
@@ -28,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='QtEsayDesigner',
+    name='QtEasyDesigner',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

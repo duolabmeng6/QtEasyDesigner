@@ -59,7 +59,7 @@ def 版本号从大小写排序(tags):
 
 def 检查当前项目并且将版本号码加一(token, project_name):
     # token = "token"
-    # project_name = "duolabmeng6/QtEsayDesigner"
+    # project_name = "duolabmeng6/QtEasyDesigner"
 
     g = Github(token)
     # print("用户名",g.get_user().name)
@@ -99,7 +99,7 @@ def 检查当前项目并且将版本号码加一(token, project_name):
 def main():
     GITHUB_REPOSITORY = os.environ.get('GITHUB_REPOSITORY')
     INPUT_TOKEN = os.environ.get('INPUT_TOKEN')
-    # GITHUB_REPOSITORY = "duolabmeng6/QtEsayDesigner"
+    # GITHUB_REPOSITORY = "duolabmeng6/QtEasyDesigner"
     新版本号 = 检查当前项目并且将版本号码加一(INPUT_TOKEN, GITHUB_REPOSITORY)
     print(f"::set-output name=NewVersion::{新版本号}")
 

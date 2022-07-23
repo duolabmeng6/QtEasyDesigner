@@ -37,7 +37,6 @@ jobs:
         python-version: "3.9.13"
         #可选x64或x86。如果未指定，默认值为x64
         architecture: "x64"
-
     - name: Install dependencies
       run: |
         cd ./pyefun
@@ -48,7 +47,11 @@ jobs:
         pip install -r requirements.txt
     - name: Build
       run: |
-        pyinstaller QtEsayDesigner_window.spec
+        python run_output_version.py
+        pyinstaller QtEasyDesigner_window.spec
+    - name: Run App Test # 运行程序检查是否返回 app run success
+      run: |
+          ./dist/my_app.exe test
     #- name: Create Zip Package # 创建压缩包
     #  run: |
     #    zip -r ./dist/MacOS_ARM64.zip ./dist/app
@@ -56,12 +59,12 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Win_x64
-        path: ./dist/QtEsayDesigner.exe # 上传 dist 目录下的 app 执行文件
+        path: ./dist/QtEasyDesigner.exe # 上传 dist 目录下的 app 执行文件
 
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
-#        tag: "latest"
+        bodyFile: ./版本描述.md
         artifacts: "dist/*.exe"
         token: ${{ secrets.GITHUB_TOKEN }}
 

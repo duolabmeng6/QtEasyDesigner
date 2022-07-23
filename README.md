@@ -14,14 +14,14 @@ qt 窗口设计器 基于易函数的理念设计和开发
 
 支持 MacOS Window
 
-[点击这里下载Qt视窗设计器](https://github.com/duolabmeng6/QtEsayDesigner/releases)
+[点击这里下载Qt视窗设计器](https://github.com/duolabmeng6/QtEasyDesigner/releases)
 
 ## 配置 pycharm 插件
 
-提供 pycharm 插件以方便使用  [点击下载 QtEsayDesigner.IDE.jar](https://github.com/duolabmeng6/QtEsayDesigner/releases/download/0.0.16/QtEsayDesigner.IDE.jar
+提供 pycharm 插件以方便使用  [点击下载 QtEasyDesigner.IDE.jar](https://github.com/duolabmeng6/QtEasyDesigner/releases/download/0.0.16/QtEasyDesigner.IDE.jar
 )
 
-mac配置路径 `/Applications/QtEsayDesigner.app/Contents/MacOS/QtEsayDesigner`
+mac配置路径 `/Applications/QtEasyDesigner.app/Contents/MacOS/QtEasyDesigner`
 
 window配置路径为 `exe文件路径`
 
@@ -47,7 +47,7 @@ qtefun 的模块下载后放置到项目目录 https://github.com/duolabmeng6/qt
 ## 开发环境 配置
 
 ```shell
-git clone https://github.com/duolabmeng6/QtEsayDesigner.git --recurse-submodules
+git clone https://github.com/duolabmeng6/QtEasyDesigner.git --recurse-submodules
 ```
 
 * 子模块 qtefun 这是组件库是中文的命令 https://github.com/duolabmeng6/qtefun
@@ -61,7 +61,7 @@ git clone https://github.com/duolabmeng6/QtEsayDesigner.git --recurse-submodules
 源码运行设计器 需要注意 python3.9 需要绝对路径
 
 ```shell
-/usr/local/bin/python3.9 /QtEasyDesigner/QtEsayDesigner.py
+/usr/local/bin/python3.9 /QtEasyDesigner/QtEasyDesigner.py
 ```
 
 

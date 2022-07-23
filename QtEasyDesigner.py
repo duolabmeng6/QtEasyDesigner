@@ -4,10 +4,16 @@ import webbrowser
 from PySide6.QtCore import Qt, QThread
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
+
+import 自动更新模块
 from pyefun import *
 from qt_esay_model.更新模块 import 获取最新版本号和下载地址
 
-全局变量_版本号 = "2022年07月15日"
+import version
+
+全局变量_版本号 = version.version
+全局_项目名称 = "duolabmeng6/QtEasyDesigner"
+全局_当前版本 = version.version
 
 if 是否为PyInstaller编译后环境():
     全局变量_资源文件目录 = 取资源文件路径()
@@ -70,19 +76,28 @@ class MainWin(主窗口):
                 文件名 = strCut(文件名, "_$")
             self.设计文件路径 = f"{目录}/{文件名}.json"
 
-    def 更新版本号(self):
-        pass
+
+    def 检查更新回到回调函数(self, 数据):
+        print("数据", 数据)
+        最新版本号 = 数据['版本号']
+        发布时间 = 数据['发布时间']
+        发布时间 = 到时间(发布时间).取日期()
         try:
-            最新版本号, 下载地址, 发布时间 = 获取最新版本号和下载地址("duolabmeng6/QtEsayDesigner")
+            最新版本号, 下载地址, 发布时间 = 获取最新版本号和下载地址("duolabmeng6/QtEasyDesigner")
             print(最新版本号, 下载地址, 发布时间)
             最新版本 = f"最新版更新于:{发布时间}({最新版本号})"
         except:
             pass
             最新版本 = "查询失败"
-        self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEsayDesigner) 当前版本:{全局变量_版本号} {最新版本}")
+        self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEasyDesigner) 当前版本:{全局变量_版本号} {最新版本}")
+
+
+    def 更新版本号(self):
+        self.检查更新线程 = 自动更新模块.检查更新线程(全局_项目名称, self.检查更新回到回调函数)
+        self.检查更新线程.start()
 
     def 打开更新页面(self, e):
-        webbrowser.open("https://github.com/duolabmeng6/QtEsayDesigner/releases")
+        webbrowser.open("https://github.com/duolabmeng6/QtEasyDesigner/releases")
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -96,7 +111,7 @@ class MainWin(主窗口):
         self.初始化托盘图标()
 
         self.状态条标签 = QLabel()
-        self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEsayDesigner) 当前版本:{全局变量_版本号} 最新版本获取中")
+        self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEasyDesigner) 当前版本:{全局变量_版本号} 最新版本获取中")
         # 绑定点击事件
         self.状态条标签.mousePressEvent = self.打开更新页面
         self.ui.statusbar.addWidget(self.状态条标签)
@@ -236,8 +251,8 @@ class MainWin(主窗口):
         self.设置菜单.添加项目("检查更新", 获取图标("mdi6.eye-outline", "#FFFFFF"), self.检查更新)
         self.设置菜单.添加项目("qtefun 项目地址: https://github.com/duolabmeng6/qtefun", 获取图标("mdi6.eye-outline", "#FFFFFF"),
                        self.打开qtefun网址)
-        self.设置菜单.添加项目("qtEsayDesigner 项目地址: https://github.com/duolabmeng6/qtefun",
-                       获取图标("mdi6.eye-outline", "#FFFFFF"), self.打开qtEsayDesigner网址)
+        self.设置菜单.添加项目("QtEasyDesigner 项目地址: https://github.com/duolabmeng6/qtefun",
+                       获取图标("mdi6.eye-outline", "#FFFFFF"), self.打开QtEasyDesigner网址)
         self.设置菜单.添加项目("关于", 获取图标("ei.bullhorn", "#FFFFFF"), self.关于)
         self.设置菜单.添加项目("帮助", 获取图标("mdi6.help-circle-outline", "#FFFFFF"))
 
@@ -252,16 +267,18 @@ class MainWin(主窗口):
         # 在浏览器中打开网址 https://github.com/duolabmeng6/qtefun
         webbrowser.open("https://github.com/duolabmeng6/qtefun")
 
-    def 打开qtEsayDesigner网址(self):
+    def 打开QtEasyDesigner网址(self):
         # 在浏览器中打开网址 https://github.com/duolabmeng6/qtefun
-        webbrowser.open("https://github.com/duolabmeng6/qtEsayDesigner")
+        webbrowser.open("https://github.com/duolabmeng6/QtEasyDesigner")
 
     def 关于(self):
-        self.消息框("QtEsayDesigner 是我揣着情怀的开发~~", "关于")
+        self.消息框("QtEasyDesigner 是我揣着情怀的开发~~", "关于")
 
     def 检查更新(self):
-        self.打开更新页面("")
+        # self.打开更新页面("")
         # self.更新版本号()
+        self.winUpdate = 自动更新模块.窗口_更新软件(Github项目名称=全局_项目名称, 应用名称="QtEasyDesigner.app", 当前版本号=全局_当前版本)
+        self.winUpdate.show()
 
     def 撤消(self):
         self.属性表格窗口.设计窗口.撤消()

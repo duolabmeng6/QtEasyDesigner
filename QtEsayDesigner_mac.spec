@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['QtEsayDesigner.py'],
+    ['QtEasyDesigner.py'],
     pathex=[],
     binaries=[],
     datas=[('qt_esay_model', 'qt_esay_model/'), ('resources', 'resources/'), ('qtefun', 'qtefun/'), ('pyefun/pyefun', 'pyefun/')],
@@ -26,7 +26,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='QtEsayDesigner',
+    name='QtEasyDesigner',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -37,7 +37,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='QtEsayDesigner.icns',
+    icon='QtEasyDesigner.icns',
 )
 coll = COLLECT(
     exe,
@@ -47,11 +47,11 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='QtEsayDesigner',
+    name='QtEasyDesigner',
 )
 app = BUNDLE(
     coll,
-    name='QtEsayDesigner.app',
-    icon='QtEsayDesigner.icns',
+    name='QtEasyDesigner.app',
+    icon='QtEasyDesigner.icns',
     bundle_identifier=None,
 )

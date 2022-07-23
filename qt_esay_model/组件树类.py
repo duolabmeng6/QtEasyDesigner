@@ -589,7 +589,7 @@ if __name__ == "__main__":
 
     # 重新测试
     窗口名称 = "启动窗口"
-    dirpath = r"C:/pyefun/QtEsayDesigner/test"
+    dirpath = r"C:/pyefun/QtEasyDesigner/test"
     with open(f"{dirpath}/{窗口名称}.json", "r", encoding="utf-8") as f:
         导入数据 = f.read()
         # 导入数据 = json.loads(导入数据)

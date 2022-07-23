@@ -121,7 +121,7 @@ self.{组件名称}.绑定{属性}(self.{组件属性[属性]})
 
 
 if __name__ == "__main__":
-    # 数据文件路径 = r"C:\pyefun\QtEsayDesigner\QtEsayDesigner\qt_esay_model\测试代码生成的目录\启动窗口.json"
+    # 数据文件路径 = r"C:\pyefun\QtEasyDesigner\QtEasyDesigner\qt_esay_model\测试代码生成的目录\启动窗口.json"
     数据文件路径 = r"/Users/chensuilong/Desktop/pythonproject/pythonProject3/main.json"
 
     # os 取文件路径的目录
