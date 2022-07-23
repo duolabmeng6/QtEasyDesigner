@@ -414,6 +414,12 @@ class MainWin(主窗口):
 
 
 if __name__ == '__main__':
+    传入参数 = sys.argv
+    if len(传入参数) == 2:
+        参数1 = 传入参数[1]
+        if 参数1 == "test":
+            print("app run success")
+            sys.exit(0)
     # print(sys.argv)
     # 将命令行参数转换为json保存
     app = QApplication(sys.argv)
