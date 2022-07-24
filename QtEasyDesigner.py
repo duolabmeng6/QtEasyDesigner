@@ -412,16 +412,7 @@ class MainWin(主窗口):
 
 
 if __name__ == '__main__':
-    传入参数 = sys.argv
-    if len(传入参数) == 2:
-        参数1 = 传入参数[1]
-        if 参数1 == "test":
-            print("app run success")
-            sys.exit(0)
-    # print(sys.argv)
-    # 将命令行参数转换为json保存
-
-    自动更新模块.检查文件是否存在_存在则删除()
+    自动更新模块.初始化()
 
     app = QApplication(sys.argv)
     window = MainWin()

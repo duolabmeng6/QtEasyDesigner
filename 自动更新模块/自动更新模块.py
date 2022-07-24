@@ -60,12 +60,12 @@ def 更新自己MacOS应用(资源压缩包, 应用名称="my_app.app"):
         print(f"资源压缩包 {资源压缩包} app目录父目录{app目录父目录} MacOs应用路径{MacOs应用路径}")
         if MacOs应用路径 != "":
             zip解压2(资源压缩包, app目录父目录, [应用名称 + '/Contents/'])
+            # 解压完成就压缩包
+            os.remove(资源压缩包)
             MacOs应用路径 = os.path.join(app目录父目录, 应用名称)
             # QApplication.quit()
             应用名称 = 应用名称[:应用名称.rfind('.')]
             运行命令 = f"killall {应用名称} && open -n -a {MacOs应用路径}"
-            # 消息框提示运行命令
-            # QMessageBox.information(None, "提示", f"运行命令 {运行命令}")
             os.system(运行命令)
             return True, MacOs应用路径
     else:
@@ -73,7 +73,16 @@ def 更新自己MacOS应用(资源压缩包, 应用名称="my_app.app"):
         return False, ""
 
 
-def 检查文件是否存在_存在则删除():
+def 初始化():
+    # 构建时测试运行是否正常的
+    传入参数 = sys.argv
+    if len(传入参数) == 2:
+        参数1 = 传入参数[1]
+        if 参数1 == "test":
+            print("app run success")
+            sys.exit(0)
+
+    # 如果在window系统中存在旧的文件则自动删除
     自身路径Window = 取自身路径Window()
     if 自身路径Window == "":
         print("非Window编译环境")
@@ -87,7 +96,7 @@ def 检查文件是否存在_存在则删除():
 
 def 更新自己Window应用(exe资源文件路径):
     # window更新方法
-    # exe资源文件路径 = r"C:\Users\csuil\.virtualenvs\QtEasyDesigner\Scripts\dist\my_app1.0.exe"
+    # exe资源文件路径 = r"C:\Users\csuil\.virtualenvs\QtEsayDesigner\Scripts\dist\my_app1.0.exe"
     自身路径Window = 取自身路径Window()
     if 自身路径Window == "":
         print("非Window编译环境")
