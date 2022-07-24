@@ -59,6 +59,7 @@ jobs:
         rm -rf build
         rm -rf dist
         rm -rf app.spec
+        python run_output_version.py
         pyinstaller QtEasyDesigner_mac.spec
     - name: Create Zip Package # 创建压缩包
       run: |
