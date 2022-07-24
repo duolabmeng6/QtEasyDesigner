@@ -5,9 +5,9 @@ from PySide6.QtCore import Qt, QThread
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
 
-import 自动更新模块
 from pyefun import *
-from qt_esay_model.更新模块 import 获取最新版本号和下载地址
+
+import 自动更新模块
 
 import version
 
@@ -82,10 +82,7 @@ class MainWin(主窗口):
         最新版本号 = 数据['版本号']
         发布时间 = 数据['发布时间']
         发布时间 = 到时间(发布时间).取日期()
-
         try:
-            最新版本号, 下载地址, 发布时间 = 获取最新版本号和下载地址("duolabmeng6/QtEasyDesigner")
-            print(最新版本号, 下载地址, 发布时间)
             最新版本 = f"最新版更新于:{发布时间}({最新版本号})"
         except:
             pass
