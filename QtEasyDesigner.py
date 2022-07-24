@@ -17,8 +17,6 @@ import version
 全局_当前版本 = version.version
 全局_官方网址 = "https://github.com/duolabmeng6/QtEasyDesigner"
 
-
-
 if 是否为PyInstaller编译后环境():
     全局变量_资源文件目录 = 取资源文件路径()
 else:
@@ -27,23 +25,27 @@ else:
 
 sys.path.append(全局变量_资源文件目录)
 qtefun路径 = 全局变量_资源文件目录 + r"/qtefun"
-qt_esay_model路径 = 全局变量_资源文件目录 + r"/qt_esay_model"
-pyefun路径 = 全局变量_资源文件目录 + r"/pyefun"
+# qt_esay_model路径 = 全局变量_资源文件目录 + r"/qt_esay_model"
+# pyefun路径 = 全局变量_资源文件目录 + r"/pyefun"
 
 qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
 pyefun路径 = os.path.dirname(os.path.abspath(__file__)) + "/pyefun"
+qtAutoUpdateApp路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtAutoUpdateApp"
 # print("pyefun", pyefun路径)
 # print("qtefun", qtefun路径)
 # print("qt_esay_model", qt_esay_model路径)
 sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
 sys.path.append(pyefun路径)
+sys.path.append(qtAutoUpdateApp路径)
 
 if 系统_是否为mac系统():
     pass
 else:
     控制台_设置编码为UTF8()
     import ctypes
+
+
     def 隐藏控制台窗口():
         whnd = ctypes.windll.kernel32.GetConsoleWindow()
         if whnd != 0:
