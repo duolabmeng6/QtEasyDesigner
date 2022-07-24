@@ -37,7 +37,6 @@ jobs:
         python-version: "3.9.13"
         #可选x64或x86。如果未指定，默认值为x64
         architecture: "x64"
-        cache: 'pip'
     - name: Install dependencies
       run: |
         cd ./pyefun
