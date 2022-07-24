@@ -8,7 +8,6 @@ from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
 from pyefun import *
 
 import qtAutoUpdateApp.自动更新模块 as 自动更新模块
-
 import version
 
 全局变量_版本号 = version.version
