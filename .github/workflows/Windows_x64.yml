@@ -31,7 +31,7 @@ jobs:
       with:
         submodules: recursive
     - name: Set up Python 3.9.13
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         #要使用的Python版本的版本范围或确切版本，使用SemVer的版本范围语法
         python-version: "3.9.13"
