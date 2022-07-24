@@ -18,8 +18,7 @@ qt 窗口设计器 基于易函数的理念设计和开发
 
 ## 配置 pycharm 插件
 
-提供 pycharm 插件以方便使用  [点击下载 QtEasyDesigner.IDE.jar](https://github.com/duolabmeng6/QtEasyDesigner/releases/download/0.0.16/QtEasyDesigner.IDE.jar
-)
+提供 pycharm 插件以方便使用  [点击下载 QtEasyDesigner.IDE.jar](https://github.com/duolabmeng6/QtEasyDesigner/releases/download/0.0.56/QtEasyDesigner.IDE.jar)
 
 mac配置路径 `/Applications/QtEasyDesigner.app/Contents/MacOS/QtEasyDesigner`
 
