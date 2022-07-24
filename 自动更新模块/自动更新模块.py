@@ -61,17 +61,28 @@ def 更新自己MacOS应用(资源压缩包, 应用名称="my_app.app"):
         if MacOs应用路径 != "":
             zip解压2(资源压缩包, app目录父目录, [应用名称 + '/Contents/'])
             MacOs应用路径 = os.path.join(app目录父目录, 应用名称)
-            QApplication.quit()
+            # QApplication.quit()
             应用名称 = 应用名称[:应用名称.rfind('.')]
             运行命令 = f"killall {应用名称} && open -n -a {MacOs应用路径}"
             # 消息框提示运行命令
-            QMessageBox.information(None, "提示", f"运行命令 {运行命令}")
+            # QMessageBox.information(None, "提示", f"运行命令 {运行命令}")
             os.system(运行命令)
-            sys.exit(0)
             return True, MacOs应用路径
     else:
         print("非MacOS编译环境")
         return False, ""
+
+
+def 检查文件是否存在_存在则删除():
+    自身路径Window = 取自身路径Window()
+    if 自身路径Window == "":
+        print("非Window编译环境")
+        return False, ""
+    # 检查文件是否存在
+    旧的文件名 = 自身路径Window + ".old.bak"
+    if os.path.exists(旧的文件名):
+        # 删除文件
+        os.remove(旧的文件名)
 
 
 def 更新自己Window应用(exe资源文件路径):
@@ -82,7 +93,7 @@ def 更新自己Window应用(exe资源文件路径):
         print("非Window编译环境")
         return False, ""
     文件名 = os.path.basename(自身路径Window)
-    
+
     # 检查文件是否存在
     旧的文件名 = 自身路径Window + ".old.bak"
     if os.path.exists(旧的文件名):

@@ -41,8 +41,6 @@ if 系统_是否为mac系统():
 else:
     控制台_设置编码为UTF8()
     import ctypes
-
-
     def 隐藏控制台窗口():
         whnd = ctypes.windll.kernel32.GetConsoleWindow()
         if whnd != 0:
@@ -422,6 +420,9 @@ if __name__ == '__main__':
             sys.exit(0)
     # print(sys.argv)
     # 将命令行参数转换为json保存
+
+    自动更新模块.检查文件是否存在_存在则删除()
+
     app = QApplication(sys.argv)
     window = MainWin()
     window.show()
