@@ -15,6 +15,9 @@ import version
 全局_项目名称 = "duolabmeng6/QtEasyDesigner"
 全局_应用名称 = "QtEasyDesigner.app"
 全局_当前版本 = version.version
+全局_官方网址 = "https://github.com/duolabmeng6/QtEasyDesigner"
+
+
 
 if 是否为PyInstaller编译后环境():
     全局变量_资源文件目录 = 取资源文件路径()
@@ -276,7 +279,10 @@ class MainWin(主窗口):
         # self.更新版本号()
         # 检查窗口是否已经创建
         if self.winUpdate is None:
-            self.winUpdate = 自动更新模块.窗口_更新软件(Github项目名称=全局_项目名称, 应用名称=全局_应用名称, 当前版本号=全局_当前版本)
+            self.winUpdate = 自动更新模块.窗口_更新软件(Github项目名称=全局_项目名称,
+                                            应用名称=全局_应用名称,
+                                            当前版本号=全局_当前版本,
+                                            官方网址=全局_官方网址)
         self.winUpdate.show()
 
     def 撤消(self):

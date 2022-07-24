@@ -110,9 +110,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_jdxx">
-       <property name="enabled">
-        <bool>true</bool>
+      <widget class="QLabel" name="label_zt">
+       <property name="text">
+        <string>文件大小 下载速度 剩余时间</string>
        </property>
       </widget>
      </item>
@@ -137,6 +137,13 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_gfwz">
+         <property name="text">
+          <string>官方网址</string>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_azgx">
