@@ -13,6 +13,7 @@ import version
 
 全局变量_版本号 = version.version
 全局_项目名称 = "duolabmeng6/QtEasyDesigner"
+全局_应用名称 = "QtEasyDesigner.app"
 全局_当前版本 = version.version
 
 if 是否为PyInstaller编译后环境():
@@ -76,7 +77,6 @@ class MainWin(主窗口):
                 文件名 = strCut(文件名, "_$")
             self.设计文件路径 = f"{目录}/{文件名}.json"
 
-
     def 检查更新回到回调函数(self, 数据):
         print("数据", 数据)
         最新版本号 = 数据['版本号']
@@ -88,7 +88,6 @@ class MainWin(主窗口):
             pass
             最新版本 = "查询失败"
         self.状态条标签.setText(f"欢迎使用 Qt视窗设计器(QtEasyDesigner) 当前版本:{全局变量_版本号} {最新版本}")
-
 
     def 更新版本号(self):
         self.检查更新线程 = 自动更新模块.检查更新线程(全局_项目名称, self.检查更新回到回调函数)
@@ -275,7 +274,7 @@ class MainWin(主窗口):
     def 检查更新(self):
         # self.打开更新页面("")
         # self.更新版本号()
-        self.winUpdate = 自动更新模块.窗口_更新软件(Github项目名称=全局_项目名称, 应用名称="QtEasyDesigner.app", 当前版本号=全局_当前版本)
+        self.winUpdate = 自动更新模块.窗口_更新软件(Github项目名称=全局_项目名称, 应用名称=全局_应用名称, 当前版本号=全局_当前版本)
         self.winUpdate.show()
 
     def 撤消(self):
