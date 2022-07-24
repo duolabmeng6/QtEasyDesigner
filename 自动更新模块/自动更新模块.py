@@ -64,7 +64,10 @@ def 更新自己MacOS应用(资源压缩包, 应用名称="my_app.app"):
             QApplication.quit()
             应用名称 = 应用名称[:应用名称.rfind('.')]
             运行命令 = f"killall {应用名称} && open -n -a {MacOs应用路径}"
+            # 消息框提示运行命令
+            QMessageBox.information(None, "提示", f"运行命令 {运行命令}")
             os.system(运行命令)
+            sys.exit(0)
             return True, MacOs应用路径
     else:
         print("非MacOS编译环境")
