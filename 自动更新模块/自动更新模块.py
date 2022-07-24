@@ -82,7 +82,14 @@ def 更新自己Window应用(exe资源文件路径):
         print("非Window编译环境")
         return False, ""
     文件名 = os.path.basename(自身路径Window)
-    os.rename(自身路径Window, 自身路径Window + ".old.bak")
+    
+    # 检查文件是否存在
+    旧的文件名 = 自身路径Window + ".old.bak"
+    if os.path.exists(旧的文件名):
+        # 删除文件
+        os.remove(旧的文件名)
+
+    os.rename(自身路径Window, 旧的文件名)
     shutil.move(exe资源文件路径, 自身路径Window)
     # 删除文件 这步放到启动时检查删除就好
     # os.remove(自身路径Window + ".old.bak") 这个运行中是无法删除的
