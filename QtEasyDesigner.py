@@ -61,6 +61,7 @@ import win_属性表格
 class MainWin(主窗口):
     插件端口号 = 0
     设计文件路径 = ""  # json文件
+    winUpdate = None
 
     def 初始化命令行参数(self):
         # 设计文件.json 端口号
@@ -99,6 +100,7 @@ class MainWin(主窗口):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self.winUpdate = None
         self.设计文件路径 = ""
         self.ui = win_app2.Ui_MainWindow()
         self.初始化命令行参数()
@@ -274,7 +276,9 @@ class MainWin(主窗口):
     def 检查更新(self):
         # self.打开更新页面("")
         # self.更新版本号()
-        self.winUpdate = 自动更新模块.窗口_更新软件(Github项目名称=全局_项目名称, 应用名称=全局_应用名称, 当前版本号=全局_当前版本)
+        # 检查窗口是否已经创建
+        if self.winUpdate is None:
+            self.winUpdate = 自动更新模块.窗口_更新软件(Github项目名称=全局_项目名称, 应用名称=全局_应用名称, 当前版本号=全局_当前版本)
         self.winUpdate.show()
 
     def 撤消(self):
