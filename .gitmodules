@@ -4,3 +4,6 @@
 [submodule "pyefun"]
 	path = pyefun
 	url = git@github.com:duolabmeng6/pyefun.git
+[submodule "qtAutoUpdateApp"]
+	path = qtAutoUpdateApp
+	url = https://github.com/duolabmeng6/qtAutoUpdateApp

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
 
 from pyefun import *
 
-import 自动更新模块
+import qtAutoUpdateApp.自动更新模块 as 自动更新模块
 
 import version
 
