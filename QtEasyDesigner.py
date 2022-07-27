@@ -6,6 +6,7 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
 
 from pyefun import *
+from pyefun.调试 import *
 
 import qtAutoUpdateApp.自动更新模块 as 自动更新模块
 import version
@@ -118,9 +119,10 @@ class MainWin(主窗口):
         self.ui.statusbar.addWidget(self.状态条标签)
 
         # 开启qt的线程 运行 更新版本号
-        self.线程 = QThread(self)  # 注意这里要给一个父对象 否则销毁会报错
-        self.线程.started.connect(self.更新版本号)
-        self.线程.start()
+        if 是否为PyInstaller编译后环境():
+            self.线程 = QThread(self)  # 注意这里要给一个父对象 否则销毁会报错
+            self.线程.started.connect(self.更新版本号)
+            self.线程.start()
 
         self.状态条标签_文件信息 = QLabel()
         self.状态条标签_文件信息.setText(self.设计文件路径)
