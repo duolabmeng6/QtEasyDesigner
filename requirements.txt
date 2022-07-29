@@ -5,3 +5,4 @@ pendulum
 python-dotenv
 ujson
 pyinstaller
+icecream
