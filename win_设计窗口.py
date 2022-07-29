@@ -144,10 +144,10 @@ class 设计窗口(QMdiSubWindow):
             容器.添加子组件(组件树类(组件名称, 组件类型, 组件属性))
         导出数据 = self.组件树.导出组件结构数据_json()
         # ic("导出数据", 导出数据)
-        efun.文件_写出(self.写出文件路径_设计文件json + "_test.json", 导出数据)
 
         if self.写出文件路径_设计文件json == "":
             return
+
         # 写出文件
         return
         ic("写出文件=======================")
@@ -1171,7 +1171,7 @@ class 设计窗口(QMdiSubWindow):
         # ic("绘制事件", event)
         # 初始化绘图工具
         qp = QPainter()
-        qp.begin(self.当前绘制容器)
+        qp.begin(self.容器)
         if self.rect:
             self.绘制矩形(qp)
         qp.end()
