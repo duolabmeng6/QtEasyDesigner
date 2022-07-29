@@ -4,3 +4,4 @@ requests
 pendulum
 python-dotenv
 ujson
+pyinstaller
