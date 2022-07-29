@@ -47,7 +47,7 @@ class 组件富文本编辑框(组件接口类):
 
     def 修改组件属性(self, 属性名称, 属性值):
         pass
-        print("修改组件属性", self.对象.objectName(), 属性名称, 属性值)
+        # print("修改组件属性", self.对象.objectName(), 属性名称, 属性值)
         if 属性名称 == "名称":
             self.对象.setObjectName(属性值)
         if 属性名称 == "左边":

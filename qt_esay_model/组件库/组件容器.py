@@ -1,4 +1,4 @@
-# 实现 按钮组件的构建 包括 创建组件 修改属性 导出属性 删除组件
+# 实现 容器组件的构建 包括 创建组件 修改属性 导出属性 删除组件
 import json
 import sys
 import PySide6
@@ -6,27 +6,26 @@ from PySide6.QtCore import QRect
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from qtefun.组件.按钮 import 按钮
+from qtefun.组件.容器 import 容器
 from 组件库.组件接口类 import *
 
 
-class 组件按钮(组件接口类):
-    对象: QPushButton
+class 组件容器(组件接口类):
+    对象: QWidget
     parent: QWidget
 
     def __init__(self, parent=None):
         pass
         self.parent = parent
-        self.事件列表 = 导出类绑定事件函数(按钮, '事件被点击')
+        self.事件列表 = 导出类绑定事件函数(容器, '事件被点击')
 
     def 创建组件(self, 名称, 左边=0, 顶边=0, 宽度=0, 高度=0, 组件属性=None):
         if 组件属性 is None:
             组件属性 = {}
-        # 根据配置信息创建按钮
-        self.对象 = QPushButton(self.parent)
+        # 根据配置信息创建容器
+        self.对象 = QWidget(self.parent)
         self.对象.setGeometry(QRect(左边, 顶边, 宽度, 高度))
         self.对象.setObjectName(名称)
-        self.对象.setText(名称)
         self.对象.show()
 
         # 设置组件属性
@@ -45,7 +44,7 @@ class 组件按钮(组件接口类):
 
     def 修改组件属性(self, 属性名称, 属性值):
         pass
-        print("修改组件属性", self.对象.objectName(), 属性名称, 属性值)
+        # print("修改组件属性", self.对象.objectName(), 属性名称, 属性值)
         if 属性名称 == "名称":
             self.对象.setObjectName(属性值)
         if 属性名称 == "左边":
@@ -76,7 +75,7 @@ class 组件按钮(组件接口类):
     def 导出组件属性(self):
         pass
         组件属性 = [
-            ("组件类型", "文本型", 'QPushButton'),
+            ("组件类型", "文本型", 'QWidget'),
             ("名称", "文本型", self.对象.objectName()),
             ("左边", "整数型", self.对象.geometry().left()),
             ("顶边", "整数型", self.对象.geometry().top()),
@@ -84,7 +83,6 @@ class 组件按钮(组件接口类):
             ("高度", "整数型", self.对象.geometry().height()),
             ("可视", "逻辑值", 1 if self.对象.isVisible() else 0),
             ("禁用", "逻辑值", 1 if self.对象.isEnabled() == False else 0),
-            ("标题", "文本型", self.对象.text()),
         ]
         # 添加事件属性
         for 事件 in self.事件列表:
@@ -108,38 +106,46 @@ class 组件按钮(组件接口类):
         self.对象.deleteLater()
 
     def 导出为代码(self, json的数据=None):
-
+        print("导出为代码", json的数据)
         组件名称 = json的数据["组件名称"]
         组件属性 = json的数据["组件属性"]
         父组件 = json的数据["父组件"]
         父组件类型 = json的数据["父组件类型"]
+        if 组件名称 == "centralwidget":
+            组件名称 = "centralwidget"
+            父组件 = "MainWindow"
+            窗口代码 = f"""
+        self.{组件名称} = QWidget({父组件})
+        self.{组件名称}.setObjectName(u"{组件名称}")
+        MainWindow.setCentralWidget(self.{组件名称})
+                    """
+            return 窗口代码
 
         窗口代码 = f"""
-        self.{组件名称} = QPushButton(self.{父组件})
+        self.{组件名称} = QWidget(self.{父组件})
         self.{组件名称}.setObjectName(u"{组件名称}")
         self.{组件名称}.setGeometry(QRect({组件属性['左边']}, {组件属性['顶边']}, {组件属性['宽度']}, {组件属性['高度']}))
-        self.{组件名称}.setText("{组件属性['标题']}")
                 """
         return 窗口代码
 
 
 if __name__ == "__main__":
     def 测试导出代码():
-        组件信息 = 组件按钮()
+        组件信息 = 组件容器()
         json的数据 = """
                 {
-                    "组件名称": "按钮1",
-                    "组件类型": "QPushButton",
+                    "组件名称": "容器1",
+                    "组件类型": "QWidget",
                     "组件属性": {
-                        "组件类型": "QPushButton",
-                        "名称": "按钮1",
+                        "组件类型": "QWidget",
+                        "名称": "容器1",
                         "左边": 299,
                         "顶边": 97,
                         "宽度": 112,
                         "高度": 91,
                         "可视": 1,
                         "禁用": 0,
-                        "标题": "按钮1",
+                        "标题": "容器1",
                         "事件被点击": ""
                     },
                     "父组件": "centralwidget",
@@ -151,8 +157,8 @@ if __name__ == "__main__":
         print(组件信息.导出为代码(json的数据))
 
 
-    测试导出代码()
-    sys.exit()
+    # 测试导出代码()
+    # sys.exit()
 
     app = QApplication([])
     # 创建窗口 400x400
@@ -164,19 +170,20 @@ if __name__ == "__main__":
 
     def 测试创建组件():
         # 创建组件
-        组件信息 = 组件按钮(w)
-        组件信息.创建组件("按钮", 顶边=10, 左边=100, 宽度=100, 高度=100)
-        组件信息.修改组件属性("事件被点击", "事件" + 组件信息.对象.objectName() + "被点击")
+        组件信息 = 组件容器(w)
+        组件信息.创建组件("容器", 顶边=10, 左边=100, 宽度=100, 高度=100)
+        # 组件信息.修改组件属性("事件被点击", "事件" + 组件信息.对象.objectName() + "被点击")
+        组件信息.对象.setStyleSheet("QWidget{background-color:%s}" % "#FFFFFF")
 
         # 导出组件属性
-        # 导出数据 = 组件按钮.导出组件属性()
+        # 导出数据 = 组件容器.导出组件属性()
         导出数据 = 组件信息.导出为json属性()
         # 导出为 json 格式 打印出来
         print(json.dumps(导出数据, indent=4, ensure_ascii=False))
         # 删除组件
-        组件信息.删除组件()
-
-        组件信息.创建组件("按钮", 组件属性=导出数据)
+        # 组件信息.删除组件()
+        #
+        # 组件信息.创建组件("容器", 组件属性=导出数据)
 
 
     测试创建组件()

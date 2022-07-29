@@ -25,7 +25,6 @@ class 代码生成UiPy文件(object):
 
         self.界面代码生成.加载已存在的文件内容 = ""
         self.界面代码生成.末尾代码 = """
-        MainWindow.setCentralWidget(self.centralwidget)
         QMetaObject.connectSlotsByName(MainWindow)
 
 class MainWin(QMainWindow):
@@ -88,11 +87,11 @@ from PySide6.QtWidgets import (QApplication, {依赖组件})
 
         父组件 = 组件对象['父组件']
         父组件类型 = 组件对象['父组件类型']
-        if 组件类型 == "QWidget":  # 窗口组件
-            self.界面代码生成.加入事件绑定代码(f"""
-self.{组件名称} = QWidget(MainWindow)
-self.{组件名称}.setObjectName(u"{组件名称}")
-""")
+#         if 组件类型 == "QWidget":  # 窗口组件
+#             self.界面代码生成.加入事件绑定代码(f"""
+# self.{组件名称} = QWidget(MainWindow)
+# self.{组件名称}.setObjectName(u"{组件名称}")
+# """)
         if 父组件类型 == "QTabWidget" and 组件类型 == "QWidget":  # 选择夹 组件
             self.界面代码生成.加入事件绑定代码(f"""
 self.{组件名称} = QWidget()
@@ -139,10 +138,7 @@ self.{组件名称}.setCurrentIndex(1)
 
         窗口代码 = 组件库对象.导出为代码(组件对象)
 
-
-        if 组件名称 == "centralwidget":
-            pass
-        elif 窗口代码 == "":
+        if 窗口代码 == "":
             raise Exception("未知组件类型", 组件对象)
 
         self.界面代码生成.加入事件绑定代码(窗口代码)
