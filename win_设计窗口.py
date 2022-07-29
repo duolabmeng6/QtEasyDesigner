@@ -148,8 +148,6 @@ class 设计窗口(QMdiSubWindow):
         if self.写出文件路径_设计文件json == "":
             return
 
-        # 写出文件
-        return
         ic("写出文件=======================")
         efun.文件_写出(self.写出文件路径_设计文件json, 导出数据)
         python代码_ui = 代码生成UiPy文件(导出数据).生成代码()
