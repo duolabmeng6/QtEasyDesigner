@@ -5,8 +5,12 @@ from PySide6.QtCore import Qt, QThread
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
 
+pyefun路径 = os.path.dirname(os.path.abspath(__file__)) + "/pyefun"
+sys.path.append(pyefun路径)
+
 from pyefun import *
-from pyefun.调试 import *
+from pyefun.调试.调试输出 import *
+
 
 import qtAutoUpdateApp.自动更新模块 as 自动更新模块
 import version
@@ -29,14 +33,12 @@ qtefun路径 = 全局变量_资源文件目录 + r"/qtefun"
 # pyefun路径 = 全局变量_资源文件目录 + r"/pyefun"
 
 qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
-pyefun路径 = os.path.dirname(os.path.abspath(__file__)) + "/pyefun"
 qtAutoUpdateApp路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtAutoUpdateApp"
 # print("pyefun", pyefun路径)
 # print("qtefun", qtefun路径)
 # print("qt_esay_model", qt_esay_model路径)
 sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
-sys.path.append(pyefun路径)
 sys.path.append(qtAutoUpdateApp路径)
 
 if 系统_是否为mac系统():
@@ -59,6 +61,7 @@ from qtefun.组件.系统托盘图标 import 系统托盘图标
 from qtefun.组件.菜单 import 菜单
 from qtefun.组件.菜单栏 import 菜单栏
 import win_属性表格
+
 
 
 class MainWin(主窗口):
