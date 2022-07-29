@@ -23,11 +23,12 @@ version-resolver:
       - 'patch'
   default: patch
 template: |
-  # 自动更新程序
-  * 更新了自动构建
-  * 自动获取版本
-  * 自动下载
-  * 自动替换
+  # Qt Easy Designer 揣着梦想与情怀 诗和远方
+  * 轻轻松松画界面
+  * 简简单单做开发
+  * 开箱即用
+  * 中文组件函数
+  * pycharm 完美支持
 
   $CHANGES
 no-changes-template: |

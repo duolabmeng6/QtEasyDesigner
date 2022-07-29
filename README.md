@@ -2,13 +2,11 @@
 
 ## 仍在积极开发中
 
+专注于 PyQt 桌面应用软件开发 为中国人快速入门 python 编程
 
-
-一款为中国人入门 python 编程的产品
+支持跨平台，`window`  `mac OS`  `ubuntu` ，实现一套代码多端运行。
 
 配备完整的视窗软件开发生态集成 `开发` `编译` `可视化界面设计` 轻松拖拽组件设计界面，一键编译发布。
-
-支持跨平台可视化窗口程序开发，`window`  `mac OS`  `ubuntu` ，实现一套代码多端运行。
 
 
 ## 优势
@@ -69,13 +67,14 @@ git clone https://github.com/duolabmeng6/QtEasyDesigner.git --recurse-submodules
 
 * 子模块 qtefun 这是组件库是中文的命令 https://github.com/duolabmeng6/qtefun
 * 子模块 pyefun 这是各种功能类的中文命令 https://github.com/duolabmeng6/pyefun
+* 子模块 qtAutoUpdateApp 开源跨平台软件自动更新框架 https://github.com/duolabmeng6/qtAutoUpdateApp
 
 
 需要开发的
 * qt_esay_model/组件库 这里是指软件中的 组件箱 配置好即可出现在组件箱
-* qtefun/组件 这里是组件的中文命令 这个库可以用于官方的qt设计器
+* qtefun/组件 这里是组件的中文命令 这个库可以用于官方的qt设计器 建议重点贡献此项目
 
-源码运行设计器 需要注意 python3.9 需要绝对路径
+在pcharm中配置插件 源码运行设计器 需要注意 python3.9 需要绝对路径
 
 ```shell
 /usr/local/bin/python3.9 /QtEasyDesigner/QtEasyDesigner.py
