@@ -14,7 +14,7 @@ from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtGui import QTextCursor
 # yapf: disable
 from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow, QMessageBox, QTableWidgetItem
-from ui import Ui_MainWindow
+from qtBuild.ui import Ui_MainWindow
 APPNAME = 'Auto Py to App'
 VERSION = '0.0.1'
 

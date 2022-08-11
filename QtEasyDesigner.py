@@ -63,7 +63,7 @@ from qtefun.组件.系统托盘图标 import 系统托盘图标
 from qtefun.组件.菜单 import 菜单
 from qtefun.组件.菜单栏 import 菜单栏
 import win_属性表格
-import qtBuild as 编译模块
+import qtBuild.main as 编译模块
 
 
 class MainWin(主窗口):
