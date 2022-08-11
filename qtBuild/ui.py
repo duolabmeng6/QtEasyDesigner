@@ -177,7 +177,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit = QPlainTextEdit(self.centralwidget)
         self.plainTextEdit.setObjectName(u"plainTextEdit")
         self.plainTextEdit.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.plainTextEdit.setReadOnly(True)
+        self.plainTextEdit.setReadOnly(False)
 
         self.gridLayout.addWidget(self.plainTextEdit, 10, 1, 1, 7)
 
