@@ -265,7 +265,7 @@ class Main_Window(QMainWindow):
         # 获取窗口类型
         windowType = self.ui.radioButton_3.isChecked()
         # 生成编译命令
-        __name = 'pyinstaller --name="' + appName + '"'
+        __name = 'pyinstaller --noconfirm --name="' + appName + '"'
         __buildType = '-F' if buildType else '-D'
         __window = '-w' if windowType else '-c'
         __icon = '-i ' + iconPath if iconPath else ''
