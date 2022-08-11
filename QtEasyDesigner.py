@@ -2,18 +2,18 @@ import sys
 import os
 import webbrowser
 from PySide6.QtCore import Qt, QThread
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QLabel, QMessageBox
+from PySide6.QtWidgets import QApplication, QLabel
 
 pyefun路径 = os.path.dirname(os.path.abspath(__file__)) + "/pyefun"
 sys.path.append(pyefun路径)
 
 from pyefun import *
 from pyefun.调试.调试输出 import *
-
-
 import qtAutoUpdateApp.自动更新模块 as 自动更新模块
 import version
+
+
+
 
 全局变量_版本号 = version.version
 全局_项目名称 = "duolabmeng6/QtEasyDesigner"
@@ -34,12 +34,14 @@ qtefun路径 = 全局变量_资源文件目录 + r"/qtefun"
 
 qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
 qtAutoUpdateApp路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtAutoUpdateApp"
+qtBuild路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtBuild"
 # print("pyefun", pyefun路径)
 # print("qtefun", qtefun路径)
 # print("qt_esay_model", qt_esay_model路径)
 sys.path.append(qtefun路径)
 sys.path.append(qt_esay_model路径)
 sys.path.append(qtAutoUpdateApp路径)
+sys.path.append(qtBuild路径)
 
 if 系统_是否为mac系统():
     pass
@@ -61,7 +63,7 @@ from qtefun.组件.系统托盘图标 import 系统托盘图标
 from qtefun.组件.菜单 import 菜单
 from qtefun.组件.菜单栏 import 菜单栏
 import win_属性表格
-
+import qtBuild as 编译模块
 
 
 class MainWin(主窗口):
@@ -255,10 +257,11 @@ class MainWin(主窗口):
         self.设置菜单 = 菜单(self, "系统")
         self.设置菜单.添加项目("设置pycharm插件端口", 获取图标("mdi6.eye-outline", "#FFFFFF"), self.设置pycharm插件端口)
         self.设置菜单.添加项目("检查更新", 获取图标("mdi6.eye-outline", "#FFFFFF"), self.检查更新)
-        self.设置菜单.添加项目("qtefun 项目地址: https://github.com/duolabmeng6/qtefun", 获取图标("mdi6.eye-outline", "#FFFFFF"),
-                       self.打开qtefun网址)
+        self.设置菜单.添加项目("qtefun 项目地址: https://github.com/duolabmeng6/qtefun",
+                               获取图标("mdi6.eye-outline", "#FFFFFF"),
+                               self.打开qtefun网址)
         self.设置菜单.添加项目("QtEasyDesigner 项目地址: https://github.com/duolabmeng6/qtefun",
-                       获取图标("mdi6.eye-outline", "#FFFFFF"), self.打开QtEasyDesigner网址)
+                               获取图标("mdi6.eye-outline", "#FFFFFF"), self.打开QtEasyDesigner网址)
         self.设置菜单.添加项目("关于", 获取图标("ei.bullhorn", "#FFFFFF"), self.关于)
         self.设置菜单.添加项目("帮助", 获取图标("mdi6.help-circle-outline", "#FFFFFF"))
 
@@ -286,9 +289,9 @@ class MainWin(主窗口):
         # 检查窗口是否已经创建
         if self.winUpdate is None:
             self.winUpdate = 自动更新模块.窗口_更新软件(Github项目名称=全局_项目名称,
-                                            应用名称=全局_应用名称,
-                                            当前版本号=全局_当前版本,
-                                            官方网址=全局_官方网址)
+                                                        应用名称=全局_应用名称,
+                                                        当前版本号=全局_当前版本,
+                                                        官方网址=全局_官方网址)
         self.winUpdate.show()
 
     def 撤消(self):
@@ -408,7 +411,17 @@ class MainWin(主窗口):
         运行(f"/usr/local/bin/python3.9 {self.属性表格窗口.设计窗口.写出文件路径AppPy}")
 
     def 编译为可执行程序(self):
-        self.消息框("等待开发")
+        # todo:: 编译为可执行程序
+        self.窗口编译 = 编译模块.Main_Window()
+        self.窗口编译.setWindowTitle("编译为可执行程序")
+        self.窗口编译.show()
+        # 源码文件路径
+        self.窗口编译.ui.lineEdit_3.setText(self.属性表格窗口.设计窗口.写出文件路径AppPy)
+        self.窗口编译.ui.lineEdit.setText(self.属性表格窗口.设计窗口.窗口名称)
+        self.窗口编译.ui.lineEdit_4.setText(self.属性表格窗口.设计窗口.项目目录)
+        self.窗口编译.ui.radioButton_2.setChecked(True)
+
+
 
     def 信号_代码跳转(self, 状态, 错误文本):
         print("信号_代码跳转", 状态, 错误文本)
