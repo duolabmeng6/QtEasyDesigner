@@ -32,16 +32,14 @@ qtefun路径 = 全局变量_资源文件目录 + r"/qtefun"
 # qt_esay_model路径 = 全局变量_资源文件目录 + r"/qt_esay_model"
 # pyefun路径 = 全局变量_资源文件目录 + r"/pyefun"
 
-qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
-qtAutoUpdateApp路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtAutoUpdateApp"
-qtBuild路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtBuild"
+# qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
+# qtAutoUpdateApp路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtAutoUpdateApp"
 # print("pyefun", pyefun路径)
 # print("qtefun", qtefun路径)
 # print("qt_esay_model", qt_esay_model路径)
 sys.path.append(qtefun路径)
-sys.path.append(qt_esay_model路径)
-sys.path.append(qtAutoUpdateApp路径)
-sys.path.append(qtBuild路径)
+# sys.path.append(qt_esay_model路径)
+# sys.path.append(qtAutoUpdateApp路径)
 
 if 系统_是否为mac系统():
     pass
