@@ -1,6 +1,8 @@
 import sys
 import os
 import webbrowser
+from pathlib import Path
+
 from PySide6.QtCore import Qt, QThread
 from PySide6.QtWidgets import QApplication, QLabel
 
@@ -29,11 +31,11 @@ else:
 
 sys.path.append(全局变量_资源文件目录)
 qtefun路径 = 全局变量_资源文件目录 + r"/qtefun"
-qt_esay_model路径 = os.path.dirname(os.path.abspath(__file__)) + "/qt_esay_model"
+qt_esay_model路径 = Path(__file__) / "qt_esay_model"
 qtAutoUpdateApp路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtAutoUpdateApp"
 qtBuild路径 = os.path.dirname(os.path.abspath(__file__)) + "/qtBuild"
 sys.path.append(qtefun路径)
-sys.path.append(qt_esay_model路径)
+sys.path.append(str(qt_esay_model路径))
 sys.path.append(qtAutoUpdateApp路径)
 sys.path.append(qtBuild路径)
 
@@ -49,6 +51,8 @@ else:
         if whnd != 0:
             ctypes.windll.user32.ShowWindow(whnd, 0)
 
+print('after import2')
+
 import win_app2
 from qtefun.组件.主窗口 import 主窗口
 from qtefun.图标 import 获取图标
@@ -58,6 +62,8 @@ from qtefun.组件.菜单 import 菜单
 from qtefun.组件.菜单栏 import 菜单栏
 import win_属性表格
 import qtBuild.main as 编译模块
+
+print('after import3')
 
 
 class MainWin(主窗口):
@@ -431,9 +437,14 @@ class MainWin(主窗口):
 
 
 if __name__ == '__main__':
+    print("test -2")
     自动更新模块.初始化()
+    print("test -1")
 
     app = QApplication(sys.argv)
+    print("test 0")
     window = MainWin()
+    print("test 1")
     window.show()
+    print("test 2")
     sys.exit(app.exec())

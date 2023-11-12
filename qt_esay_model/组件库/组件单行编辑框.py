@@ -6,8 +6,8 @@ from PySide6.QtCore import QRect
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
-from 导出组件事件方法 import *
-from 组件库.组件接口类 import *
+from qt_esay_model.导出组件事件方法 import *
+from qt_esay_model.组件库.组件接口类 import *
 from qtefun.组件.单行编辑框 import 单行编辑框
 
 

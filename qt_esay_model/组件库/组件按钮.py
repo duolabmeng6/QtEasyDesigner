@@ -7,7 +7,7 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
 from qtefun.组件.按钮 import 按钮
-from 组件库.组件接口类 import *
+from qt_esay_model.组件库.组件接口类 import *
 
 
 class 组件按钮(组件接口类):

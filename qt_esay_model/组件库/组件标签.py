@@ -7,7 +7,7 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 
 from qtefun.组件.标签 import 标签
-from 组件库.组件接口类 import *
+from qt_esay_model.组件库.组件接口类 import *
 
 
 class 组件标签(组件接口类):

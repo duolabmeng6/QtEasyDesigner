@@ -3,7 +3,7 @@ import abc
 from abc import ABCMeta
 
 from PySide6.QtWidgets import QWidget
-from 导出组件事件方法 import 导出类绑定事件函数
+from qt_esay_model.导出组件事件方法 import 导出类绑定事件函数
 
 class 组件接口类(metaclass=ABCMeta):
     对象: object = None

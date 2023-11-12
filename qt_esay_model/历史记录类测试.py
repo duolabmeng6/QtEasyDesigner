@@ -3,7 +3,7 @@ import sys
 
 from PySide6.QtGui import QShortcut, QKeySequence
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout
-import 历史记录类
+from qt_esay_model import 历史记录类
 
 
 class Example(QWidget):
