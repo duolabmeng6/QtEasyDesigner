@@ -5,6 +5,7 @@
 /docs/build
 __pycache__
 /venv
+/env
 /cache/
 *_test.rst
 .idea
