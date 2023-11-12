@@ -51,7 +51,7 @@ else:
         if whnd != 0:
             ctypes.windll.user32.ShowWindow(whnd, 0)
 
-print('after import2')
+
 
 import win_app2
 from qtefun.组件.主窗口 import 主窗口
@@ -63,7 +63,7 @@ from qtefun.组件.菜单栏 import 菜单栏
 import win_属性表格
 import qtBuild.main as 编译模块
 
-print('after import3')
+
 
 
 class MainWin(主窗口):
