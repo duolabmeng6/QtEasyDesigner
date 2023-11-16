@@ -6,13 +6,13 @@ import sys
 # 添加当前文件的父目录的父目录
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from 中文对照组件常量 import 取组件名称中英文对照
-from 组件库.组件单行编辑框 import 组件单行编辑框
-from 组件库.组件富文本编辑框 import 组件富文本编辑框
-from 组件库.组件按钮 import 组件按钮
-from 组件库.组件窗口 import 组件窗口
-from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
-from 界面代码生成类 import 界面代码生成类
+from qt_esay_model.中文对照组件常量 import 取组件名称中英文对照
+from qt_esay_model.组件库.组件单行编辑框 import 组件单行编辑框
+from qt_esay_model.组件库.组件富文本编辑框 import 组件富文本编辑框
+from qt_esay_model.组件库.组件按钮 import 组件按钮
+from qt_esay_model.组件库.组件窗口 import 组件窗口
+from qt_esay_model.组件库.组件纯文本编辑框 import 组件纯文本编辑框
+from qt_esay_model.界面代码生成类 import 界面代码生成类
 
 
 class 组件树类:

@@ -1,14 +1,14 @@
-from 组件库.组件列表框 import 组件列表框
-from 组件库.组件单行编辑框 import 组件单行编辑框
-from 组件库.组件单选框 import 组件单选框
-from 组件库.组件复选框 import 组件复选框
-from 组件库.组件富文本编辑框 import 组件富文本编辑框
-from 组件库.组件按钮 import 组件按钮
-from 组件库.组件标签 import 组件标签
-from 组件库.组件树形框 import 组件树形框
-from 组件库.组件纯文本编辑框 import 组件纯文本编辑框
-from 组件库.组件表格 import 组件表格
-from 组件库.组件容器 import 组件容器
+from qt_esay_model.组件库.组件列表框 import 组件列表框
+from qt_esay_model.组件库.组件单行编辑框 import 组件单行编辑框
+from qt_esay_model.组件库.组件单选框 import 组件单选框
+from qt_esay_model.组件库.组件复选框 import 组件复选框
+from qt_esay_model.组件库.组件富文本编辑框 import 组件富文本编辑框
+from qt_esay_model.组件库.组件按钮 import 组件按钮
+from qt_esay_model.组件库.组件标签 import 组件标签
+from qt_esay_model.组件库.组件树形框 import 组件树形框
+from qt_esay_model.组件库.组件纯文本编辑框 import 组件纯文本编辑框
+from qt_esay_model.组件库.组件表格 import 组件表格
+from qt_esay_model.组件库.组件容器 import 组件容器
 
 
 class 组件数据:
